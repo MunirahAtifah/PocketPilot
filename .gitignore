@@ -1,0 +1,63 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.backup
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+.DS_Store
+*.iml
+*.iws
+*.ipr
+*.classpath
+*.project
+.settings/
+
+# Compilation
+*.class
+*.jar
+*.war
+*.nar
+*.zip
+*.tar.gz
+
+# Build
+build/
+dist/
+.gradle/
+
+# Database
+*.db
+*.sqlite
+*.sql.bak
+
+# Docker
+docker-compose.override.yml
+.dockerignore.local
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if using npm)
+node_modules/
+package-lock.json
+npm-debug.log

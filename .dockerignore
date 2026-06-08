@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.iml
+*.swp
+*.swo
+
+# Build
+target
+build
+*.class
+*.jar
+*.war
+
+# Gradle
+.gradle
+local.properties
+gradlew
+gradlew.bat
+gradle/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if used)
+node_modules
+npm-debug.log
+
+# Android
+PP/
+.gradle/
+
+# Documentation
+README.md
+*.md
+SETUP_INTELLIJ_ULTIMATE.md
+
+# Other
+.env

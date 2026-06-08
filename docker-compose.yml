@@ -1,0 +1,26 @@
+services:
+  pocketpilot-db:
+    image: mysql:8.0
+    container_name: pocketpilot_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: pocketpilot_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database-setup.sql:/docker-entrypoint-initdb.d/1-setup.sql
+      - ./notification-setup.sql:/docker-entrypoint-initdb.d/2-notifications.sql
+
+  pocketpilot-web:
+    build: .
+    container_name: pocketpilot_tomcat_app
+    restart: always
+    ports:
+      - "8088:8080"
+    depends_on:
+      - pocketpilot-db
+
+volumes:
+  db_data:

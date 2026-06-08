@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!-- ============================================================
+         PocketPilot Web Application Configuration
+         ============================================================
+         This file configures servlets, mappings, and application settings
+    -->
+
+    <!-- ============================================================
+         APPLICATION INFORMATION
+    -->
+    <display-name>PocketPilot - Budget Management System</display-name>
+    <description>A web-based budget management system for students and parents</description>
+
+    <!-- ============================================================
+         SERVLET DEFINITIONS
+    -->
+
+    <!-- LoginServlet Configuration -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.LoginServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- LogoutServlet Configuration -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.LogoutServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <!-- SignupServlet Configuration -->
+    <servlet>
+        <servlet-name>SignupServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.SignupServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <!-- Budget Operations (Unified) -->
+    <servlet>
+        <servlet-name>AddBudgetServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.BudgetServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>UpdateBudgetServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.BudgetServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeleteBudgetServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.BudgetServlet</servlet-class>
+    </servlet>
+
+    <!-- Expense Operations (Unified) -->
+    <servlet>
+        <servlet-name>AddExpenseServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.ExpenseServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>UpdateExpenseServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.ExpenseServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeleteExpenseServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.ExpenseServlet</servlet-class>
+    </servlet>
+
+    <!-- GenerateSupervisionCodeServlet Configuration -->
+    <servlet>
+        <servlet-name>GenerateSupervisionCodeServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.GenerateSupervisionCodeServlet</servlet-class>
+    </servlet>
+
+    <!-- LinkSupervisionCodeServlet Configuration -->
+    <servlet>
+        <servlet-name>LinkSupervisionCodeServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.LinkSupervisionCodeServlet</servlet-class>
+    </servlet>
+
+    <!-- RevokeSupervisionAccessServlet Configuration -->
+    <servlet>
+        <servlet-name>RevokeSupervisionAccessServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.RevokeSupervisionAccessServlet</servlet-class>
+    </servlet>
+
+    <!-- RemoveSupervisionServlet Configuration -->
+    <servlet>
+        <servlet-name>RemoveSupervisionServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.RemoveSupervisionServlet</servlet-class>
+    </servlet>
+
+    <!-- TrackingProgressServlet Configuration -->
+    <servlet>
+        <servlet-name>TrackingProgressServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.TrackingProgressServlet</servlet-class>
+    </servlet>
+
+    <!-- DashboardServlet Configuration -->
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.DashboardServlet</servlet-class>
+    </servlet>
+
+    <!-- ParentDashboardServlet Configuration -->
+    <servlet>
+        <servlet-name>ParentDashboardServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.ParentDashboardServlet</servlet-class>
+    </servlet>
+
+    <!-- StudentRequestSupervisionServlet Configuration -->
+    <servlet>
+        <servlet-name>StudentRequestSupervisionServlet</servlet-name>
+        <servlet-class>com.pocketpilot.controller.StudentRequestSupervisionServlet</servlet-class>
+    </servlet>
+
+    <!-- SupervisionAccessServlet Configuration -->
+    <servlet>
+        <servlet-name>SupervisionAccessServlet</servlet-name>
+        <servlet-class>com.pocketpilot.servlet.SupervisionAccessServlet</servlet-class>
+    </servlet>
+
+    <!-- ============================================================
+         SERVLET MAPPINGS
+    -->
+
+    <!-- LoginServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- LogoutServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- SignupServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>SignupServlet</servlet-name>
+        <url-pattern>/SignupServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- AddBudgetServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>AddBudgetServlet</servlet-name>
+        <url-pattern>/AddBudgetServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- UpdateBudgetServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>UpdateBudgetServlet</servlet-name>
+        <url-pattern>/UpdateBudgetServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- DeleteBudgetServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>DeleteBudgetServlet</servlet-name>
+        <url-pattern>/DeleteBudgetServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- AddExpenseServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>AddExpenseServlet</servlet-name>
+        <url-pattern>/AddExpenseServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- UpdateExpenseServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>UpdateExpenseServlet</servlet-name>
+        <url-pattern>/UpdateExpenseServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- DeleteExpenseServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>DeleteExpenseServlet</servlet-name>
+        <url-pattern>/DeleteExpenseServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- GenerateSupervisionCodeServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>GenerateSupervisionCodeServlet</servlet-name>
+        <url-pattern>/GenerateSupervisionCodeServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- LinkSupervisionCodeServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>LinkSupervisionCodeServlet</servlet-name>
+        <url-pattern>/LinkSupervisionCodeServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- RevokeSupervisionAccessServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>RevokeSupervisionAccessServlet</servlet-name>
+        <url-pattern>/RevokeSupervisionAccessServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- RemoveSupervisionServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>RemoveSupervisionServlet</servlet-name>
+        <url-pattern>/RemoveSupervisionServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- TrackingProgressServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>TrackingProgressServlet</servlet-name>
+        <url-pattern>/TrackingProgress</url-pattern>
+    </servlet-mapping>
+
+    <!-- DashboardServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/DashboardServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- ParentDashboardServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>ParentDashboardServlet</servlet-name>
+        <url-pattern>/ParentDashboardServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- StudentRequestSupervisionServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>StudentRequestSupervisionServlet</servlet-name>
+        <url-pattern>/StudentRequestSupervisionServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- SupervisionAccessServlet URL Mapping -->
+    <servlet-mapping>
+        <servlet-name>SupervisionAccessServlet</servlet-name>
+        <url-pattern>/SupervisionAccessServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============================================================
+         SESSION CONFIGURATION
+    -->
+    <session-config>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- ============================================================
+         WELCOME FILES
+    -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- ============================================================
+         ERROR PAGES
+    -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error500.jsp</location>
+    </error-page>
+
+    <!-- ============================================================
+         MIME TYPES
+    -->
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+</web-app>

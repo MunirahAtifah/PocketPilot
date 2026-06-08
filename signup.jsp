@@ -1,0 +1,336 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PocketPilot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .signup-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .signup-header h1 {
+            color: #6B46C1;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .signup-header p {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #6B46C1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0D5C7;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #6B46C1;
+            background-color: #FFFBF0;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #6B46C1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #c62828;
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #FFEBEE;
+            border-radius: 8px;
+            border-left: 4px solid #c62828;
+            display: none;
+        }
+        
+        .success-message {
+            color: #2e7d32;
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #E8F5E9;
+            border-radius: 8px;
+            border-left: 4px solid #2e7d32;
+            display: none;
+        }
+
+        .dynamic-fields {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E0D5C7;
+        }
+
+        .field-hidden {
+            display: none;
+        }
+
+        .role-description {
+            background: #F5F1E8;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <%
+        // Check if user is already logged in
+        if (session.getAttribute("userID") != null) {
+            response.sendRedirect("studentDashboard.jsp");
+            return;
+        }
+    %>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>💰 Create Account</h1>
+            <p>Join PocketPilot to manage your finances</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        
+        <form method="POST" action="SignupServlet" id="signupForm">
+            <!-- Role Selection -->
+            <div class="form-group">
+                <label for="role">Select Your Role</label>
+                <select name="role" id="role" required>
+                    <option value="">-- Choose a role --</option>
+                    <option value="Student">👨‍🎓 Student</option>
+                    <option value="Parent">👨‍👩‍👧 Parent</option>
+                    <option value="Student_Counsellor">👨‍🏫 Student Counsellor</option>
+                </select>
+            </div>
+            
+            <!-- Full Name (All Roles) -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input 
+                    type="text" 
+                    id="fullName" 
+                    name="fullName" 
+                    placeholder="Your full name"
+                    required
+                >
+            </div>
+            
+            <!-- Basic Information (All Roles) -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Choose a username"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="your@email.com"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input 
+                    type="tel" 
+                    id="phoneNumber" 
+                    name="phoneNumber" 
+                    placeholder="01234567890"
+                    required
+                >
+            </div>
+            
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Minimum 6 characters"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="Re-enter your password"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="btn">Create Account</button>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="login.jsp">Login here</a>
+        </div>
+    </div>
+
+    <script>
+        // Check URL parameters for success/error messages
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMessage = urlParams.get('error');
+        const successMessage = urlParams.get('success');
+        
+        if (errorMessage) {
+            document.getElementById('errorMessage').textContent = '❌ ' + decodeURIComponent(errorMessage);
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+        
+        if (successMessage) {
+            document.getElementById('successMessage').textContent = '✓ ' + decodeURIComponent(successMessage);
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'login.jsp?success=' + encodeURIComponent(successMessage);
+            }, 2000);
+        }
+
+        // Form validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('role').value;
+            const fullName = document.getElementById('fullName').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            errorDiv.style.display = 'none';
+            
+            if (!role) {
+                errorDiv.textContent = '❌ Please select a role';
+                errorDiv.style.display = 'block';
+                e.preventDefault();
+                return;
+            }
+
+            if (!fullName.trim()) {
+                errorDiv.textContent = '❌ Full name is required';
+                errorDiv.style.display = 'block';
+                e.preventDefault();
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorDiv.textContent = '❌ Passwords do not match';
+                errorDiv.style.display = 'block';
+                e.preventDefault();
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorDiv.textContent = '❌ Password must be at least 6 characters';
+                errorDiv.style.display = 'block';
+                e.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
