@@ -354,7 +354,7 @@
             </div>
             <div>
                 <a href="TrackingProgressServlet?action=export&month=<%= reportMonth %><%= !"Student".equals(userRole) ? "&studentID=" + trackingStudentID : "" %>" class="btn btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    📄 Save / Print PDF
+                    Download
                 </a>
             </div>
         </div>
