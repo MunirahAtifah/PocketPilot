@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,6 +59,7 @@ import com.pocketpilot.util.DatabaseConnection;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/SignupServlet")
 public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -145,8 +147,9 @@ public class SignupServlet extends HttpServlet {
         // ================================================
         // Step 4: Register user in database
         // ================================================
+        int userID = -1;
         try {
-            int userID = registerUser(username, email, phoneNumber, role, password);
+            userID = registerUser(username, email, phoneNumber, role, password);
 
             if (userID > 0) {
         // ================================================
@@ -194,6 +197,14 @@ public class SignupServlet extends HttpServlet {
         } catch (SQLException e) {
             logDebug("Registration error: " + e.getMessage());
             e.printStackTrace();
+            if (userID > 0) {
+                try {
+                    deleteUser(userID);
+                    logDebug("Cleaned up registered user ID " + userID + " due to registration exception.");
+                } catch (SQLException ex) {
+                    logDebug("Failed to clean up registered user ID " + userID + ": " + ex.getMessage());
+                }
+            }
             redirectWithError(response, "An error occurred. Please try again later.");
         }
     }
@@ -270,7 +281,7 @@ public class SignupServlet extends HttpServlet {
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "SELECT COUNT(*) FROM Registration WHERE email = ?";
+            String sql = "SELECT COUNT(*) FROM registration WHERE email = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             rs = stmt.executeQuery();
@@ -297,7 +308,7 @@ public class SignupServlet extends HttpServlet {
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "SELECT COUNT(*) FROM Registration WHERE username = ?";
+            String sql = "SELECT COUNT(*) FROM registration WHERE username = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             rs = stmt.executeQuery();
@@ -326,7 +337,7 @@ public class SignupServlet extends HttpServlet {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "INSERT INTO Registration (username, email, phone_number, role, password) " +
+            String sql = "INSERT INTO registration (username, email, phone_number, role, password) " +
                         "VALUES (?, ?, ?, ?, ?)";
 
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -364,7 +375,7 @@ public class SignupServlet extends HttpServlet {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "INSERT INTO Student (userID, studentName) VALUES (?, ?)";
+            String sql = "INSERT INTO student (userID, studentName) VALUES (?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userID);
             stmt.setString(2, studentName);
@@ -388,7 +399,7 @@ public class SignupServlet extends HttpServlet {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "INSERT INTO Parent (userID, parentName) VALUES (?, ?)";
+            String sql = "INSERT INTO parent (userID, parentName) VALUES (?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userID);
             stmt.setString(2, parentName);
@@ -424,7 +435,7 @@ public class SignupServlet extends HttpServlet {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "INSERT INTO Student_Counsellor (userID, staffName) VALUES (?, ?)";
+            String sql = "INSERT INTO student_counsellor (userID, staffName) VALUES (?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userID);
             stmt.setString(2, counsellorName);
@@ -448,7 +459,7 @@ public class SignupServlet extends HttpServlet {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "DELETE FROM Registration WHERE userID = ?";
+            String sql = "DELETE FROM registration WHERE userID = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userID);
 
@@ -471,7 +482,7 @@ public class SignupServlet extends HttpServlet {
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "SELECT studentID FROM Student WHERE userID = ?";
+            String sql = "SELECT studentID FROM student WHERE userID = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userID);
             rs = stmt.executeQuery();

@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.pocketpilot.dao.StudentCounsellorDAO;
 import com.pocketpilot.dao.ParentSupervisionDAO;
@@ -83,7 +83,7 @@ public class SupervisionAccessServlet extends HttpServlet {
         }
 
         int accessID = Integer.parseInt(accessIDStr);
-        boolean success = StudentCounsellorDAO.approveCounsellor(accessID);
+        boolean success = StudentCounsellorDAO.approveStudent(accessID);
 
         if (success) {
             out.print("{\"success\":true,\"message\":\"Counsellor approved successfully\"}");
@@ -102,7 +102,7 @@ public class SupervisionAccessServlet extends HttpServlet {
         }
 
         int accessID = Integer.parseInt(accessIDStr);
-        boolean success = StudentCounsellorDAO.disapproveCounsellor(accessID);
+        boolean success = StudentCounsellorDAO.disapproveStudent(accessID);
 
         if (success) {
             out.print("{\"success\":true,\"message\":\"Counsellor access removed\"}");
@@ -124,7 +124,7 @@ public class SupervisionAccessServlet extends HttpServlet {
     private Integer getStudentID(Integer userID) throws SQLException {
         // This should be implemented with actual database query
         // For now, returning a placeholder
-        String sql = "SELECT studentID FROM Student WHERE userID = ?";
+        String sql = "SELECT studentID FROM student WHERE userID = ?";
         try (java.sql.Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
              java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
             

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 
 /**
  * RevokeSupervisionAccessServlet - Revoke Supervision Links
@@ -29,6 +30,7 @@ import javax.servlet.http.*;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/RevokeSupervisionAccessServlet")
 public class RevokeSupervisionAccessServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -58,7 +60,7 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
                 if ("Student".equals(role)) {
                     response.sendRedirect("supervisionAccess.jsp?error=Invalid+request");
                 } else {
-                    response.sendRedirect("parentSupervisionLink.jsp?error=Invalid+request");
+                    response.sendRedirect("supervisionAccess.jsp?error=Invalid+request");
                 }
                 return;
             }
@@ -93,20 +95,20 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
                 
                 // Verify parent owns this supervision link
                 if (!isParentAuthorized(userID, supervisionCode)) {
-                    response.sendRedirect("parentSupervisionLink.jsp?error=You+are+not+authorized+to+revoke+this+link");
+                    response.sendRedirect("supervisionAccess.jsp?error=You+are+not+authorized+to+revoke+this+link");
                     return;
                 }
                 
                 // Revoke the supervision access
                 if (revokeSupervisionByCode(supervisionCode)) {
-                    response.sendRedirect("parentSupervisionLink.jsp?success=Student+account+unlinked+successfully");
+                    response.sendRedirect("supervisionAccess.jsp?success=Student+account+unlinked+successfully");
                 } else {
-                    response.sendRedirect("parentSupervisionLink.jsp?error=Failed+to+unlink+student+account");
+                    response.sendRedirect("supervisionAccess.jsp?error=Failed+to+unlink+student+account");
                 }
                 
             } else {
                 // User is neither student nor parent
-                response.sendRedirect("dashboard.jsp?error=Only+students+and+parents+can+revoke+supervision");
+                response.sendRedirect("studentDashboard.jsp?error=Only+students+and+parents+can+revoke+supervision");
             }
             
         } catch (Exception e) {
@@ -115,7 +117,7 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
             if ("Student".equals(role)) {
                 response.sendRedirect("supervisionAccess.jsp?error=An+error+occurred");
             } else {
-                response.sendRedirect("parentSupervisionLink.jsp?error=An+error+occurred");
+                response.sendRedirect("supervisionAccess.jsp?error=An+error+occurred");
             }
         }
     }
@@ -133,16 +135,13 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
      */
     private boolean isStudentAuthorized(int userID, String code) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to check if student owns this supervision link
             // Joins SupervisionAccess with Student table using studentID
-            String sql = "SELECT COUNT(*) FROM SupervisionAccess sa " +
-                        "JOIN Student s ON sa.studentID = s.studentID " +
+            String sql = "SELECT COUNT(*) FROM supervisionaccess sa " +
+                        "JOIN student s ON sa.studentID = s.studentID " +
                         "WHERE s.userID = ? AND sa.code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
@@ -179,16 +178,13 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
      */
     private boolean isParentAuthorized(int userID, String code) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to check if parent owns this supervision link
             // Joins SupervisionAccess with Parent table using parentID
-            String sql = "SELECT COUNT(*) FROM SupervisionAccess sa " +
-                        "JOIN Parent p ON sa.parentID = p.parentID " +
+            String sql = "SELECT COUNT(*) FROM supervisionaccess sa " +
+                        "JOIN parent p ON sa.parentID = p.parentID " +
                         "WHERE p.userID = ? AND sa.code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
@@ -223,14 +219,11 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
      */
     private boolean revokeSupervisionByCode(String code) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to delete supervision access record
-            String sql = "DELETE FROM SupervisionAccess WHERE code = ?";
+            String sql = "DELETE FROM supervisionaccess WHERE code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, code);
 

@@ -45,7 +45,7 @@ public class ExpenseDAO {
      */
     public static boolean createExpense(int studentID, int categoryID, double expenseAmount,
                                        String expenseDesc, LocalDate expenseDate) {
-        String sql = "INSERT INTO Expense (studentID, categoryID, expenseAmount, expenseDesc, expenseDate) " +
+        String sql = "INSERT INTO expense (studentID, categoryID, expenseAmount, expenseDesc, expenseDate) " +
                     "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -78,8 +78,8 @@ public class ExpenseDAO {
      */
     public static Map<String, Object> getExpenseByID(int expenseID) {
         String sql = "SELECT e.expenseID, e.studentID, e.categoryID, e.expenseAmount, " +
-                    "e.expenseDesc, e.expenseDate, c.categoryName FROM Expense e " +
-                    "JOIN Category c ON e.categoryID = c.categoryID WHERE e.expenseID = ?";
+                    "e.expenseDesc, e.expenseDate, c.categoryName FROM expense e " +
+                    "JOIN category c ON e.categoryID = c.categoryID WHERE e.expenseID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -127,7 +127,7 @@ public class ExpenseDAO {
      */
     public static boolean updateExpense(int expenseID, int studentID, int categoryID,
                                        double expenseAmount, String expenseDesc, LocalDate expenseDate) {
-        String sql = "UPDATE Expense SET categoryID = ?, expenseAmount = ?, expenseDesc = ?, expenseDate = ? " +
+        String sql = "UPDATE expense SET categoryID = ?, expenseAmount = ?, expenseDesc = ?, expenseDate = ? " +
                     "WHERE expenseID = ? AND studentID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -162,7 +162,7 @@ public class ExpenseDAO {
      * @return true if successful, false otherwise
      */
     public static boolean deleteExpense(int expenseID, int studentID) {
-        String sql = "DELETE FROM Expense WHERE expenseID = ? AND studentID = ?";
+        String sql = "DELETE FROM expense WHERE expenseID = ? AND studentID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -193,8 +193,8 @@ public class ExpenseDAO {
      */
     public static List<Map<String, Object>> getExpensesByStudentAndMonth(int studentID, int month, int year) {
         String sql = "SELECT e.expenseID, e.studentID, e.categoryID, e.expenseAmount, " +
-                    "e.expenseDesc, e.expenseDate, c.categoryName FROM Expense e " +
-                    "JOIN Category c ON e.categoryID = c.categoryID " +
+                    "e.expenseDesc, e.expenseDate, c.categoryName FROM expense e " +
+                    "JOIN category c ON e.categoryID = c.categoryID " +
                     "WHERE e.studentID = ? AND MONTH(e.expenseDate) = ? AND YEAR(e.expenseDate) = ? " +
                     "ORDER BY e.expenseDate DESC";
 
@@ -242,8 +242,8 @@ public class ExpenseDAO {
      */
     public static List<Map<String, Object>> getAllExpensesByStudent(int studentID) {
         String sql = "SELECT e.expenseID, e.studentID, e.categoryID, e.expenseAmount, " +
-                    "e.expenseDesc, e.expenseDate, c.categoryName FROM Expense e " +
-                    "JOIN Category c ON e.categoryID = c.categoryID " +
+                    "e.expenseDesc, e.expenseDate, c.categoryName FROM expense e " +
+                    "JOIN category c ON e.categoryID = c.categoryID " +
                     "WHERE e.studentID = ? ORDER BY e.expenseDate DESC";
 
         List<Map<String, Object>> expenses = new ArrayList<>();
@@ -289,7 +289,7 @@ public class ExpenseDAO {
      * @return Total expense amount
      */
     public static double getTotalExpenseForMonth(int studentID, int month, int year) {
-        String sql = "SELECT SUM(expenseAmount) as total FROM Expense " +
+        String sql = "SELECT SUM(expenseAmount) as total FROM expense " +
                     "WHERE studentID = ? AND MONTH(expenseDate) = ? AND YEAR(expenseDate) = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -326,7 +326,7 @@ public class ExpenseDAO {
      * @return true if expense belongs to student, false otherwise
      */
     public static boolean belongsToStudent(int expenseID, int studentID) {
-        String sql = "SELECT studentID FROM Expense WHERE expenseID = ?";
+        String sql = "SELECT studentID FROM expense WHERE expenseID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

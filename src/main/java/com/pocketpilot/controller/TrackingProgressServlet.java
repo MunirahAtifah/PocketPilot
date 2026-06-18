@@ -10,6 +10,7 @@ import java.time.YearMonth;
 import java.util.*;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import com.pocketpilot.dao.BudgetDAO;
 import com.pocketpilot.util.DatabaseConnection;
 import com.pocketpilot.util.ReportGenerator;
 import com.pocketpilot.util.ReportGenerator.ReportData;
+import com.pocketpilot.util.TrackingProgressCalculator;
 
 /**
  * TrackingProgressServlet - Generate financial tracking progress reports
@@ -71,6 +73,7 @@ import com.pocketpilot.util.ReportGenerator.ReportData;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/TrackingProgressServlet")
 public class TrackingProgressServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -111,29 +114,97 @@ public class TrackingProgressServlet extends HttpServlet {
         String monthStr = request.getParameter("month");
         String action = request.getParameter("action");
 
-        // If action is "export", handle PDF export
-        if ("export".equals(action)) {
-            handlePDFExport(request, response, userID, role, studentIDStr, monthStr);
-            return;
-        }
-
         // ================================================
         // Step 3: Determine which student to track
         // ================================================
-        int trackingStudentID = userID;
+        int trackingStudentID = -1;
 
-        // If Chancellor provided studentID, get that student's data instead
-        if ("Chancellor".equals(role) && studentIDStr != null && !studentIDStr.isEmpty()) {
-            try {
-                trackingStudentID = Integer.parseInt(studentIDStr);
-                
-                // Chancellor must have access to this student
-                // (This will be verified when we read data from database)
-            } catch (NumberFormatException e) {
-                response.sendRedirect("error.jsp?message=Invalid+student+ID");
+        if ("Student".equals(role)) {
+            // Retrieve studentID from userID
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement("SELECT studentID FROM student WHERE userID = ?")) {
+                pstmt.setInt(1, userID);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        trackingStudentID = rs.getInt("studentID");
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error mapping userID to studentID: " + e.getMessage());
+            }
+            if (trackingStudentID == -1) {
+                response.sendRedirect("error.jsp?message=Student+profile+not+found");
                 return;
             }
-        } else if (!"Student".equals(role) && !"Chancellor".equals(role)) {
+        } else if ("Parent".equals(role)) {
+            if (studentIDStr != null && !studentIDStr.isEmpty()) {
+                try {
+                    trackingStudentID = Integer.parseInt(studentIDStr);
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("error.jsp?message=Invalid+student+ID");
+                    return;
+                }
+            } else {
+                // Find parent's first approved child
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(
+                         "SELECT sa.studentID FROM supervisionaccess sa " +
+                         "JOIN parent p ON sa.parentID = p.parentID " +
+                         "WHERE p.userID = ? AND sa.approvalStatus = 'Approved' " +
+                         "ORDER BY sa.id LIMIT 1")) {
+                    pstmt.setInt(1, userID);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            trackingStudentID = rs.getInt("studentID");
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error finding parent child: " + e.getMessage());
+                }
+                if (trackingStudentID == -1) {
+                    response.sendRedirect("supervisionAccess.jsp?error=Please+link+a+child+account+first+to+track+progress");
+                    return;
+                }
+            }
+        } else if ("Student_Counsellor".equals(role)) {
+            if (studentIDStr != null && !studentIDStr.isEmpty()) {
+                try {
+                    trackingStudentID = Integer.parseInt(studentIDStr);
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("StudentCounsellorDashboard?error=Invalid+student+ID");
+                    return;
+                }
+
+                // Verify mutual student-counsellor approval connection status
+                boolean hasAccess = false;
+                try {
+                    Integer staffID = com.pocketpilot.dao.StudentCounsellorDAO.getStaffIDByUserID(userID);
+                    if (staffID != null) {
+                        try (Connection conn = DatabaseConnection.getConnection();
+                             PreparedStatement pstmt = conn.prepareStatement(
+                                 "SELECT COUNT(*) FROM studentcounselloraccess " +
+                                 "WHERE studentID = ? AND staffID = ? AND approvedByStudent = 1 AND accessStatus = 'Approved'")) {
+                            pstmt.setInt(1, trackingStudentID);
+                            pstmt.setInt(2, staffID);
+                            try (ResultSet rs = pstmt.executeQuery()) {
+                                if (rs.next() && rs.getInt(1) > 0) {
+                                    hasAccess = true;
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!hasAccess) {
+                    response.sendRedirect("StudentCounsellorDashboard?error=Access+denied.+Mutual+approval+required.");
+                    return;
+                }
+            } else {
+                response.sendRedirect("StudentCounsellorDashboard?error=Please+select+a+student+first");
+                return;
+            }
+        } else {
             response.sendRedirect("error.jsp?message=Unauthorized+access");
             return;
         }
@@ -212,14 +283,72 @@ public class TrackingProgressServlet extends HttpServlet {
     }
 
     /**
+     * Handle POST requests - Save comments on budget or expense
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp?error=Please+log+in+first");
+            return;
+        }
+
+        Object userIDObj = session.getAttribute("userID");
+        Object roleObj = session.getAttribute("role");
+        if (userIDObj == null || roleObj == null) {
+            response.sendRedirect("login.jsp?error=Invalid+session");
+            return;
+        }
+
+        String role = (String) roleObj;
+        if (!"Parent".equals(role) && !"Student_Counsellor".equals(role)) {
+            response.sendRedirect("login.jsp?error=Access+denied");
+            return;
+        }
+
+        String action = request.getParameter("action");
+        if ("updateComment".equals(action)) {
+            String type = request.getParameter("type");
+            String idStr = request.getParameter("id");
+            String comment = request.getParameter("comment");
+            String studentIDStr = request.getParameter("studentID");
+            String monthStr = request.getParameter("month");
+
+            if (type != null && idStr != null) {
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql;
+                    if ("budget".equals(type)) {
+                        sql = "UPDATE budget SET comment = ? WHERE budgetID = ?";
+                    } else {
+                        sql = "UPDATE expense SET comment = ? WHERE expenseID = ?";
+                    }
+                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setString(1, comment);
+                        pstmt.setInt(2, Integer.parseInt(idStr));
+                        pstmt.executeUpdate();
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error updating comment: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            // Redirect back to GET request
+            String redirectUrl = "TrackingProgressServlet?studentID=" + studentIDStr + "&month=" + monthStr;
+            response.sendRedirect(redirectUrl);
+        }
+    }
+
+    /**
      * Get budgets for a specific month
      */
     private List<Map<String, Object>> getBudgetsForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> budgets = new ArrayList<>();
         
-        String sql = "SELECT b.budgetID, b.budgetDate, b.budgetDesc, b.budgetAmount, " +
-                    "c.categoryName FROM Budget b " +
-                    "JOIN Category c ON b.categoryID = c.categoryID " +
+        String sql = "SELECT b.budgetID, b.budgetDate, b.budgetDesc, b.budgetAmount, b.comment, " +
+                    "c.categoryName FROM budget b " +
+                    "JOIN category c ON b.categoryID = c.categoryID " +
                     "WHERE b.studentID = ? AND MONTH(b.budgetDate) = ? AND YEAR(b.budgetDate) = ? " +
                     "ORDER BY b.budgetDate DESC";
 
@@ -238,6 +367,7 @@ public class TrackingProgressServlet extends HttpServlet {
                 budget.put("budgetDate", rs.getDate("budgetDate").toLocalDate());
                 budget.put("budgetDesc", rs.getString("budgetDesc"));
                 budget.put("budgetAmount", rs.getDouble("budgetAmount"));
+                budget.put("comment", rs.getString("comment"));
                 budget.put("categoryName", rs.getString("categoryName"));
                 budgets.add(budget);
             }
@@ -252,9 +382,9 @@ public class TrackingProgressServlet extends HttpServlet {
     private List<Map<String, Object>> getExpensesForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> expenses = new ArrayList<>();
         
-        String sql = "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, " +
-                    "c.categoryName FROM Expense e " +
-                    "JOIN Category c ON e.categoryID = c.categoryID " +
+        String sql = "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, e.comment, " +
+                    "c.categoryName FROM expense e " +
+                    "JOIN category c ON e.categoryID = c.categoryID " +
                     "WHERE e.studentID = ? AND MONTH(e.expenseDate) = ? AND YEAR(e.expenseDate) = ? " +
                     "ORDER BY e.expenseDate DESC";
 
@@ -273,6 +403,7 @@ public class TrackingProgressServlet extends HttpServlet {
                 expense.put("expenseDate", rs.getDate("expenseDate").toLocalDate());
                 expense.put("expenseDesc", rs.getString("expenseDesc"));
                 expense.put("expenseAmount", rs.getDouble("expenseAmount"));
+                expense.put("comment", rs.getString("comment"));
                 expense.put("categoryName", rs.getString("categoryName"));
                 expenses.add(expense);
             }
@@ -295,7 +426,7 @@ public class TrackingProgressServlet extends HttpServlet {
      * Get student name by student ID
      */
     private String getStudentName(int studentID) {
-        String sql = "SELECT studentName FROM Student WHERE studentID = ?";
+        String sql = "SELECT studentName FROM student WHERE studentID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

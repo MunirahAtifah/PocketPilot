@@ -3,6 +3,7 @@ package com.pocketpilot.controller;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,7 @@ import javax.servlet.http.HttpSession;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/StudentRequestSupervisionServlet")
 public class StudentRequestSupervisionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -82,18 +84,14 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
         
         try {
             // ================================================
-            // Step 4: Load database driver and create connection
+            // Step 4: Get database connection from utility
             // ================================================
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbUrl = "jdbc:mysql://localhost:3306/PP";
-            String dbUser = "root";
-            String dbPassword = "";
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // ================================================
             // Step 5: Validate the supervision code exists in Student table
             // ================================================
-            String validateSql = "SELECT s.studentID, s.supervisionCode FROM Student s WHERE UPPER(s.supervisionCode) = ?";
+            String validateSql = "SELECT s.studentID, s.supervisionCode FROM student s WHERE UPPER(s.supervisionCode) = ?";
             PreparedStatement validateStmt = conn.prepareStatement(validateSql);
             validateStmt.setString(1, supervisionCode);
             ResultSet validateRs = validateStmt.executeQuery();
@@ -115,7 +113,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             // ================================================
             // Step 6: Get current student ID from userID
             // ================================================
-            String getStudentIdSql = "SELECT studentID FROM Student WHERE userID = ?";
+            String getStudentIdSql = "SELECT studentID FROM student WHERE userID = ?";
             PreparedStatement getStudentStmt = conn.prepareStatement(getStudentIdSql);
             getStudentStmt.setInt(1, userID);
             ResultSet studentRs = getStudentStmt.executeQuery();
@@ -146,7 +144,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             // ================================================
             // Step 8: Check if supervision link already exists (prevent duplicates)
             // ================================================
-            String checkExistingSql = "SELECT id FROM SupervisionAccess WHERE studentID = ? AND parentID = ?";
+            String checkExistingSql = "SELECT id FROM supervisionaccess WHERE studentID = ? AND parentID = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkExistingSql);
             checkStmt.setInt(1, currentStudentID);  // Current student is the supervised one
             checkStmt.setInt(2, targetStudentID);   // Target student is the supervisor
@@ -167,7 +165,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             // ================================================
             // Step 9: Create supervision access record
             // ================================================
-            String insertSql = "INSERT INTO SupervisionAccess (code, studentID, parentID, approvalStatus) VALUES (?, ?, ?, 'Approved')";
+            String insertSql = "INSERT INTO supervisionaccess (code, studentID, parentID, approvalStatus) VALUES (?, ?, ?, 'Approved')";
             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
             insertStmt.setString(1, generateAccessCode(10));  // Generate unique 10-char code
             insertStmt.setInt(2, currentStudentID);           // Student being supervised

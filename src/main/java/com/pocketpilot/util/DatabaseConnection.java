@@ -53,21 +53,14 @@ import java.sql.SQLException;
  */
 public class DatabaseConnection {
 
-    // ================================================
-    // Database Configuration - UPDATED FOR DOCKER
-    // ================================================
-    
-    /** Database URL - Uses Docker service name 'pocketpilot-db' and database 'pocketpilot_db' */
-    private static final String DB_URL = "jdbc:mysql://pocketpilot-db:3306/pp?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    
-    /** Database Username */
-    private static final String DB_USER = "root";
-    
-    /** Database Password - Matches MYSQL_ROOT_PASSWORD in compose file */
-    private static final String DB_PASSWORD = "rootpassword";
-    
     /** MySQL JDBC Driver Class */
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+
+    // Resolved database configuration cached after first successful initialization
+    private static String resolvedUrl = null;
+    private static String resolvedUser = "root";
+    private static String resolvedPassword = "";
+    private static final Object lock = new Object();
 
     // ================================================
     // Static Initializer - Load JDBC Driver
@@ -85,6 +78,73 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Resolve database configuration dynamically, checking environment variables
+     * and auto-detecting active database configurations.
+     */
+    private static void resolveConnection() {
+        synchronized (lock) {
+            if (resolvedUrl != null) {
+                return;
+            }
+
+            // Check if environment variables are set
+            String envHost = System.getenv("DB_HOST");
+            String envPort = System.getenv("DB_PORT");
+            String envName = System.getenv("DB_NAME");
+            String envUser = System.getenv("DB_USER");
+            String envPass = System.getenv("DB_PASSWORD");
+
+            if (envHost != null) {
+                String port = envPort != null ? envPort : "3306";
+                String name = envName != null ? envName : "pp";
+                resolvedUrl = "jdbc:mysql://" + envHost + ":" + port + "/" + name + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                resolvedUser = envUser != null ? envUser : "root";
+                resolvedPassword = envPass != null ? envPass : "";
+                System.out.println("✓ Using database configuration from environment: " + resolvedUrl);
+                return;
+            }
+
+            // Define config candidates to test
+            class DbConfigCandidate {
+                String url;
+                String user;
+                String password;
+                DbConfigCandidate(String url, String user, String password) {
+                    this.url = url;
+                    this.user = user;
+                    this.password = password;
+                }
+            }
+
+            java.util.List<DbConfigCandidate> candidates = new java.util.ArrayList<>();
+            // 1. Docker environment default configuration
+            candidates.add(new DbConfigCandidate("jdbc:mysql://pocketpilot-db:3306/pp?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&connectTimeout=2000", "root", "rootpassword"));
+            // 2. Local XAMPP/WAMP default (lowercase pp)
+            candidates.add(new DbConfigCandidate("jdbc:mysql://localhost:3306/pp?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&connectTimeout=2000", "root", ""));
+            // 3. Local XAMPP/WAMP default (uppercase PP)
+            candidates.add(new DbConfigCandidate("jdbc:mysql://localhost:3306/PP?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&connectTimeout=2000", "root", ""));
+
+            for (DbConfigCandidate candidate : candidates) {
+                try (Connection conn = DriverManager.getConnection(candidate.url, candidate.user, candidate.password)) {
+                    resolvedUrl = candidate.url;
+                    resolvedUser = candidate.user;
+                    resolvedPassword = candidate.password;
+                    System.out.println("✓ Successfully connected to auto-detected database: " + resolvedUrl);
+                    return;
+                } catch (SQLException e) {
+                    System.out.println("Info: Database connection candidate failed: " + candidate.url + " (" + e.getMessage() + ")");
+                }
+            }
+
+            // Default fallback if all connection attempts fail
+            resolvedUrl = "jdbc:mysql://localhost:3306/PP?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+            resolvedUser = "root";
+            resolvedPassword = "";
+            System.err.println("⚠ All database connection attempts failed. Falling back to default: " + resolvedUrl);
+        }
+    }
+
     // ================================================
     // Public Methods
     // ================================================
@@ -96,13 +156,16 @@ public class DatabaseConnection {
      * @throws SQLException if connection fails
      */
     public static Connection getConnection() throws SQLException {
+        if (resolvedUrl == null) {
+            resolveConnection();
+        }
         try {
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            System.out.println("✓ Database connection established");
+            Connection conn = DriverManager.getConnection(resolvedUrl, resolvedUser, resolvedPassword);
+            System.out.println("✓ Database connection established: " + resolvedUrl);
             return conn;
         } catch (SQLException e) {
             System.err.println("✗ Failed to establish database connection");
-            System.err.println("URL: " + DB_URL);
+            System.err.println("URL: " + resolvedUrl);
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
             throw e;
@@ -141,10 +204,11 @@ public class DatabaseConnection {
      * @return String with database connection details
      */
     public static String getDatabaseInfo() {
-        return "Database: PP\n" +
-               "Host: localhost\n" +
-               "Port: 3306\n" +
-               "User: " + DB_USER + "\n" +
+        if (resolvedUrl == null) {
+            resolveConnection();
+        }
+        return "URL: " + resolvedUrl + "\n" +
+               "User: " + resolvedUser + "\n" +
                "Driver: " + JDBC_DRIVER;
     }
 }

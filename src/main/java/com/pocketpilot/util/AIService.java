@@ -5,319 +5,199 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 
-/**
- * AIService - Unified AI-powered financial guidance engine
- * 
- * Purpose: Provide intelligent financial recommendations using Gemini API
- * 
- * Features:
- *   - Generate AI-powered financial guidance using Google Gemini API
- *   - Fallback to rule-based guidance if API is unavailable
- *   - Analyze budget status and provide personalized recommendations
- *   - Adapt guidance based on spending patterns and trends
- * 
- * Configuration:
- *   - Gemini API Key: Set via environment variable GEMINI_API_KEY
- *   - API Endpoint: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
- * 
- * @author PocketPilot Development Team
- * @version 2.0
- */
 public class AIService {
 
     private static final String GEMINI_API_KEY = System.getenv("GEMINI_API_KEY");
-    private static final String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-    private static final int API_TIMEOUT = 10000; // 10 seconds
+    private static final String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    private static final int API_TIMEOUT = 10000;
 
-    /**
-     * Generate AI-powered financial guidance using Gemini API
-     * Falls back to rule-based guidance if API fails
-     * 
-     * @param surplusStatus Status of budget (surplus, deficit, or balanced)
-     * @param budgetUtilization Percentage of budget used
-     * @param averageDailyExpense Average daily spending amount
-     * @param totalBudget Total budget for the month
-     * @param surplusDeficitAmount Amount of surplus or deficit
-     * @param spendingTrend Spending trend (increasing, decreasing, or stable)
-     * @param topCategories Top spending categories and amounts
-     * @return AI-powered financial guidance string
-     */
     public static String generateAIGuidance(String surplusStatus, double budgetUtilization,
-                                          double averageDailyExpense, double totalBudget,
-                                          double surplusDeficitAmount, String spendingTrend,
-                                          Map<String, Double> topCategories) {
+                                            double averageDailyExpense, double totalBudget,
+                                            double surplusDeficitAmount, Map<String, String> spendingTrend,
+                                            Map<String, Double> topCategories) {
         
-        // Try to get guidance from Gemini API
-        String aiGuidance = getGeminiGuidance(surplusStatus, budgetUtilization, 
-                                             averageDailyExpense, totalBudget, 
-                                             surplusDeficitAmount, spendingTrend, 
-                                             topCategories);
+        String aiGuidance = getGeminiGuidance(surplusStatus, budgetUtilization, averageDailyExpense, 
+                                              totalBudget, surplusDeficitAmount, spendingTrend, topCategories);
         
-        // If Gemini API fails or returns null, use rule-based guidance
         if (aiGuidance == null || aiGuidance.isEmpty()) {
-            aiGuidance = generateRuleBasedGuidance(surplusStatus, budgetUtilization,
-                                                  averageDailyExpense, totalBudget,
-                                                  surplusDeficitAmount);
+            aiGuidance = generateRuleBasedGuidance(surplusStatus, budgetUtilization, averageDailyExpense, totalBudget, surplusDeficitAmount);
         }
-        
         return aiGuidance;
     }
 
-    /**
-     * Call Gemini API for intelligent financial guidance
-     * 
-     * @param surplusStatus Status of budget (surplus, deficit, or balanced)
-     * @param budgetUtilization Percentage of budget used
-     * @param averageDailyExpense Average daily spending amount
-     * @param totalBudget Total budget for the month
-     * @param surplusDeficitAmount Amount of surplus or deficit
-     * @param spendingTrend Spending trend (increasing, decreasing, or stable)
-     * @param topCategories Top spending categories
-     * @return AI-generated guidance from Gemini API or null if failed
-     */
     private static String getGeminiGuidance(String surplusStatus, double budgetUtilization,
-                                           double averageDailyExpense, double totalBudget,
-                                           double surplusDeficitAmount, String spendingTrend,
-                                           Map<String, Double> topCategories) {
+                                            double averageDailyExpense, double totalBudget,
+                                            double surplusDeficitAmount, Map<String, String> spendingTrend,
+                                            Map<String, Double> topCategories) {
         try {
-            // Check if API key is available
-            if (GEMINI_API_KEY == null || GEMINI_API_KEY.trim().isEmpty()) {
-                System.out.println("[AIService] Gemini API key not configured. Using rule-based guidance.");
-                return null;
-            }
+            if (GEMINI_API_KEY == null || GEMINI_API_KEY.trim().isEmpty()) return null;
 
-            // Build the prompt for Gemini
-            String prompt = buildFinancialPrompt(surplusStatus, budgetUtilization,
-                                               averageDailyExpense, totalBudget,
-                                               surplusDeficitAmount, spendingTrend,
-                                               topCategories);
-
-            // Call Gemini API
+            String prompt = buildFinancialPrompt(surplusStatus, budgetUtilization, averageDailyExpense, 
+                                                 totalBudget, surplusDeficitAmount, spendingTrend, topCategories);
             String jsonResponse = callGeminiAPI(prompt);
-            
-            // Parse and extract the guidance from response
-            String guidance = parseGeminiResponse(jsonResponse);
-            
-            if (guidance != null && !guidance.isEmpty()) {
-                System.out.println("[AIService] Successfully generated guidance using Gemini API");
-                return guidance;
-            }
-            
+            return parseGeminiResponse(jsonResponse);
         } catch (Exception e) {
-            System.err.println("[AIService] Error calling Gemini API: " + e.getMessage());
-            e.printStackTrace();
+            return null;
         }
-        
-        return null;
     }
 
-    /**
-     * Build a comprehensive financial analysis prompt for Gemini
-     */
     private static String buildFinancialPrompt(String surplusStatus, double budgetUtilization,
                                               double averageDailyExpense, double totalBudget,
-                                              double surplusDeficitAmount, String spendingTrend,
+                                              double surplusDeficitAmount, Map<String, String> spendingTrend,
                                               Map<String, Double> topCategories) {
         StringBuilder prompt = new StringBuilder();
-        
-        prompt.append("You are a financial advisor for a student. Analyze the following budget data and provide concise, actionable financial guidance in 3-4 sentences:\n\n");
-        
-        prompt.append("Budget Status: ").append(surplusStatus).append("\n");
-        prompt.append("Budget Utilization: ").append(String.format("%.1f", budgetUtilization)).append("%\n");
-        prompt.append("Total Budget: RM").append(String.format("%.2f", totalBudget)).append("\n");
-        prompt.append("Average Daily Expense: RM").append(String.format("%.2f", averageDailyExpense)).append("\n");
-        
-        if (surplusDeficitAmount > 0) {
-            prompt.append("Surplus Amount: RM").append(String.format("%.2f", surplusDeficitAmount)).append("\n");
-        } else if (surplusDeficitAmount < 0) {
-            prompt.append("Deficit Amount: RM").append(String.format("%.2f", Math.abs(surplusDeficitAmount))).append("\n");
-        }
-        
-        prompt.append("Spending Trend: ").append(spendingTrend).append("\n");
-        
-        if (topCategories != null && !topCategories.isEmpty()) {
-            prompt.append("Top Spending Categories: ");
-            topCategories.forEach((category, amount) -> 
-                prompt.append(category).append(" (RM").append(String.format("%.2f", amount)).append("), ")
-            );
-            prompt.append("\n");
-        }
-        
-        prompt.append("\nProvide specific, practical recommendations for this student's financial situation. ");
-        prompt.append("Start with an emoji relevant to the situation. Be encouraging but realistic.");
-        
+        prompt.append("Analyze this student budget: Status=").append(surplusStatus)
+              .append(", Utilization=").append(String.format("%.1f%%", budgetUtilization))
+              .append(", Budget=RM").append(String.format("%.2f", totalBudget))
+              .append(", AvgDaily=RM").append(String.format("%.2f", averageDailyExpense))
+              .append(", Trend=").append(spendingTrend.get("trend")).append(" (").append(spendingTrend.get("percentage")).append(").")
+              .append(" Provide 3-4 sentences of actionable, encouraging financial advice.");
         return prompt.toString();
     }
 
-    /**
-     * Call the Gemini API with the given prompt
-     */
     private static String callGeminiAPI(String prompt) throws Exception {
         URL url = new URL(GEMINI_API_URL + "?key=" + GEMINI_API_KEY);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setConnectTimeout(API_TIMEOUT);
+        conn.setDoOutput(true);
         
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setConnectTimeout(API_TIMEOUT);
-        connection.setReadTimeout(API_TIMEOUT);
+        String json = "{\"contents\": [{\"parts\": [{\"text\": \"" + prompt.replace("\"", "\\\"") + "\"}]}]}";
+        try (OutputStream os = conn.getOutputStream()) { os.write(json.getBytes("utf-8")); }
         
-        // Build JSON request
-        String jsonRequest = buildGeminiRequest(prompt);
-        
-        // Send request
-        connection.setDoOutput(true);
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonRequest.getBytes("utf-8");
-            os.write(input, 0, input.length);
+        try (Scanner scanner = new Scanner(conn.getInputStream(), "utf-8")) {
+            return scanner.hasNextLine() ? scanner.nextLine() : "";
         }
-        
-        // Read response
-        int responseCode = connection.getResponseCode();
-        if (responseCode != 200) {
-            System.err.println("[AIService] Gemini API returned status code: " + responseCode);
-            return null;
-        }
-        
-        StringBuilder response = new StringBuilder();
-        try (Scanner scanner = new Scanner(connection.getInputStream(), "utf-8")) {
-            while (scanner.hasNextLine()) {
-                response.append(scanner.nextLine());
-            }
-        }
-        
-        return response.toString();
     }
 
-    /**
-     * Build JSON request for Gemini API
-     */
-    private static String buildGeminiRequest(String prompt) {
-        // Escape quotes and newlines in prompt
-        String escapedPrompt = prompt.replace("\"", "\\\"").replace("\n", "\\n");
-        
-        return "{\n" +
-               "  \"contents\": [{\n" +
-               "    \"parts\": [{\n" +
-               "      \"text\": \"" + escapedPrompt + "\"\n" +
-               "    }]\n" +
-               "  }],\n" +
-               "  \"generationConfig\": {\n" +
-               "    \"temperature\": 0.7,\n" +
-               "    \"topP\": 0.95,\n" +
-               "    \"topK\": 40,\n" +
-               "    \"maxOutputTokens\": 500\n" +
-               "  }\n" +
-               "}";
-    }
-
-    /**
-     * Parse Gemini API response to extract guidance text
-     */
-    private static String parseGeminiResponse(String jsonResponse) {
+    private static String parseGeminiResponse(String json) {
         try {
-            // Simple JSON parsing to extract text content
-            // Looking for: "candidates": [{"content": {"parts": [{"text": "..."}]}}]
-            
-            int textStart = jsonResponse.indexOf("\"text\": \"");
-            if (textStart == -1) {
-                return null;
+            JsonObject responseObj = JsonParser.parseString(json).getAsJsonObject();
+            JsonArray candidates = responseObj.getAsJsonArray("candidates");
+            if (candidates != null && candidates.size() > 0) {
+                JsonObject firstCandidate = candidates.get(0).getAsJsonObject();
+                JsonObject content = firstCandidate.getAsJsonObject("content");
+                if (content != null) {
+                    JsonArray parts = content.getAsJsonArray("parts");
+                    if (parts != null && parts.size() > 0) {
+                        return parts.get(0).getAsJsonObject().get("text").getAsString().trim();
+                    }
+                }
             }
-            
-            textStart += "\"text\": \"".length();
-            int textEnd = jsonResponse.indexOf("\"", textStart);
-            
-            if (textEnd == -1) {
-                return null;
-            }
-            
-            String guidance = jsonResponse.substring(textStart, textEnd);
-            
-            // Unescape the text
-            guidance = guidance.replace("\\n", "\n")
-                              .replace("\\\"", "\"")
-                              .replace("\\\\", "\\");
-            
-            return guidance.trim();
-            
         } catch (Exception e) {
-            System.err.println("[AIService] Error parsing Gemini response: " + e.getMessage());
-            return null;
+            System.err.println("[AIService] Gson parsing failed: " + e.getMessage());
         }
+        return null;
     }
 
-    /**
-     * Generate rule-based financial guidance (fallback when API is unavailable)
-     * This preserves the original logic from TrackingProgressCalculator
-     * 
-     * @param surplusStatus Status of budget (surplus, deficit, or balanced)
-     * @param budgetUtilization Percentage of budget used
-     * @param averageDailyExpense Average daily spending amount
-     * @param totalBudget Total budget for the month
-     * @param surplusDeficitAmount Amount of surplus or deficit
-     * @return Rule-based financial guidance string
-     */
-    public static String generateRuleBasedGuidance(String surplusStatus, double budgetUtilization,
-                                                   double averageDailyExpense, double totalBudget,
-                                                   double surplusDeficitAmount) {
-        StringBuilder guidance = new StringBuilder();
-
-        // Analyze surplus status and provide specific guidance
-        if ("surplus".equals(surplusStatus)) {
-            // Surplus detected - recommend savings
-            guidance.append("✓ Great job! You have surplus remaining.\n");
-            guidance.append("💡 Recommendation: Allocate ").append(String.format("%.2f", surplusDeficitAmount))
-                    .append(" to emergency savings fund.\n");
-            guidance.append("📊 You are using ").append(String.format("%.1f", budgetUtilization))
-                    .append("% of your monthly budget.\n");
-        }
-        // Deficit detected - provide corrective actions
-        else if ("deficit".equals(surplusStatus)) {
-            guidance.append("⚠ Alert: You have exceeded your budget!\n");
-            guidance.append("💡 Recommendation: Reduce daily spending to ").append(String.format("%.2f", averageDailyExpense * 0.8))
-                    .append(" per day to stay on track.\n");
-            guidance.append("📊 You are using ").append(String.format("%.1f", budgetUtilization))
-                    .append("% of your monthly budget.\n");
-            guidance.append("💭 Review high-spending categories and adjust habits.\n");
-        }
-        // Balanced status - encourage maintenance
-        else {
-            guidance.append("✓ You are on track with your budget!\n");
-            guidance.append("💡 Recommendation: Maintain current spending patterns.\n");
-            guidance.append("📊 You are using ").append(String.format("%.1f", budgetUtilization))
-                    .append("% of your monthly budget.\n");
-            guidance.append("📈 Current daily average: ").append(String.format("%.2f", averageDailyExpense)).append("\n");
-        }
-
-        return guidance.toString();
+    public static String generateRuleBasedGuidance(String status, double util, double avg, double budget, double diff) {
+        if ("surplus".equals(status)) return "✓ Great job! You have a surplus of RM" + String.format("%.2f", diff) + ". Keep it up!";
+        if ("deficit".equals(status)) return "⚠ Alert: You exceeded your budget. Try reducing daily spend to RM" + String.format("%.2f", avg * 0.8) + ".";
+        return "✓ You are on track with your budget. Maintain your current spending habits.";
     }
 
-    /**
-     * Generate simple rule-based guidance with spending trend analysis
-     * 
-     * @param surplusStatus Budget status
-     * @param spendingTrend Direction of spending trend
-     * @return Guidance string
-     */
-    public static String generateQuickGuidance(String surplusStatus, String spendingTrend) {
-        StringBuilder guidance = new StringBuilder();
-        
-        if ("increasing".equals(spendingTrend)) {
-            guidance.append("⚠️ Your spending is increasing! ");
-        } else if ("decreasing".equals(spendingTrend)) {
-            guidance.append("✅ Great! Your spending is decreasing. ");
-        } else {
-            guidance.append("📊 Your spending is stable. ");
+    public static int suggestCategoryID(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            return 8; // Default to 'Other'
+        }
+        // First try Gemini API if key is available
+        if (GEMINI_API_KEY != null && !GEMINI_API_KEY.trim().isEmpty()) {
+            try {
+                String prompt = "Given the following transaction description: \"" + description.replace("\"", "\\\"") + 
+                                "\", classify it into one of these category IDs:\n" +
+                                "1 - Education (tuition, books, supplies, school fees)\n" +
+                                "2 - Food (meals, groceries, dining out, drinks, coffee)\n" +
+                                "3 - Transport (bus, taxi, train, fuel, Grab, commute)\n" +
+                                "4 - Entertainment (movies, games, concerts, fun, hobbies)\n" +
+                                "5 - Utilities (electricity, water, gas, internet, mobile bills)\n" +
+                                "6 - Healthcare (medicines, clinics, gym, fitness, health)\n" +
+                                "7 - Shopping (clothes, shoes, gifts, gadgets, retail)\n" +
+                                "8 - Other (general, miscellaneous, everything else)\n\n" +
+                                "Respond with ONLY the single number of the category ID (1-8). No other words, punctuation, or formatting.";
+                String jsonResponse = callGeminiAPI(prompt);
+                String result = parseGeminiResponse(jsonResponse);
+                if (result != null) {
+                    result = result.trim();
+                    if (result.matches("[1-8]")) {
+                        return Integer.parseInt(result);
+                    }
+                }
+            } catch (Exception e) {
+                // Ignore and fall back to rule-based suggestion
+            }
         }
         
-        if ("surplus".equals(surplusStatus)) {
-            guidance.append("Continue managing your budget wisely!");
-        } else if ("deficit".equals(surplusStatus)) {
-            guidance.append("You need to reduce spending immediately.");
-        } else {
-            guidance.append("You're on track!");
+        // Rule-based fallback
+        return getRuleBasedCategorySuggestion(description);
+    }
+
+    public static int getRuleBasedCategorySuggestion(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            return 8; // Default to 'Other'
+        }
+        String desc = description.toLowerCase();
+        
+        // Education
+        if (desc.contains("book") || desc.contains("pen") || desc.contains("pencil") || desc.contains("notebook") || 
+            desc.contains("stationery") || desc.contains("school") || desc.contains("tuition") || desc.contains("exam") || 
+            desc.contains("fee") || desc.contains("course") || desc.contains("class") || desc.contains("material")) {
+            return 1;
         }
         
-        return guidance.toString();
+        // Food
+        if (desc.contains("food") || desc.contains("eat") || desc.contains("lunch") || desc.contains("dinner") || 
+            desc.contains("breakfast") || desc.contains("restaurant") || desc.contains("cafe") || desc.contains("meal") || 
+            desc.contains("snack") || desc.contains("drink") || desc.contains("coffee") || desc.contains("starbucks") || 
+            desc.contains("mcd") || desc.contains("kfc") || desc.contains("grocery") || desc.contains("groceries") || 
+            desc.contains("rice") || desc.contains("water") || desc.contains("dine") || desc.contains("dining")) {
+            return 2;
+        }
+        
+        // Transport
+        if (desc.contains("taxi") || desc.contains("bus") || desc.contains("transport") || desc.contains("fuel") || 
+            desc.contains("car") || desc.contains("bike") || desc.contains("train") || desc.contains("travel") || 
+            desc.contains("commute") || desc.contains("grab") || desc.contains("petrol") || desc.contains("parking") || 
+            desc.contains("toll") || desc.contains("lrt") || desc.contains("mrt")) {
+            return 3;
+        }
+        
+        // Entertainment
+        if (desc.contains("movie") || desc.contains("game") || desc.contains("entertainment") || desc.contains("play") || 
+            desc.contains("cinema") || desc.contains("fun") || desc.contains("hobby") || desc.contains("recreation") || 
+            desc.contains("ticket") || desc.contains("concert") || desc.contains("netflix") || desc.contains("spotify") || 
+            desc.contains("steam") || desc.contains("pubg")) {
+            return 4;
+        }
+        
+        // Utilities
+        if (desc.contains("electricity") || desc.contains("water") || desc.contains("gas") || desc.contains("internet") || 
+            desc.contains("utility") || desc.contains("bill") || desc.contains("phone") || desc.contains("mobile") || 
+            desc.contains("wifi") || desc.contains("unifi") || desc.contains("digi") || desc.contains("maxis") || 
+            desc.contains("celcom") || desc.contains("hotlink")) {
+            return 5;
+        }
+        
+        // Healthcare
+        if (desc.contains("gym") || desc.contains("fitness") || desc.contains("health") || desc.contains("exercise") || 
+            desc.contains("sport") || desc.contains("medicine") || desc.contains("doctor") || desc.contains("medical") || 
+            desc.contains("clinic") || desc.contains("hospital") || desc.contains("pill") || desc.contains("dentist") || 
+            desc.contains("supplement")) {
+            return 6;
+        }
+        
+        // Shopping
+        if (desc.contains("cloth") || desc.contains("shirt") || desc.contains("pant") || desc.contains("shoe") || 
+            desc.contains("dress") || desc.contains("clothing") || desc.contains("wear") || desc.contains("apparel") || 
+            desc.contains("fashion") || desc.contains("gift") || desc.contains("gadget") || desc.contains("shopee") || 
+            desc.contains("lazada") || desc.contains("amazon") || desc.contains("mall") || desc.contains("buy")) {
+            return 7;
+        }
+        
+        return 8; // Other
     }
 }

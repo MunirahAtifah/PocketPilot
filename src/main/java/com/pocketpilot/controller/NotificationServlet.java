@@ -5,15 +5,16 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.pocketpilot.dao.NotificationDAO;
+import com.pocketpilot.dao.UserDAO;
 import com.pocketpilot.model.Notification;
 
 /**
@@ -43,7 +44,12 @@ public class NotificationServlet extends HttpServlet {
                 return;
             }
             
-            int studentID = (int) session.getAttribute("userID");
+            int userID = (int) session.getAttribute("userID");
+            int studentID = new UserDAO().getStudentIDByUserID(userID);
+            if (studentID == -1) {
+                sendError(response, 404, "Student profile not found");
+                return;
+            }
             String action = request.getParameter("action");
             
             if ("getUnread".equals(action)) {
@@ -76,7 +82,12 @@ public class NotificationServlet extends HttpServlet {
                 return;
             }
             
-            int studentID = (int) session.getAttribute("userID");
+            int userID = (int) session.getAttribute("userID");
+            int studentID = new UserDAO().getStudentIDByUserID(userID);
+            if (studentID == -1) {
+                sendError(response, 404, "Student profile not found");
+                return;
+            }
             String action = request.getParameter("action");
             
             if ("markAsRead".equals(action)) {

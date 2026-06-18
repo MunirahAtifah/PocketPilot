@@ -176,9 +176,11 @@ public class PDFReportGenerator {
 
             // Write PDF bytes to response output stream
             byte[] pdfBytes = byteArrayOutputStream.toByteArray();
+            response.setContentLength(pdfBytes.length);
             response.getOutputStream().write(pdfBytes);
             response.getOutputStream().flush();
-
+            response.getOutputStream().close();
+ 
             System.out.println("✓ PDF Report generated successfully for: " + studentName);
             return true;
 
@@ -217,12 +219,12 @@ public class PDFReportGenerator {
 
         // Data rows
         summaryTable.addCell(createDataCell("Total Budget"));
-        summaryTable.addCell(createDataCell(String.format("₱%.2f", totalBudget)));
+        summaryTable.addCell(createDataCell(String.format("RM%.2f", totalBudget)));
         summaryTable.addCell(createDataCell("Target"));
         summaryTable.addCell(createDataCell("Monthly allocation"));
 
         summaryTable.addCell(createDataCell("Total Expense"));
-        summaryTable.addCell(createDataCell(String.format("₱%.2f", totalExpense)));
+        summaryTable.addCell(createDataCell(String.format("RM%.2f", totalExpense)));
         summaryTable.addCell(createDataCell("Actual"));
         summaryTable.addCell(createDataCell("Money spent"));
 
@@ -232,7 +234,7 @@ public class PDFReportGenerator {
         summaryTable.addCell(createDataCell("Percentage used"));
 
         summaryTable.addCell(createDataCell("Surplus/Deficit"));
-        summaryTable.addCell(createDataCell(String.format("₱%.2f", surplusDeficit)));
+        summaryTable.addCell(createDataCell(String.format("RM%.2f", surplusDeficit)));
         summaryTable.addCell(createDataCell(capitalizeFirst(surplusStatus)));
         summaryTable.addCell(createDataCell("Remaining or over"));
 
@@ -265,7 +267,7 @@ public class PDFReportGenerator {
             table.addCell(createDataCell(budget.get("budgetDesc").toString()));
             
             double amount = (double) budget.get("budgetAmount");
-            table.addCell(createDataCell(String.format("₱%.2f", amount)));
+            table.addCell(createDataCell(String.format("RM%.2f", amount)));
             totalAmount += amount;
         }
 
@@ -273,7 +275,7 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell("TOTAL"));
-        table.addCell(createHeaderCell(String.format("₱%.2f", totalAmount)));
+        table.addCell(createHeaderCell(String.format("RM%.2f", totalAmount)));
 
         document.add(table);
     }
@@ -304,7 +306,7 @@ public class PDFReportGenerator {
             table.addCell(createDataCell(expense.get("expenseDesc").toString()));
             
             double amount = (double) expense.get("expenseAmount");
-            table.addCell(createDataCell(String.format("₱%.2f", amount)));
+            table.addCell(createDataCell(String.format("RM%.2f", amount)));
             totalAmount += amount;
         }
 
@@ -312,7 +314,7 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell("TOTAL"));
-        table.addCell(createHeaderCell(String.format("₱%.2f", totalAmount)));
+        table.addCell(createHeaderCell(String.format("RM%.2f", totalAmount)));
 
         document.add(table);
     }
@@ -344,7 +346,7 @@ public class PDFReportGenerator {
             table.addCell(createDataCell(String.valueOf(rank)));
             table.addCell(createDataCell(entry.getKey()));
             table.addCell(createDataCell(
-                String.format("₱%.2f (%.1f%%)", entry.getValue(), percentage)
+                String.format("RM%.2f (%.1f%%)", entry.getValue(), percentage)
             ));
             
             rank++;

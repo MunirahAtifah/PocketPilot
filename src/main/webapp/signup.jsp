@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - PocketPilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             min-height: 100vh;
             display: flex;
@@ -101,6 +102,7 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
+            font-family: inherit;
         }
         
         .btn:hover {
@@ -145,6 +147,28 @@
             border-radius: 8px;
             border-left: 4px solid #2e7d32;
             display: none;
+        }
+
+        /* Password container with eye toggle */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .password-container input {
+            padding-right: 45px !important;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            color: #6B46C1;
+            font-size: 18px;
+            user-select: none;
+            z-index: 10;
         }
 
         .dynamic-fields {
@@ -246,24 +270,33 @@
             <!-- Password -->
             <div class="form-group">
                 <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    placeholder="Minimum 6 characters"
-                    required
-                >
+                <div class="password-container">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Minimum 6 characters"
+                        required
+                    >
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+                </div>
+                <div id="passwordWarning" style="display: none; color: #c62828; font-size: 13px; margin-top: 5px; font-weight: 500; align-items: center; gap: 4px; transition: all 0.3s ease;">
+                    ⚠️ Password must be at least 6 characters
+                </div>
             </div>
             
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    type="password" 
-                    id="confirmPassword" 
-                    name="confirmPassword" 
-                    placeholder="Re-enter your password"
-                    required
-                >
+                <div class="password-container">
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        placeholder="Re-enter your password"
+                        required
+                    >
+                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">👁️</span>
+                </div>
             </div>
             
             <button type="submit" class="btn">Create Account</button>
@@ -275,6 +308,31 @@
     </div>
 
     <script>
+        // Real-time password validation
+        const passwordInput = document.getElementById('password');
+        const passwordWarning = document.getElementById('passwordWarning');
+
+        passwordInput.addEventListener('blur', function() {
+            validatePasswordLength();
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (passwordInput.value.length >= 6) {
+                passwordWarning.style.display = 'none';
+                passwordInput.style.borderColor = '#E0D5C7';
+            }
+        });
+
+        function validatePasswordLength() {
+            if (passwordInput.value.length > 0 && passwordInput.value.length < 6) {
+                passwordWarning.style.display = 'flex';
+                passwordInput.style.borderColor = '#c62828';
+            } else {
+                passwordWarning.style.display = 'none';
+                passwordInput.style.borderColor = '#E0D5C7';
+            }
+        }
+
         // Check URL parameters for success/error messages
         const urlParams = new URLSearchParams(window.location.search);
         const errorMessage = urlParams.get('error');
@@ -331,6 +389,17 @@
                 return;
             }
         });
+
+        function togglePasswordVisibility(fieldId, toggleElement) {
+            const passwordInput = document.getElementById(fieldId);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleElement.textContent = "🙈";
+            } else {
+                passwordInput.type = "password";
+                toggleElement.textContent = "👁️";
+            }
+        }
     </script>
 </body>
 </html>

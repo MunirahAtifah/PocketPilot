@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.pocketpilot.util.DatabaseConnection;
 import com.pocketpilot.dao.StudentCounsellorDAO;
@@ -46,7 +46,7 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
 
         // Only counsellors can access this page
         if (!"Student_Counsellor".equals(role)) {
-            response.sendRedirect("loginDashboard.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -67,10 +67,12 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
             int approvedCount = 0;
             
             for (Map<String, Object> student : allStudents) {
-                boolean isApproved = (Boolean) student.get("approved");
-                if (isApproved) {
+                boolean isApprovedByStudent = (Boolean) student.get("approvedByStudent");
+                String accessStatus = (String) student.get("accessStatus");
+                if (isApprovedByStudent && "Approved".equalsIgnoreCase(accessStatus)) {
                     approvedCount++;
-                } else {
+                }
+                if ("pending".equalsIgnoreCase(accessStatus)) {
                     pendingCount++;
                 }
             }
@@ -110,12 +112,32 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
                 handleApproveStudent(request, response);
             } else if ("disapproveStudent".equals(action)) {
                 handleDisapproveStudent(request, response);
+            } else if ("connectStudent".equals(action)) {
+                handleConnectStudent(request, response);
             } else {
                 response.getWriter().print("{\"success\":false,\"message\":\"Invalid action\"}");
             }
         } catch (Exception e) {
             System.err.println("Error handling action: " + e.getMessage());
             response.getWriter().print("{\"success\":false,\"message\":\"Error: " + e.getMessage() + "\"}");
+        }
+    }
+
+    private void handleConnectStudent(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String studentIDStr = request.getParameter("studentID");
+        String staffIDStr = request.getParameter("staffID");
+        if (studentIDStr == null || studentIDStr.isEmpty() || staffIDStr == null || staffIDStr.isEmpty()) {
+            response.getWriter().print("{\"success\":false,\"message\":\"Invalid IDs\"}");
+            return;
+        }
+        int studentID = Integer.parseInt(studentIDStr);
+        int staffID = Integer.parseInt(staffIDStr);
+        boolean success = StudentCounsellorDAO.createAccessRecord(studentID, staffID);
+        if (success) {
+            response.getWriter().print("{\"success\":true,\"message\":\"Connection request sent successfully\"}");
+        } else {
+            response.getWriter().print("{\"success\":false,\"message\":\"Failed to request connection\"}");
         }
     }
 
@@ -172,13 +194,14 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
             conn = DatabaseConnection.getConnection();
 
             // Query all students with their access status for this counsellor
-            String sql = "SELECT s.studentID, u.username, u.email, r.userID, " +
+            String sql = "SELECT s.studentID, u.username, u.email, u.userID, " +
                         "COALESCE(sca.accessID, 0) as accessID, " +
                         "COALESCE(sca.approvedByStudent, 0) as approvedByStudent, " +
+                        "COALESCE(sca.accessStatus, 'pending') as accessStatus, " +
                         "COALESCE(sca.createdDate, NOW()) as createdDate " +
-                        "FROM Student s " +
-                        "JOIN Registration u ON s.userID = u.userID " +
-                        "LEFT JOIN StudentCounsellorAccess sca ON s.studentID = sca.studentID " +
+                        "FROM student s " +
+                        "JOIN registration u ON s.userID = u.userID " +
+                        "LEFT JOIN studentcounselloraccess sca ON s.studentID = sca.studentID " +
                         "AND sca.staffID = ? " +
                         "ORDER BY s.studentID DESC";
 
@@ -192,7 +215,8 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
                 student.put("name", rs.getString("username"));
                 student.put("email", rs.getString("email"));
                 student.put("accessID", rs.getInt("accessID"));
-                student.put("approved", rs.getBoolean("approvedByStudent"));
+                student.put("approvedByStudent", rs.getBoolean("approvedByStudent"));
+                student.put("accessStatus", rs.getString("accessStatus"));
                 student.put("requestedDate", rs.getTimestamp("createdDate"));
                 
                 students.add(student);

@@ -1,191 +1,98 @@
 package com.pocketpilot.controller;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.WebServlet;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 import java.io.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import com.pocketpilot.dao.BudgetDAO;
-import com.pocketpilot.dao.StudentDAO;
+import com.pocketpilot.dao.UserDAO;
+import com.pocketpilot.model.Budget;
 
-@WebServlet(name = "BudgetServlet", urlPatterns = "/BudgetServlet")
+@WebServlet(name = "BudgetServlet", urlPatterns = {"/BudgetServlet"})
 public class BudgetServlet extends HttpServlet {
-    private BudgetDAO budgetDAO = new BudgetDAO();
-    private StudentDAO studentDAO = new StudentDAO();
+    private final BudgetDAO budgetDAO = new BudgetDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Integer userID = (session != null) ? (Integer) session.getAttribute("userID") : null;
         
-        HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
-        String role = (String) session.getAttribute("role");
-        
-        if (userID == null || !"Student".equals(role)) {
+        if (userID == null || !"Student".equals(session.getAttribute("role"))) {
             response.sendRedirect("login.jsp?error=Access+denied");
             return;
         }
 
         String action = request.getParameter("action");
-        
-        // If action not provided, infer from servlet path or form parameters
-        if (action == null || action.isEmpty()) {
-            String servletPath = request.getServletPath();
-            if (servletPath.contains("UpdateBudgetServlet")) {
-                action = "update";
-            } else if (servletPath.contains("DeleteBudgetServlet")) {
-                action = "delete";
-            } else {
-                // Check form parameters to distinguish update from add
-                if (request.getParameter("budgetID") != null && !request.getParameter("budgetID").isEmpty()) {
-                    action = "update";
-                } else {
-                    action = "add"; // default to add
-                }
-            }
-        }
-        
         try {
-            if ("add".equalsIgnoreCase(action)) {
-                handleAdd(request, response, userID);
-            } else if ("update".equalsIgnoreCase(action)) {
-                handleUpdate(request, response, userID);
-            } else if ("delete".equalsIgnoreCase(action)) {
-                handleDelete(request, response, userID);
-            } else {
-                response.sendRedirect("budget.jsp?error=Invalid+action");
+            int studentID = userDAO.getStudentIDByUserID(userID);
+            if (studentID == -1) {
+                response.sendRedirect("budget.jsp?error=Student+not+found");
+                return;
             }
+
+            if ("add".equals(action)) handleAdd(request, response, studentID);
+            else if ("update".equals(action)) handleUpdate(request, response, studentID);
+            else if ("delete".equals(action)) handleDelete(request, response, studentID);
         } catch (Exception e) {
-            System.err.println("Error in BudgetServlet: " + e.getMessage());
-            e.printStackTrace();
             response.sendRedirect("budget.jsp?error=Operation+failed");
         }
     }
 
-    private void handleAdd(HttpServletRequest request, HttpServletResponse response, Integer userID) 
-            throws ServletException, IOException {
-        
-        try {
-            int studentID = studentDAO.getStudentIDByUserID(userID);
-            
-            String categoryIDStr = request.getParameter("categoryID");
-            String budgetAmountStr = request.getParameter("budgetAmount");
-            String description = request.getParameter("budgetDesc");
-            String month = request.getParameter("month");
-            String year = request.getParameter("year");
-            
-            if (categoryIDStr == null || categoryIDStr.isEmpty() || 
-                budgetAmountStr == null || budgetAmountStr.isEmpty() ||
-                month == null || month.isEmpty() || year == null || year.isEmpty()) {
-                response.sendRedirect("budget.jsp?error=Please+fill+all+fields");
-                return;
-            }
-            
-            int categoryID = Integer.parseInt(categoryIDStr);
-            double budgetAmount = Double.parseDouble(budgetAmountStr);
-            
-            if (budgetAmount <= 0) {
-                response.sendRedirect("budget.jsp?error=Budget+amount+must+be+greater+than+0");
-                return;
-            }
-            
-            String dateStr = year + "-" + month + "-01";
-            LocalDate createdDate = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE);
-            
-            if (description == null || description.trim().isEmpty()) {
-                description = "Budget for " + dateStr;
-            }
-            
-            boolean success = budgetDAO.createBudget(studentID, categoryID, budgetAmount, 
-                                                      description, createdDate);
-            
-            if (success) {
-                response.sendRedirect("budget.jsp?success=Budget+created+successfully");
-            } else {
-                response.sendRedirect("budget.jsp?error=Failed+to+create+budget");
-            }
-            
-        } catch (NumberFormatException e) {
-            response.sendRedirect("budget.jsp?error=Invalid+input+format");
+    private void sendRedirect(HttpServletRequest request, HttpServletResponse response, String statusParam) throws IOException {
+        String month = request.getParameter("month");
+        String redirectUrl = "budget.jsp";
+        if (month != null && !month.trim().isEmpty()) {
+            redirectUrl += "?month=" + month + "&" + statusParam;
+        } else {
+            redirectUrl += "?" + statusParam;
         }
+        response.sendRedirect(redirectUrl);
     }
 
-    private void handleUpdate(HttpServletRequest request, HttpServletResponse response, Integer userID) 
-            throws ServletException, IOException {
-        
+    private void handleAdd(HttpServletRequest request, HttpServletResponse response, int studentID) throws IOException {
         try {
-            int studentID = studentDAO.getStudentIDByUserID(userID);
+            Budget b = new Budget();
+            b.setStudentID(studentID);
+            b.setCategoryID(Integer.parseInt(request.getParameter("categoryID")));
+            b.setBudgetAmount(Double.parseDouble(request.getParameter("budgetAmount")));
+            b.setBudgetDesc(request.getParameter("budgetDesc"));
             
-            String budgetIDStr = request.getParameter("budgetID");
-            String categoryIDStr = request.getParameter("categoryID");
-            String budgetAmountStr = request.getParameter("budgetAmount");
-            String description = request.getParameter("budgetDesc");
-            String month = request.getParameter("month");
-            String year = request.getParameter("year");
+            // Logic for YYYY-MM input
+            String period = request.getParameter("budgetPeriod"); // "2026-06"
+            String[] parts = period.split("-");
+            b.setBudgetDate(LocalDate.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), 1));
             
-            if (budgetIDStr == null || budgetIDStr.isEmpty() ||
-                categoryIDStr == null || categoryIDStr.isEmpty() ||
-                budgetAmountStr == null || budgetAmountStr.isEmpty() ||
-                month == null || month.isEmpty() || year == null || year.isEmpty()) {
-                response.sendRedirect("budget.jsp?error=Please+fill+all+fields");
-                return;
-            }
-            
-            int budgetID = Integer.parseInt(budgetIDStr);
-            int categoryID = Integer.parseInt(categoryIDStr);
-            double budgetAmount = Double.parseDouble(budgetAmountStr);
-            
-            if (budgetAmount <= 0) {
-                response.sendRedirect("budget.jsp?error=Budget+amount+must+be+greater+than+0");
-                return;
-            }
-            
-            String dateStr = year + "-" + month + "-01";
-            LocalDate createdDate = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE);
-            
-            if (description == null || description.trim().isEmpty()) {
-                description = "Budget for " + dateStr;
-            }
-            
-            boolean success = budgetDAO.updateBudget(budgetID, studentID, categoryID, 
-                                                      budgetAmount, description, createdDate);
-            
-            if (success) {
-                response.sendRedirect("budget.jsp?success=Budget+updated+successfully");
-            } else {
-                response.sendRedirect("budget.jsp?error=Failed+to+update+budget");
-            }
-            
-        } catch (NumberFormatException e) {
-            response.sendRedirect("budget.jsp?error=Invalid+input+format");
-        }
+            if (budgetDAO.createBudget(b)) sendRedirect(request, response, "success=Created");
+            else sendRedirect(request, response, "error=Failed");
+        } catch (Exception e) { sendRedirect(request, response, "error=Invalid+input"); }
     }
 
-    private void handleDelete(HttpServletRequest request, HttpServletResponse response, Integer userID) 
-            throws ServletException, IOException {
-        
+    private void handleUpdate(HttpServletRequest request, HttpServletResponse response, int studentID) throws IOException {
         try {
-            int studentID = studentDAO.getStudentIDByUserID(userID);
-            String budgetIDStr = request.getParameter("budgetID");
+            Budget b = new Budget();
+            b.setBudgetID(Integer.parseInt(request.getParameter("budgetID")));
+            b.setStudentID(studentID);
+            b.setCategoryID(Integer.parseInt(request.getParameter("categoryID")));
+            b.setBudgetAmount(Double.parseDouble(request.getParameter("budgetAmount")));
+            b.setBudgetDesc(request.getParameter("budgetDesc"));
             
-            if (budgetIDStr == null || budgetIDStr.isEmpty()) {
-                response.sendRedirect("budget.jsp?error=Budget+ID+is+required");
-                return;
-            }
+            // Logic for YYYY-MM input
+            String period = request.getParameter("budgetPeriod");
+            String[] parts = period.split("-");
+            b.setBudgetDate(LocalDate.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), 1));
             
-            int budgetID = Integer.parseInt(budgetIDStr);
-            
-            boolean success = budgetDAO.deleteBudget(budgetID, studentID);
-            
-            if (success) {
-                response.sendRedirect("budget.jsp?success=Budget+deleted+successfully");
-            } else {
-                response.sendRedirect("budget.jsp?error=Failed+to+delete+budget");
-            }
-            
-        } catch (NumberFormatException e) {
-            response.sendRedirect("budget.jsp?error=Invalid+budget+ID");
-        }
+            if (budgetDAO.updateBudget(b)) sendRedirect(request, response, "success=Updated");
+            else sendRedirect(request, response, "error=Update+failed");
+        } catch (Exception e) { sendRedirect(request, response, "error=Invalid+input"); }
+    }
+
+    private void handleDelete(HttpServletRequest request, HttpServletResponse response, int studentID) throws IOException {
+        try {
+            int budgetID = Integer.parseInt(request.getParameter("budgetID"));
+            if (budgetDAO.deleteBudget(budgetID, studentID)) sendRedirect(request, response, "success=Deleted");
+            else sendRedirect(request, response, "error=Delete+failed");
+        } catch (Exception e) { sendRedirect(request, response, "error=Invalid+ID"); }
     }
 }

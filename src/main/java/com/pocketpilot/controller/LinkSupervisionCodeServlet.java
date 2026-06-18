@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 
 /**
  * LinkSupervisionCodeServlet - Link Parent to Student via Supervision Code
@@ -41,6 +42,7 @@ import javax.servlet.http.*;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/LinkSupervisionCodeServlet")
 public class LinkSupervisionCodeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -81,7 +83,7 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             // Step 3: Validate supervision code is provided
             // ================================================
             if (supervisionCode == null || supervisionCode.trim().isEmpty()) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Please+enter+a+supervision+code");
+                response.sendRedirect("supervisionAccess.jsp?error=Please+enter+a+supervision+code");
                 return;
             }
             
@@ -89,7 +91,7 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             // Step 4: Validate relationship is provided
             // ================================================
             if (relationship == null || relationship.trim().isEmpty()) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Please+select+your+relationship");
+                response.sendRedirect("supervisionAccess.jsp?error=Please+select+your+relationship");
                 return;
             }
 
@@ -107,7 +109,7 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             int parentID = getParentID(userID);
             System.out.println("[LinkSupervisionCodeServlet] Parent ID: " + parentID);
             if (parentID <= 0) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Parent+profile+not+found");
+                response.sendRedirect("supervisionAccess.jsp?error=Parent+profile+not+found");
                 return;
             }
 
@@ -117,7 +119,7 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             int studentID = getStudentIDByCode(supervisionCode);
             System.out.println("[LinkSupervisionCodeServlet] Student ID: " + studentID);
             if (studentID <= 0) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Invalid+supervision+code");
+                response.sendRedirect("supervisionAccess.jsp?error=Invalid+supervision+code");
                 return;
             }
 
@@ -125,7 +127,7 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             // Step 8: Check if parent-student link already exists
             // ================================================
             if (alreadyLinked(studentID, parentID)) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=You+are+already+linked+to+this+child");
+                response.sendRedirect("supervisionAccess.jsp?error=You+are+already+linked+to+this+child");
                 return;
             }
 
@@ -140,16 +142,16 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
             System.out.println("[LinkSupervisionCodeServlet] Updating with Code: " + supervisionCode + ", ParentID: " + parentID + ", Relationship: " + relationship);
             if (updateSupervisionLink(supervisionCode, parentID, relationship)) {
                 // Success - redirect to parent supervision page with success message
-                response.sendRedirect("parentSupervisionAccess.jsp?success=Successfully+linked+to+" + studentUsername);
+                response.sendRedirect("supervisionAccess.jsp?success=Successfully+linked+to+" + studentUsername);
             } else {
                 // Failed - redirect with error message
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Failed+to+link+account");
+                response.sendRedirect("supervisionAccess.jsp?error=Failed+to+link+account");
             }
 
         } catch (Exception e) {
             // Catch all other exceptions and log them
             e.printStackTrace();
-            response.sendRedirect("parentSupervisionAccess.jsp?error=An+error+occurred");
+            response.sendRedirect("supervisionAccess.jsp?error=An+error+occurred");
         }
     }
 
@@ -164,14 +166,11 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
      */
     private int getParentID(int userID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get parentID from userID
-            String sql = "SELECT parentID FROM Parent WHERE userID = ?";
+            String sql = "SELECT parentID FROM parent WHERE userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
@@ -204,14 +203,11 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
      */
     private int getStudentIDByCode(String code) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get studentID from code in SupervisionAccess table
-            String sql = "SELECT studentID FROM SupervisionAccess WHERE code = ? LIMIT 1";
+            String sql = "SELECT studentID FROM supervisionaccess WHERE code = ? LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, code);
             ResultSet rs = pstmt.executeQuery();
@@ -245,14 +241,11 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
      */
     private boolean alreadyLinked(int studentID, int parentID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to check if link exists
-            String sql = "SELECT COUNT(*) FROM SupervisionAccess WHERE studentID = ? AND parentID = ?";
+            String sql = "SELECT COUNT(*) FROM supervisionaccess WHERE studentID = ? AND parentID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
             pstmt.setInt(2, parentID);
@@ -287,15 +280,12 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
      */
     private String getStudentUsername(int studentID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get username by joining Student and Registration tables
-            String sql = "SELECT r.username FROM Registration r " +
-                        "JOIN Student s ON r.userID = s.userID " +
+            String sql = "SELECT r.username FROM registration r " +
+                        "JOIN student s ON r.userID = s.userID " +
                         "WHERE s.studentID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
@@ -332,15 +322,12 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
      */
     private boolean updateSupervisionLink(String code, int parentID, String relationship) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to update SupervisionAccess record
             // Set parentID, mark as Approved, and store relationship
-            String sql = "UPDATE SupervisionAccess SET parentID = ?, approvalStatus = 'Approved', relationship = ? WHERE code = ?";
+            String sql = "UPDATE supervisionaccess SET parentID = ?, approvalStatus = 'Approved', relationship = ? WHERE code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, parentID);
             pstmt.setString(2, relationship);

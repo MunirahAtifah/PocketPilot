@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.Random;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 
 /**
  * GenerateSupervisionCodeServlet - Generate Supervision Code for Student
@@ -27,6 +28,7 @@ import javax.servlet.http.*;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/GenerateSupervisionCodeServlet")
 public class GenerateSupervisionCodeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -106,14 +108,11 @@ public class GenerateSupervisionCodeServlet extends HttpServlet {
      */
     private int getStudentID(int userID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get studentID from userID
-            String sql = "SELECT studentID FROM Student WHERE userID = ?";
+            String sql = "SELECT studentID FROM student WHERE userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
@@ -146,14 +145,11 @@ public class GenerateSupervisionCodeServlet extends HttpServlet {
      */
     private String getExistingCode(int studentID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get existing code for student
-            String sql = "SELECT code FROM SupervisionAccess WHERE studentID = ? LIMIT 1";
+            String sql = "SELECT code FROM supervisionaccess WHERE studentID = ? LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
             ResultSet rs = pstmt.executeQuery();
@@ -209,15 +205,12 @@ public class GenerateSupervisionCodeServlet extends HttpServlet {
      */
     private boolean insertSupervisionCode(String code, int studentID) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to insert new supervision access record
             // Default status is 'Approved' for self-generated codes
-            String sql = "INSERT INTO SupervisionAccess (code, studentID, approvalStatus) VALUES (?, ?, 'Approved')";
+            String sql = "INSERT INTO supervisionaccess (code, studentID, approvalStatus) VALUES (?, ?, 'Approved')";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, code);
             pstmt.setInt(2, studentID);

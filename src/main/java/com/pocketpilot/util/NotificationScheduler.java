@@ -30,14 +30,14 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  */
 public class NotificationScheduler {
-    
+
     private static ScheduledExecutorService scheduler;
     private static final String TAG = "[NotificationScheduler]";
-    
+
     // ============================================================
     // INITIALIZATION
     // ============================================================
-    
+
     /**
      * Initialize and start the notification scheduler
      * Should be called when application starts
@@ -47,13 +47,13 @@ public class NotificationScheduler {
             if (scheduler == null || scheduler.isShutdown()) {
                 scheduler = Executors.newScheduledThreadPool(2);
                 System.out.println(TAG + " Initializing notification scheduler...");
-                
+
                 // Schedule daily notifications task
                 scheduleDailyNotificationsTask();
-                
+
                 // Schedule monthly notifications task
                 scheduleMonthlyNotificationsTask();
-                
+
                 System.out.println(TAG + " Notification scheduler started successfully");
             }
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class NotificationScheduler {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Shutdown the notification scheduler
      * Should be called when application stops
@@ -72,11 +72,11 @@ public class NotificationScheduler {
             System.out.println(TAG + " Notification scheduler stopped");
         }
     }
-    
+
     // ============================================================
     // SCHEDULED TASKS
     // ============================================================
-    
+
     /**
      * Schedule daily notifications task
      * Runs every day at 9:00 AM
@@ -84,7 +84,7 @@ public class NotificationScheduler {
     private static void scheduleDailyNotificationsTask() {
         // Calculate initial delay until 9:00 AM
         long initialDelay = calculateDelayUntilTime(9, 0);
-        
+
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println(TAG + " Running daily notification task...");
@@ -96,7 +96,7 @@ public class NotificationScheduler {
             }
         }, initialDelay, 24, TimeUnit.HOURS);
     }
-    
+
     /**
      * Schedule monthly notifications task
      * Runs on the 1st of every month at 9:00 AM
@@ -104,7 +104,7 @@ public class NotificationScheduler {
     private static void scheduleMonthlyNotificationsTask() {
         // Calculate initial delay until 1st of next month at 9:00 AM
         long initialDelay = calculateDelayUntilMonthStart();
-        
+
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println(TAG + " Running monthly notification task...");
@@ -116,29 +116,29 @@ public class NotificationScheduler {
             }
         }, initialDelay, 30, TimeUnit.DAYS); // Approximate 30 days for simplicity
     }
-    
+
     // ============================================================
     // NOTIFICATION GENERATION
     // ============================================================
-    
+
     /**
      * Generate daily reminders for all students
      */
     private static void generateDailyNotifications() {
         try {
             List<Integer> allStudents = getAllStudentIds();
-            
+
             for (int studentID : allStudents) {
                 // Check if student has daily reminders enabled
                 Map<String, Object> preferences = NotificationDAO.getPreferences(studentID);
-                
+
                 if (preferences != null && (boolean) preferences.getOrDefault("enableDailyReminder", true)) {
                     Notification notification = new Notification();
                     notification.setStudentID(studentID);
                     notification.setNotificationType(Notification.NotificationType.DAILY_REMINDER);
                     notification.setMessage(getDailyReminderMessage());
                     notification.setScheduledDate(LocalDateTime.now());
-                    
+
                     NotificationDAO.createNotification(notification);
                     System.out.println(TAG + " Created daily reminder for student " + studentID);
                 }
@@ -148,18 +148,18 @@ public class NotificationScheduler {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Generate monthly reminders for all students on the 1st of the month
      */
     private static void generateMonthlyNotifications() {
         try {
             List<Integer> allStudents = getAllStudentIds();
-            
+
             for (int studentID : allStudents) {
                 // Check if student has monthly reminders enabled
                 Map<String, Object> preferences = NotificationDAO.getPreferences(studentID);
-                
+
                 if (preferences != null && (boolean) preferences.getOrDefault("enableMonthlyReminder", true)) {
                     // Create monthly budget reminder
                     Notification budgetNotification = new Notification();
@@ -167,17 +167,17 @@ public class NotificationScheduler {
                     budgetNotification.setNotificationType(Notification.NotificationType.MONTHLY_BUDGET);
                     budgetNotification.setMessage(getMonthlyBudgetReminderMessage());
                     budgetNotification.setScheduledDate(LocalDateTime.now());
-                    
+
                     NotificationDAO.createNotification(budgetNotification);
                     System.out.println(TAG + " Created monthly budget reminder for student " + studentID);
-                    
+
                     // Create monthly expense reminder
                     Notification expenseNotification = new Notification();
                     expenseNotification.setStudentID(studentID);
                     expenseNotification.setNotificationType(Notification.NotificationType.MONTHLY_EXPENSE);
                     expenseNotification.setMessage(getMonthlyExpenseReminderMessage());
                     expenseNotification.setScheduledDate(LocalDateTime.now());
-                    
+
                     NotificationDAO.createNotification(expenseNotification);
                     System.out.println(TAG + " Created monthly expense reminder for student " + studentID);
                 }
@@ -187,37 +187,116 @@ public class NotificationScheduler {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Manually trigger daily notifications (for testing)
      */
     public static void triggerDailyNotifications() {
         generateDailyNotifications();
     }
-    
+
     /**
      * Manually trigger monthly notifications (for testing)
      */
     public static void triggerMonthlyNotifications() {
         generateMonthlyNotifications();
     }
-    
+
+    /**
+     * Check if notifications are due for a student today and generate them if
+     * missing
+     */
+    public static void checkAndGenerateNotificationsForStudent(int studentID) {
+        try {
+            LocalDate today = LocalDate.now();
+            boolean hasDailyToday = false;
+            boolean hasMonthlyBudgetToday = false;
+            boolean hasMonthlyExpenseToday = false;
+
+            // Check what has already been created today
+            String sql = "SELECT notificationType FROM notification " +
+                    "WHERE studentID = ? AND DATE(scheduledDate) = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                stmt.setDate(2, java.sql.Date.valueOf(today));
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        String type = rs.getString("notificationType");
+                        if (Notification.NotificationType.DAILY_REMINDER.equals(type)) {
+                            hasDailyToday = true;
+                        } else if (Notification.NotificationType.MONTHLY_BUDGET.equals(type)) {
+                            hasMonthlyBudgetToday = true;
+                        } else if (Notification.NotificationType.MONTHLY_EXPENSE.equals(type)) {
+                            hasMonthlyExpenseToday = true;
+                        }
+                    }
+                }
+            }
+
+            // Get notification preferences
+            Map<String, Object> preferences = NotificationDAO.getPreferences(studentID);
+            boolean enableDaily = preferences == null
+                    || (boolean) preferences.getOrDefault("enableDailyReminder", true);
+            boolean enableMonthly = preferences == null
+                    || (boolean) preferences.getOrDefault("enableMonthlyReminder", true);
+
+            // Generate daily reminder if missing and enabled
+            if (enableDaily && !hasDailyToday) {
+                Notification notification = new Notification();
+                notification.setStudentID(studentID);
+                notification.setNotificationType(Notification.NotificationType.DAILY_REMINDER);
+                notification.setMessage(getDailyReminderMessage());
+                notification.setScheduledDate(LocalDateTime.now());
+                NotificationDAO.createNotification(notification);
+                System.out.println(TAG + " Auto-generated missing daily reminder for student " + studentID);
+            }
+
+            // Generate monthly reminders if it's the 1st of the month, enabled, and missing
+            if (today.getDayOfMonth() == 1 && enableMonthly) {
+                if (!hasMonthlyBudgetToday) {
+                    Notification budgetNotification = new Notification();
+                    budgetNotification.setStudentID(studentID);
+                    budgetNotification.setNotificationType(Notification.NotificationType.MONTHLY_BUDGET);
+                    budgetNotification.setMessage(getMonthlyBudgetReminderMessage());
+                    budgetNotification.setScheduledDate(LocalDateTime.now());
+                    NotificationDAO.createNotification(budgetNotification);
+                    System.out
+                            .println(TAG + " Auto-generated missing monthly budget reminder for student " + studentID);
+                }
+                if (!hasMonthlyExpenseToday) {
+                    Notification expenseNotification = new Notification();
+                    expenseNotification.setStudentID(studentID);
+                    expenseNotification.setNotificationType(Notification.NotificationType.MONTHLY_EXPENSE);
+                    expenseNotification.setMessage(getMonthlyExpenseReminderMessage());
+                    expenseNotification.setScheduledDate(LocalDateTime.now());
+                    NotificationDAO.createNotification(expenseNotification);
+                    System.out
+                            .println(TAG + " Auto-generated missing monthly expense reminder for student " + studentID);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(TAG + " Error checking/generating notifications for student: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     // ============================================================
     // HELPER METHODS
     // ============================================================
-    
+
     /**
      * Get all student IDs from the database
      */
     private static List<Integer> getAllStudentIds() {
         List<Integer> studentIds = new ArrayList<>();
-        
+
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT studentID FROM Student";
-            
+            String sql = "SELECT studentID FROM student";
+
             try (Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(sql)) {
-                
+                    ResultSet rs = stmt.executeQuery(sql)) {
+
                 while (rs.next()) {
                     studentIds.add(rs.getInt("studentID"));
                 }
@@ -226,33 +305,33 @@ public class NotificationScheduler {
             System.err.println(TAG + " Error getting student IDs: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return studentIds;
     }
-    
+
     /**
      * Calculate delay in milliseconds until a specific time today or tomorrow
      */
     private static long calculateDelayUntilTime(int hour, int minute) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime targetTime = now.withHour(hour).withMinute(minute).withSecond(0).withNano(0);
-        
+
         // If target time has already passed today, schedule for tomorrow
         if (targetTime.isBefore(now)) {
             targetTime = targetTime.plusDays(1);
         }
-        
+
         Duration duration = Duration.between(now, targetTime);
         return duration.toMillis();
     }
-    
+
     /**
      * Calculate delay in milliseconds until the 1st of next month at 9:00 AM
      */
     private static long calculateDelayUntilMonthStart() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime nextMonthStart = now.withDayOfMonth(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
-        
+
         // If we're before 9 AM on the 1st, target today
         if (now.getDayOfMonth() == 1 && now.isBefore(nextMonthStart)) {
             // Do nothing, targetTime is correct
@@ -264,32 +343,32 @@ public class NotificationScheduler {
             // We're past 9 AM on the 1st or in the middle of the month, go to next month
             nextMonthStart = nextMonthStart.plusMonths(1);
         }
-        
+
         Duration duration = Duration.between(now, nextMonthStart);
         return Math.max(duration.toMillis(), 1000); // At least 1 second delay
     }
-    
+
     /**
      * Get daily reminder message
      */
     private static String getDailyReminderMessage() {
         return "📝 Daily Reminder: Don't forget to log your expenses today! Keep your budget records up to date.";
     }
-    
+
     /**
      * Get monthly budget reminder message
      */
     private static String getMonthlyBudgetReminderMessage() {
         return "💰 Monthly Budget Reminder: It's the 1st of the month! Time to review and plan your budget for the month ahead.";
     }
-    
+
     /**
      * Get monthly expense reminder message
      */
     private static String getMonthlyExpenseReminderMessage() {
         return "📊 Monthly Expense Review: Review your expenses from the past month and see how well you managed your budget!";
     }
-    
+
     /**
      * Get scheduler status
      */

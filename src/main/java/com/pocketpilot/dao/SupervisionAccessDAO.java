@@ -7,25 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 public class SupervisionAccessDAO {
-    private String dbUrl = "jdbc:mysql://localhost:3306/PP";
-    private String dbUser = "root";
-    private String dbPassword = "";
-
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    // Database connection is managed by com.pocketpilot.util.DatabaseConnection
 
     /**
      * Validate if a supervision code exists and is valid
      */
     public boolean isValidSupervisionCode(String supervisionCode) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "SELECT supervisionCode FROM Student WHERE UPPER(supervisionCode) = ? LIMIT 1";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "SELECT supervisionCode FROM student WHERE UPPER(supervisionCode) = ? LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, supervisionCode.trim().toUpperCase());
             ResultSet rs = pstmt.executeQuery();
@@ -47,8 +37,8 @@ public class SupervisionAccessDAO {
      */
     public int getStudentIDBySupervisionCode(String supervisionCode) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "SELECT studentID FROM Student WHERE UPPER(supervisionCode) = ? LIMIT 1";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "SELECT studentID FROM student WHERE UPPER(supervisionCode) = ? LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, supervisionCode.trim().toUpperCase());
             ResultSet rs = pstmt.executeQuery();
@@ -74,8 +64,8 @@ public class SupervisionAccessDAO {
      */
     public boolean supervisionLinkExists(int studentID, int parentID) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "SELECT id FROM SupervisionAccess WHERE studentID = ? AND parentID = ? LIMIT 1";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "SELECT id FROM supervisionaccess WHERE studentID = ? AND parentID = ? LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
             pstmt.setInt(2, parentID);
@@ -98,8 +88,8 @@ public class SupervisionAccessDAO {
      */
     public boolean createSupervisionAccess(int studentID, int parentID, String accessCode) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "INSERT INTO SupervisionAccess (code, studentID, parentID, approvalStatus) VALUES (?, ?, ?, 'Approved')";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "INSERT INTO supervisionaccess (code, studentID, parentID, approvalStatus) VALUES (?, ?, ?, 'Approved')";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, accessCode);
             pstmt.setInt(2, studentID);
@@ -123,12 +113,13 @@ public class SupervisionAccessDAO {
         List<Map<String, Object>> supervisionList = new ArrayList<>();
         
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             String sql = "SELECT sa.id, sa.approvalStatus, s.supervisionCode, " +
                         "CONCAT(u.username, ' (', u.email, ')') as parentInfo " +
-                        "FROM SupervisionAccess sa " +
-                        "JOIN Student s ON sa.parentID = s.studentID " +
-                        "JOIN Registration u ON s.userID = u.userID " +
+                        "FROM supervisionaccess sa " +
+                        "JOIN student s ON sa.studentID = s.studentID " +
+                        "LEFT JOIN parent p ON sa.parentID = p.parentID " +
+                        "LEFT JOIN registration u ON p.userID = u.userID " +
                         "WHERE sa.studentID = ? " +
                         "ORDER BY sa.id DESC";
             
@@ -160,8 +151,8 @@ public class SupervisionAccessDAO {
      */
     public boolean revokeSupervisionAccess(int supervisionID) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "DELETE FROM SupervisionAccess WHERE id = ?";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "DELETE FROM supervisionaccess WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, supervisionID);
             
@@ -181,8 +172,8 @@ public class SupervisionAccessDAO {
      */
     public boolean hasSupervisionAccess(int studentID, int parentID) {
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            String sql = "SELECT id FROM SupervisionAccess WHERE studentID = ? AND parentID = ? AND approvalStatus = 'Approved' LIMIT 1";
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
+            String sql = "SELECT id FROM supervisionaccess WHERE studentID = ? AND parentID = ? AND approvalStatus = 'Approved' LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
             pstmt.setInt(2, parentID);

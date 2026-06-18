@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Counsellor Dashboard - PocketPilot</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -14,26 +15,32 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #F5F1E8;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FDFBF7 0%, #F5F1E8 100%);
             min-height: 100vh;
         }
 
         .header {
             background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             color: white;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.25);
         }
 
         .header h1 {
-            font-size: 28px;
+            color: white;
+            font-size: 32px;
             margin-bottom: 5px;
+            font-weight: 700;
         }
 
         .header p {
-            font-size: 14px;
-            opacity: 0.9;
+            color: #E9D5FF;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .container {
@@ -44,37 +51,38 @@
 
         /* Nav Bar */
         .navbar {
-            background: white;
-            padding: 0 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
             display: flex;
-            gap: 25px;
+            gap: 20px;
             border-bottom: 1px solid #E0D5C7;
-            align-items: center;
-            height: 60px;
             position: sticky;
             top: 0;
             z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
         .navbar a {
             color: #6B46C1;
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
-            height: 100%;
-            display: flex;
-            align-items: center;
+            font-size: 15px;
             transition: all 0.3s;
-            border-bottom: 3px solid transparent;
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
         .navbar a:hover {
             color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
         }
 
         .navbar a.active {
             color: #8B5CF6;
-            border-bottom: 3px solid #8B5CF6;
+            background: rgba(139, 92, 246, 0.15);
+            border-bottom: none;
         }
 
         .logout-btn {
@@ -82,14 +90,21 @@
             background: #8B5CF6 !important;
             color: white !important;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
             height: auto !important;
-            border-bottom: none !important;
+            display: inline-flex !important;
+            align-items: center;
+            font-family: inherit;
         }
         
         .logout-btn:hover {
             background: #6B46C1 !important;
-            color: white !important;
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
+            transform: translateY(-1px);
         }
 
         /* Main Content */
@@ -212,6 +227,7 @@
             font-size: 12px;
             font-weight: 600;
             transition: all 0.3s;
+            font-family: inherit;
         }
 
         .btn-approve:hover {
@@ -229,6 +245,7 @@
             font-size: 12px;
             font-weight: 600;
             transition: all 0.3s;
+            font-family: inherit;
         }
 
         .btn-disapprove:hover {
@@ -307,6 +324,7 @@
             text-decoration: none;
             font-size: 0.9em;
             transition: background 0.3s;
+            font-family: inherit;
         }
 
         .view-details-btn:hover {
@@ -373,7 +391,13 @@
 
         // Only counsellors can access this page
         if (!"Student_Counsellor".equals(userRole)) {
-            response.sendRedirect("loginDashboard.jsp");
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Redirect direct accesses to the Servlet to populate data
+        if (request.getAttribute("allStudents") == null) {
+            response.sendRedirect("StudentCounsellorDashboard");
             return;
         }
 
@@ -382,16 +406,6 @@
         Integer pendingCount = (Integer) request.getAttribute("pendingCount");
         Integer approvedCount = (Integer) request.getAttribute("approvedCount");
         Integer staffID = (Integer) request.getAttribute("staffID");
-
-        if (allStudents == null) {
-            allStudents = new ArrayList<>();
-        }
-        if (pendingCount == null) {
-            pendingCount = 0;
-        }
-        if (approvedCount == null) {
-            approvedCount = 0;
-        }
     %>
     
     <div class="header">
@@ -435,7 +449,8 @@
                     <tr>
                         <th>Student Name</th>
                         <th>Email</th>
-                        <th>Status</th>
+                        <th>Student Approval</th>
+                        <th>Counsellor Status</th>
                         <th>Requested Date</th>
                         <th style="width: 250px;">Actions</th>
                     </tr>
@@ -445,35 +460,48 @@
                     Integer studentID = (Integer) student.get("studentID");
                     String name = (String) student.get("name");
                     String email = (String) student.get("email");
-                    Boolean isApproved = (Boolean) student.get("approved");
+                    Boolean isApprovedByStudent = (Boolean) student.get("approvedByStudent");
+                    String accessStatus = (String) student.get("accessStatus");
                     Integer accessID = (Integer) student.get("accessID");
                     java.util.Date requestedDate = (java.util.Date) student.get("requestedDate");
                     
-                    String statusBadge = isApproved ? "badge-approved" : "badge-pending";
-                    String statusText = isApproved ? "✓ APPROVED" : "⏳ PENDING";
+                    boolean fullyConnected = isApprovedByStudent && "Approved".equalsIgnoreCase(accessStatus);
+                    String studentApprovalBadge = isApprovedByStudent ? "badge-approved" : "badge-pending";
+                    String studentApprovalText = isApprovedByStudent ? "✓ Approved" : "⏳ Awaiting Student Approval";
+                    
+                    String counsellorStatusBadge = "badge-pending";
+                    if ("Approved".equalsIgnoreCase(accessStatus)) counsellorStatusBadge = "badge-approved";
+                    else if ("Disapproved".equalsIgnoreCase(accessStatus)) counsellorStatusBadge = "badge-pending"; // fallback styles
+                    String counsellorStatusText = accessStatus != null ? accessStatus.toUpperCase() : "PENDING";
                 %>
                     <tr>
                         <td>
-                            <% if (isApproved && accessID > 0) { %>
-                                <a href="javascript:void(0)" onclick="viewStudentProfile(<%= studentID %>)" class="student-name">
+                            <% if (fullyConnected) { %>
+                                <a href="javascript:void(0)" onclick="viewStudentProfile(<%= studentID %>)" class="student-name" style="color:#6B46C1; text-decoration:underline;">
                                     <%= name %>
                                 </a>
                             <% } else { %>
-                                <span class="student-name disabled"><%= name %></span>
+                                <span class="student-name disabled" title="Mutual approval required to view profiles"><%= name %></span>
                             <% } %>
                         </td>
                         <td><%= email %></td>
-                        <td><span class="badge <%= statusBadge %>"><%= statusText %></span></td>
+                        <td><span class="badge <%= studentApprovalBadge %>"><%= studentApprovalText %></span></td>
+                        <td>
+                            <span class="badge <%= counsellorStatusBadge %>" 
+                                  style="<%= "Disapproved".equalsIgnoreCase(accessStatus) ? "background:#F8D7DA; color:#721C24;" : "" %>">
+                                <%= counsellorStatusText %>
+                            </span>
+                        </td>
                         <td><%= requestedDate != null ? new java.text.SimpleDateFormat("MMM dd, yyyy").format(requestedDate) : "N/A" %></td>
                         <td>
                             <div class="action-buttons">
-                            <% if (!isApproved && accessID > 0) { %>
+                            <% if (accessID == 0) { %>
+                                <button class="btn-approve" onclick="connectStudent(<%= studentID %>, <%= staffID %>)">Connect</button>
+                            <% } else if (!"Approved".equalsIgnoreCase(accessStatus)) { %>
                                 <button class="btn-approve" onclick="approveStudent(<%= accessID %>)">✓ APPROVE</button>
                                 <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">✗ DISAPPROVE</button>
-                            <% } else if (isApproved && accessID > 0) { %>
-                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">✗ REVOKE</button>
                             <% } else { %>
-                                <span style="color: #999; font-size: 12px;">No access record</span>
+                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">✗ REVOKE</button>
                             <% } %>
                             </div>
                         </td>
@@ -486,6 +514,35 @@
     </div>
 
     <script>
+        function connectStudent(studentID, staffID) {
+            if (confirm('Do you want to request connection with this student?')) {
+                sendConnectAction(studentID, staffID);
+            }
+        }
+
+        function sendConnectAction(studentID, staffID) {
+            fetch('StudentCounsellorDashboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'action=connectStudent&studentID=' + studentID + '&staffID=' + staffID
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✓ ' + data.message);
+                    location.reload();
+                } else {
+                    alert('✗ ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred');
+            });
+        }
+
         function approveStudent(accessID) {
             if (confirm('Are you sure you want to approve this student?')) {
                 sendAction('approveStudent', accessID);
@@ -522,8 +579,7 @@
         }
 
         function viewStudentProfile(studentID) {
-            // Redirect to a page where counsellor can view student's budget, expense, and tracking
-            window.location.href = 'counsellorStudentView.jsp?studentID=' + studentID;
+            window.location.href = 'TrackingProgressServlet?studentID=' + studentID;
         }
     </script>
 </body>

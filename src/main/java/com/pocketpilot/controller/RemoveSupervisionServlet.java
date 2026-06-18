@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 
 /**
  * RemoveSupervisionServlet - Remove Supervision Access Link
@@ -28,6 +29,7 @@ import javax.servlet.http.*;
  * @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/RemoveSupervisionServlet")
 public class RemoveSupervisionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +55,7 @@ public class RemoveSupervisionServlet extends HttpServlet {
             // ================================================
             String accessId = request.getParameter("accessId");
             if (accessId == null || accessId.trim().isEmpty()) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Invalid+request");
+                response.sendRedirect("supervisionAccess.jsp?error=Invalid+request");
                 return;
             }
 
@@ -63,7 +65,7 @@ public class RemoveSupervisionServlet extends HttpServlet {
             // Step 3: Verify parent has permission to remove this link (SECURITY)
             // ================================================
             if (!isParentAuthorized(userID, accessId)) {
-                response.sendRedirect("parentSupervisionAccess.jsp?error=You+are+not+authorized+to+remove+this+link");
+                response.sendRedirect("supervisionAccess.jsp?error=You+are+not+authorized+to+remove+this+link");
                 return;
             }
 
@@ -72,15 +74,15 @@ public class RemoveSupervisionServlet extends HttpServlet {
             // ================================================
             if (removeSupervisionAccess(accessId)) {
                 // Success - redirect with success message
-                response.sendRedirect("parentSupervisionAccess.jsp?success=Child+supervision+access+removed+successfully");
+                response.sendRedirect("supervisionAccess.jsp?success=Child+supervision+access+removed+successfully");
             } else {
                 // Failed - redirect with error message
-                response.sendRedirect("parentSupervisionAccess.jsp?error=Failed+to+remove+supervision+access");
+                response.sendRedirect("supervisionAccess.jsp?error=Failed+to+remove+supervision+access");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("parentSupervisionAccess.jsp?error=An+error+occurred+while+removing+supervision+access");
+            response.sendRedirect("supervisionAccess.jsp?error=An+error+occurred+while+removing+supervision+access");
         }
     }
 
@@ -97,16 +99,13 @@ public class RemoveSupervisionServlet extends HttpServlet {
      */
     private boolean isParentAuthorized(int userID, String accessId) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to check if parent owns this supervision link
             // Joins SupervisionAccess with Parent table using parentID
-            String sql = "SELECT COUNT(*) FROM SupervisionAccess sa " +
-                        "JOIN Parent p ON sa.parentID = p.parentID " +
+            String sql = "SELECT COUNT(*) FROM supervisionaccess sa " +
+                        "JOIN parent p ON sa.parentID = p.parentID " +
                         "WHERE p.userID = ? AND sa.code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
@@ -141,14 +140,11 @@ public class RemoveSupervisionServlet extends HttpServlet {
      */
     private boolean removeSupervisionAccess(String code) throws SQLException {
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/PP", "root", "");
+            Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to delete supervision access record
-            String sql = "DELETE FROM SupervisionAccess WHERE code = ?";
+            String sql = "DELETE FROM supervisionaccess WHERE code = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, code);
             

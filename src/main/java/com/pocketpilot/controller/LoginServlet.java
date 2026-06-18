@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,25 +24,26 @@ import com.pocketpilot.util.DatabaseConnection;
  * - Creates session with user information
  * - Redirects based on user role
  * - Handles login failures with error messages
- * * URL Mapping: POST /LoginServlet
- * * Request Parameters:
+ * - URL Mapping: POST /LoginServlet
+ * - Request Parameters:
  * - email: String (user's email address)
  * - password: String (user password)
  * - rememberMe: boolean (optional, for future cookie implementation)
- * * Session Attributes Created:
+ * - Session Attributes Created:
  * - userID: Integer (user's unique ID)
  * - username: String (user's username)
  * - role: String ('Student', 'Parent', 'IT_Support', 'Student_Counsellor')
  * - email: String (user's email)
- * * Redirect Destinations:
+ * - Redirect Destinations:
  * - Student → studentDashboard.jsp
  * - Parent → parentDashboard.jsp
  * - IT_Support → staffDashboard.jsp
  * - Student_Counsellor → studentCounsellorDashboard.jsp
  * - Failed → login.jsp?error=Invalid+credentials
- * * @author PocketPilot Development Team
+ * - @author PocketPilot Development Team
  * @version 1.0
  */
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -110,6 +112,9 @@ public class LoginServlet extends HttpServlet {
             User user = authenticateUser(email, password);
 
             if (user != null) {
+                // Ensure profile exists (self-healing broken/missing profiles)
+                com.pocketpilot.dao.UserDAO.ensureProfileExists(user.getUserID(), user.getRole(), user.getUsername());
+
                 // ================================================
                 // Step 4: Create session with user information
                 // ================================================
@@ -133,7 +138,7 @@ public class LoginServlet extends HttpServlet {
                 } else if ("Parent".equals(role)) {
                     redirectUrl = "parentDashboard.jsp";
                 } else if ("Student_Counsellor".equals(role)) {
-                    redirectUrl = "studentCounsellorDashboard.jsp";
+                    redirectUrl = "StudentCounsellorDashboard";
                 } else {
                     redirectUrl = "login.jsp?error=Unknown+user+role";
                 }

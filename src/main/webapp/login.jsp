@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PocketPilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -103,6 +104,7 @@
             cursor: pointer;
             margin-top: 10px;
             transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
         
         .login-button:hover {
@@ -148,6 +150,28 @@
             border-left: 4px solid #2e7d32;
         }
         
+        /* Password container with eye toggle */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .password-container input {
+            padding-right: 45px !important;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            color: #6B46C1;
+            font-size: 18px;
+            user-select: none;
+            z-index: 10;
+        }
+        
         .form-group {
             margin-bottom: 20px;
         }
@@ -187,6 +211,7 @@
             cursor: pointer;
             margin-top: 10px;
             transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
         
         .login-button:hover {
@@ -206,10 +231,10 @@
             text-decoration: none;
             transition: color 0.3s;
         }
-        
+        </style>
 </head>
 <body>
-    <a href="/PP/index.jsp" class="back-link">← Back to Home</a>
+    <a href="index.jsp" class="back-link">← Back to Home</a>
     
     <div class="login-container">
         <div class="logo-section">
@@ -245,7 +270,7 @@
         %>
         
         <%-- CHANGED: Added dynamic context path mapping to prevent 404 routing errors --%>
-        <form method="POST" action="/PP/LoginServlet">
+        <form action="${pageContext.request.contextPath}/LoginServlet" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input 
@@ -259,13 +284,16 @@
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    placeholder="Enter your password"
-                    required
-                >
+                <div class="password-container">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+                </div>
             </div>
             
             <button type="submit" class="login-button">Login</button>
@@ -276,5 +304,17 @@
             <a href="signup.jsp">Create Account</a>
         </div>
     </div>
+    <script>
+        function togglePasswordVisibility(fieldId, toggleElement) {
+            const passwordInput = document.getElementById(fieldId);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleElement.textContent = "🙈";
+            } else {
+                passwordInput.type = "password";
+                toggleElement.textContent = "👁️";
+            }
+        }
+    </script>
 </body>
 </html>

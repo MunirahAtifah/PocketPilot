@@ -36,7 +36,7 @@ public class NotificationDAO {
      */
     public static boolean createNotification(Notification notification) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO Notification (studentID, notificationType, message, scheduledDate) " +
+            String sql = "INSERT INTO notification (studentID, notificationType, message, scheduledDate) " +
                         "VALUES (?, ?, ?, ?)";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -85,7 +85,7 @@ public class NotificationDAO {
         List<Notification> notifications = new ArrayList<>();
         
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM Notification WHERE studentID = ? AND isRead = FALSE " +
+            String sql = "SELECT * FROM notification WHERE studentID = ? AND isRead = FALSE " +
                         "ORDER BY scheduledDate DESC";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -116,7 +116,7 @@ public class NotificationDAO {
         List<Notification> notifications = new ArrayList<>();
         
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM Notification WHERE studentID = ? " +
+            String sql = "SELECT * FROM notification WHERE studentID = ? " +
                         "ORDER BY scheduledDate DESC LIMIT 100";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -145,7 +145,7 @@ public class NotificationDAO {
      */
     public static int getUnreadCount(int studentID) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT COUNT(*) as count FROM Notification WHERE studentID = ? AND isRead = FALSE";
+            String sql = "SELECT COUNT(*) as count FROM notification WHERE studentID = ? AND isRead = FALSE";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, studentID);
@@ -176,7 +176,7 @@ public class NotificationDAO {
      */
     public static boolean markAsRead(int notificationID) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE Notification SET isRead = TRUE WHERE notificationID = ?";
+            String sql = "UPDATE notification SET isRead = TRUE WHERE notificationID = ?";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, notificationID);
@@ -199,7 +199,7 @@ public class NotificationDAO {
      */
     public static int markAllAsRead(int studentID) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE Notification SET isRead = TRUE WHERE studentID = ? AND isRead = FALSE";
+            String sql = "UPDATE notification SET isRead = TRUE WHERE studentID = ? AND isRead = FALSE";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, studentID);
@@ -225,7 +225,7 @@ public class NotificationDAO {
      */
     public static boolean deleteNotification(int notificationID) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "DELETE FROM Notification WHERE notificationID = ?";
+            String sql = "DELETE FROM notification WHERE notificationID = ?";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, notificationID);
@@ -248,7 +248,7 @@ public class NotificationDAO {
      */
     public static int deleteOldNotifications(int daysOld) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "DELETE FROM Notification WHERE createdDate < DATE_SUB(NOW(), INTERVAL ? DAY) AND isRead = TRUE";
+            String sql = "DELETE FROM notification WHERE createdDate < DATE_SUB(NOW(), INTERVAL ? DAY) AND isRead = TRUE";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, daysOld);
@@ -274,7 +274,7 @@ public class NotificationDAO {
      */
     public static Map<String, Object> getPreferences(int studentID) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM NotificationPreference WHERE studentID = ?";
+            String sql = "SELECT * FROM notificationpreference WHERE studentID = ?";
             
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, studentID);
@@ -307,7 +307,7 @@ public class NotificationDAO {
      */
     public static boolean updatePreferences(int studentID, Map<String, Object> preferences) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE NotificationPreference SET enableDailyReminder = ?, " +
+            String sql = "UPDATE notificationpreference SET enableDailyReminder = ?, " +
                         "enableMonthlyReminder = ?, reminderTime = ?, reminderDayOfMonth = ? " +
                         "WHERE studentID = ?";
             

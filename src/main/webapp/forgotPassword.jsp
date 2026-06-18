@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - PocketPilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             min-height: 100vh;
             display: flex;
@@ -114,6 +115,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-family: inherit;
         }
         
         .button:hover {
@@ -183,6 +185,28 @@
             font-weight: bold;
             padding: 12px !important;
         }
+
+        /* Password container with eye toggle */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .password-container input {
+            padding-right: 45px !important;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            color: #6B46C1;
+            font-size: 18px;
+            user-select: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -199,9 +223,9 @@
         </div>
         
         <!-- Reset Password Tab -->
-        <div id="reset-tab" class="tab-content">
+        <div id="reset-tab" class="tab-content active">
             <p class="info-text">
-                Enter your verification code and new password. Check your email for the code.
+                Enter your email address and new password to update your password.
             </p>
             
             <form method="POST" action="ForgotPasswordServlet">
@@ -219,40 +243,33 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="code">Verification Code</label>
-                    <input 
-                        type="text" 
-                        id="code" 
-                        name="code" 
-                        placeholder="Enter 6-digit code"
-                        maxlength="6"
-                        pattern="[0-9]{6}"
-                        required
-                    >
-                </div>
-                
-                <div class="form-group">
                     <label for="new-password">New Password</label>
-                    <input 
-                        type="password" 
-                        id="new-password" 
-                        name="newPassword" 
-                        placeholder="Enter new password"
-                        minlength="6"
-                        required
-                    >
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="new-password" 
+                            name="newPassword" 
+                            placeholder="Enter new password"
+                            minlength="6"
+                            required
+                        >
+                        <span class="toggle-password" onclick="togglePasswordVisibility('new-password', this)">👁️</span>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        id="confirm-password" 
-                        name="confirmPassword" 
-                        placeholder="Confirm new password"
-                        minlength="6"
-                        required
-                    >
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            name="confirmPassword" 
+                            placeholder="Confirm new password"
+                            minlength="6"
+                            required
+                        >
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">👁️</span>
+                    </div>
                 </div>
                 
                 <button type="submit" class="button">Reset Password</button>
@@ -263,19 +280,25 @@
                 if ("success".equals(resetStatus)) {
             %>
                 <div class="message success" style="margin-top: 20px;">
-                    Password reset successful! You can now login with your new password.
+                    ✅ Password reset successful! You can now login with your new password.
                 </div>
             <% 
-                } else if ("invalid_code".equals(resetStatus)) {
+                } else if ("invalid_email".equals(resetStatus)) {
             %>
                 <div class="message error" style="margin-top: 20px;">
-                    ❌ Invalid verification code. Please try again.
+                    ❌ Email address not found. Please try again.
                 </div>
             <% 
                 } else if ("mismatch".equals(resetStatus)) {
             %>
                 <div class="message error" style="margin-top: 20px;">
                     ❌ Passwords do not match. Please try again.
+                </div>
+            <% 
+                } else if ("error".equals(resetStatus)) {
+            %>
+                <div class="message error" style="margin-top: 20px;">
+                    ❌ An error occurred. Please try again.
                 </div>
             <% } %>
         </div>
@@ -300,6 +323,17 @@
             
             // Add active class to clicked button
             event.target.classList.add('active');
+        }
+
+        function togglePasswordVisibility(fieldId, toggleElement) {
+            const passwordInput = document.getElementById(fieldId);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleElement.textContent = "🙈";
+            } else {
+                passwordInput.type = "password";
+                toggleElement.textContent = "👁️";
+            }
         }
     </script>
 </body>

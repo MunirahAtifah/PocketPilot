@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logout - PocketPilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             min-height: 100vh;
             display: flex;
@@ -61,6 +62,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-family: inherit;
         }
         
         .btn-login {

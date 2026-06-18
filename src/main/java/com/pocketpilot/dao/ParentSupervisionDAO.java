@@ -53,7 +53,7 @@ public class ParentSupervisionDAO {
                 code = generateSupervisionCode();
                 conn = DatabaseConnection.getConnection();
 
-                String checkSQL = "SELECT COUNT(*) FROM ParentChildAccess WHERE supervisionCode = ?";
+                String checkSQL = "SELECT COUNT(*) FROM parentchildaccess WHERE supervisionCode = ?";
                 stmt = conn.prepareStatement(checkSQL);
                 stmt.setString(1, code);
                 ResultSet rs = stmt.executeQuery();
@@ -69,7 +69,7 @@ public class ParentSupervisionDAO {
 
             // Store the code (pending parent entry)
             conn = DatabaseConnection.getConnection();
-            String insertSQL = "INSERT INTO ParentChildAccess (studentID, supervisionCode, connectionStatus) " +
+            String insertSQL = "INSERT INTO parentchildaccess (studentID, supervisionCode, connectionStatus) " +
                               "VALUES (?, ?, 'pending')";
             stmt = conn.prepareStatement(insertSQL);
             stmt.setInt(1, studentID);
@@ -96,7 +96,7 @@ public class ParentSupervisionDAO {
             conn = DatabaseConnection.getConnection();
 
             // Find the student associated with this code
-            String findSQL = "SELECT studentID, connectionStatus FROM ParentChildAccess WHERE supervisionCode = ?";
+            String findSQL = "SELECT studentID, connectionStatus FROM parentchildaccess WHERE supervisionCode = ?";
             stmt = conn.prepareStatement(findSQL);
             stmt.setString(1, supervisionCode);
             rs = stmt.executeQuery();
@@ -112,7 +112,7 @@ public class ParentSupervisionDAO {
             stmt.close();
 
             // Check if parent already connected to this student
-            String checkSQL = "SELECT COUNT(*) FROM ParentChildAccess WHERE parentID = ? AND studentID = ?";
+            String checkSQL = "SELECT COUNT(*) FROM parentchildaccess WHERE parentID = ? AND studentID = ?";
             stmt = conn.prepareStatement(checkSQL);
             stmt.setInt(1, parentID);
             stmt.setInt(2, studentID);
@@ -128,7 +128,7 @@ public class ParentSupervisionDAO {
             stmt.close();
 
             // Update the code record with parentID and mark as active
-            String updateSQL = "UPDATE ParentChildAccess SET parentID = ?, connectionStatus = 'active', connectedDate = NOW() " +
+            String updateSQL = "UPDATE parentchildaccess SET parentID = ?, connectionStatus = 'active', connectedDate = NOW() " +
                               "WHERE supervisionCode = ?";
             stmt = conn.prepareStatement(updateSQL);
             stmt.setInt(1, parentID);
@@ -156,7 +156,7 @@ public class ParentSupervisionDAO {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "SELECT DISTINCT studentID FROM ParentChildAccess " +
+            String sql = "SELECT DISTINCT studentID FROM parentchildaccess " +
                         "WHERE parentID = ? AND connectionStatus = 'active'";
 
             stmt = conn.prepareStatement(sql);
@@ -188,7 +188,7 @@ public class ParentSupervisionDAO {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "SELECT supervisionCode, createdDate FROM ParentChildAccess " +
+            String sql = "SELECT supervisionCode, createdDate FROM parentchildaccess " +
                         "WHERE studentID = ? AND connectionStatus = 'pending' " +
                         "ORDER BY createdDate DESC";
 
@@ -220,7 +220,7 @@ public class ParentSupervisionDAO {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "SELECT COUNT(*) FROM ParentChildAccess " +
+            String sql = "SELECT COUNT(*) FROM parentchildaccess " +
                         "WHERE parentID = ? AND studentID = ? AND connectionStatus = 'active'";
 
             stmt = conn.prepareStatement(sql);
@@ -251,7 +251,7 @@ public class ParentSupervisionDAO {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String sql = "UPDATE ParentChildAccess SET connectionStatus = 'inactive' " +
+            String sql = "UPDATE parentchildaccess SET connectionStatus = 'inactive' " +
                         "WHERE parentID = ? AND studentID = ?";
 
             stmt = conn.prepareStatement(sql);
