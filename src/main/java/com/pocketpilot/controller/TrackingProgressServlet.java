@@ -319,9 +319,17 @@ public class TrackingProgressServlet extends HttpServlet {
                 try (Connection conn = DatabaseConnection.getConnection()) {
                     String sql;
                     if ("budget".equals(type)) {
-                        sql = "UPDATE budget SET comment = ? WHERE budgetID = ?";
+                        if ("Parent".equals(role)) {
+                            sql = "UPDATE budget SET parentComment = ? WHERE budgetID = ?";
+                        } else {
+                            sql = "UPDATE budget SET counsellorComment = ? WHERE budgetID = ?";
+                        }
                     } else {
-                        sql = "UPDATE expense SET comment = ? WHERE expenseID = ?";
+                        if ("Parent".equals(role)) {
+                            sql = "UPDATE expense SET parentComment = ? WHERE expenseID = ?";
+                        } else {
+                            sql = "UPDATE expense SET counsellorComment = ? WHERE expenseID = ?";
+                        }
                     }
                     try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                         pstmt.setString(1, comment);
@@ -346,7 +354,7 @@ public class TrackingProgressServlet extends HttpServlet {
     private List<Map<String, Object>> getBudgetsForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> budgets = new ArrayList<>();
         
-        String sql = "SELECT b.budgetID, b.budgetDate, b.budgetDesc, b.budgetAmount, b.comment, " +
+        String sql = "SELECT b.budgetID, b.budgetDate, b.budgetDesc, b.budgetAmount, b.comment, b.parentComment, b.counsellorComment, " +
                     "c.categoryName FROM budget b " +
                     "JOIN category c ON b.categoryID = c.categoryID " +
                     "WHERE b.studentID = ? AND MONTH(b.budgetDate) = ? AND YEAR(b.budgetDate) = ? " +
@@ -368,6 +376,8 @@ public class TrackingProgressServlet extends HttpServlet {
                 budget.put("budgetDesc", rs.getString("budgetDesc"));
                 budget.put("budgetAmount", rs.getDouble("budgetAmount"));
                 budget.put("comment", rs.getString("comment"));
+                budget.put("parentComment", rs.getString("parentComment"));
+                budget.put("counsellorComment", rs.getString("counsellorComment"));
                 budget.put("categoryName", rs.getString("categoryName"));
                 budgets.add(budget);
             }
@@ -382,7 +392,7 @@ public class TrackingProgressServlet extends HttpServlet {
     private List<Map<String, Object>> getExpensesForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> expenses = new ArrayList<>();
         
-        String sql = "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, e.comment, " +
+        String sql = "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, e.comment, e.parentComment, e.counsellorComment, " +
                     "c.categoryName FROM expense e " +
                     "JOIN category c ON e.categoryID = c.categoryID " +
                     "WHERE e.studentID = ? AND MONTH(e.expenseDate) = ? AND YEAR(e.expenseDate) = ? " +
@@ -404,6 +414,8 @@ public class TrackingProgressServlet extends HttpServlet {
                 expense.put("expenseDesc", rs.getString("expenseDesc"));
                 expense.put("expenseAmount", rs.getDouble("expenseAmount"));
                 expense.put("comment", rs.getString("comment"));
+                expense.put("parentComment", rs.getString("parentComment"));
+                expense.put("counsellorComment", rs.getString("counsellorComment"));
                 expense.put("categoryName", rs.getString("categoryName"));
                 expenses.add(expense);
             }

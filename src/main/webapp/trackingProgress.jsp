@@ -437,7 +437,9 @@
                     <tbody>
                         <% for (Map<String, Object> expense : expenses) { 
                             LocalDate exDate = (LocalDate) expense.get("expenseDate");
-                            String expComment = (String) expense.get("comment");
+                            String parentComment = (String) expense.get("parentComment");
+                            String counsellorComment = (String) expense.get("counsellorComment");
+                            String expComment = "Parent".equals(userRole) ? parentComment : counsellorComment;
                         %>
                             <tr>
                                 <td><%= exDate != null ? exDate.format(dateFormatter) : "-" %></td>
@@ -456,7 +458,20 @@
                                             <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; text-transform: none; border-radius: 4px; height: auto;">Save</button>
                                         </form>
                                     <% } else { %>
-                                        <span style="font-style: italic; color: #6B46C1;"><%= expComment != null && !expComment.trim().isEmpty() ? expComment : "-" %></span>
+                                        <%
+                                            StringBuilder studentComment = new StringBuilder();
+                                            if (parentComment != null && !parentComment.trim().isEmpty()) {
+                                                studentComment.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                            }
+                                            if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
+                                                if (studentComment.length() > 0) studentComment.append("<br>");
+                                                studentComment.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                            }
+                                            if (studentComment.length() == 0) {
+                                                studentComment.append("-");
+                                            }
+                                        %>
+                                        <span style="font-size: 13px;"><%= studentComment.toString() %></span>
                                     <% } %>
                                 </td>
                             </tr>
@@ -485,7 +500,9 @@
                     <tbody>
                         <% for (Map<String, Object> budget : budgets) { 
                             LocalDate bDate = (LocalDate) budget.get("budgetDate");
-                            String budComment = (String) budget.get("comment");
+                            String parentComment = (String) budget.get("parentComment");
+                            String counsellorComment = (String) budget.get("counsellorComment");
+                            String budComment = "Parent".equals(userRole) ? parentComment : counsellorComment;
                         %>
                             <tr>
                                 <td><%= bDate != null ? bDate.format(dateFormatter) : "-" %></td>
@@ -504,7 +521,20 @@
                                             <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; text-transform: none; border-radius: 4px; height: auto;">Save</button>
                                         </form>
                                     <% } else { %>
-                                        <span style="font-style: italic; color: #6B46C1;"><%= budComment != null && !budComment.trim().isEmpty() ? budComment : "-" %></span>
+                                        <%
+                                            StringBuilder studentComment = new StringBuilder();
+                                            if (parentComment != null && !parentComment.trim().isEmpty()) {
+                                                studentComment.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                            }
+                                            if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
+                                                if (studentComment.length() > 0) studentComment.append("<br>");
+                                                studentComment.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                            }
+                                            if (studentComment.length() == 0) {
+                                                studentComment.append("-");
+                                            }
+                                        %>
+                                        <span style="font-size: 13px;"><%= studentComment.toString() %></span>
                                     <% } %>
                                 </td>
                             </tr>

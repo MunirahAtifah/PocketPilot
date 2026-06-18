@@ -483,6 +483,7 @@
                             <tr>
                                 <th>Parent Name</th>
                                 <th>Relationship</th>
+                                <th>Supervision Code</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -492,6 +493,7 @@
                                 <tr>
                                     <td style="font-weight: 600;"><%= parent.get("parentName") %></td>
                                     <td><%= parent.get("relationship") %></td>
+                                    <td style="font-family: monospace; font-weight: 700; color: #6B46C1;"><%= parent.get("code") %></td>
                                     <td>
                                         <span class="status-badge" style="background: #E8F5E9; color: #2E7D32;">
                                             Approved

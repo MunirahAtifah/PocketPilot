@@ -35,7 +35,9 @@ CREATE TABLE `budget` (
   `categoryID` int(10) DEFAULT NULL,
   `studentID` int(10) DEFAULT NULL,
   `parentID` int(10) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL
+  `comment` varchar(255) DEFAULT NULL,
+  `parentComment` varchar(255) DEFAULT NULL,
+  `counsellorComment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -86,7 +88,9 @@ CREATE TABLE `expense` (
   `categoryID` int(10) DEFAULT NULL,
   `studentID` int(10) DEFAULT NULL,
   `parentID` int(10) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL
+  `comment` varchar(255) DEFAULT NULL,
+  `parentComment` varchar(255) DEFAULT NULL,
+  `counsellorComment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

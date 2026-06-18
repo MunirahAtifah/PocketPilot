@@ -149,7 +149,7 @@ public class GenerateSupervisionCodeServlet extends HttpServlet {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
             
             // SQL query to get existing code for student
-            String sql = "SELECT code FROM supervisionaccess WHERE studentID = ? LIMIT 1";
+            String sql = "SELECT code FROM supervisionaccess WHERE studentID = ? AND parentID IS NULL LIMIT 1";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, studentID);
             ResultSet rs = pstmt.executeQuery();

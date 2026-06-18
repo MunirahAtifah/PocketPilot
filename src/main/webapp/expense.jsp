@@ -89,7 +89,7 @@
     List<Map<String, Object>> expenseList = new ArrayList<>();
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(
-             "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, e.categoryID, c.categoryName, e.comment " +
+             "SELECT e.expenseID, e.expenseDate, e.expenseDesc, e.expenseAmount, e.categoryID, c.categoryName, e.parentComment, e.counsellorComment " +
              "FROM expense e " +
              "JOIN category c ON e.categoryID = c.categoryID " +
              "WHERE e.studentID = ? AND MONTH(e.expenseDate) = ? AND YEAR(e.expenseDate) = ? " +
@@ -106,7 +106,8 @@
                 row.put("amount", rs.getDouble("expenseAmount"));
                 row.put("categoryID", rs.getInt("categoryID"));
                 row.put("category", rs.getString("categoryName"));
-                row.put("comment", rs.getString("comment"));
+                row.put("parentComment", rs.getString("parentComment"));
+                row.put("counsellorComment", rs.getString("counsellorComment"));
                 expenseList.add(row);
             }
         }
@@ -579,7 +580,24 @@
                                 <td><%= e.get("category") %></td>
                                 <td style="font-weight: 600;">RM <%= String.format("%.2f", (Double) e.get("amount")) %></td>
                                 <td><%= e.get("desc") != null ? e.get("desc") : "-" %></td>
-                                <td style="font-style: italic; color: #8B5CF6;"><%= e.get("comment") != null && !((String) e.get("comment")).trim().isEmpty() ? e.get("comment") : "-" %></td>
+                                 <td>
+                                     <%
+                                         String parentComment = (String) e.get("parentComment");
+                                         String counsellorComment = (String) e.get("counsellorComment");
+                                         StringBuilder commentStr = new StringBuilder();
+                                         if (parentComment != null && !parentComment.trim().isEmpty()) {
+                                             commentStr.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                         }
+                                         if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
+                                             if (commentStr.length() > 0) commentStr.append("<br>");
+                                             commentStr.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                         }
+                                         if (commentStr.length() == 0) {
+                                             commentStr.append("-");
+                                         }
+                                     %>
+                                     <span style="font-size: 13px;"><%= commentStr.toString() %></span>
+                                 </td>
                                 <td>
                                     <div class="action-buttons">
                                         <button type="button" class="edit-btn btn btn-secondary" style="padding: 4px 8px; font-size: 12px; height: auto; border-radius: 4px;" onclick="enableEdit('<%= e.get("id") %>', '<%= e.get("categoryID") %>', '<%= e.get("amount") %>', '<%= e.get("date") %>', '<%= e.get("desc") != null ? e.get("desc").toString().replace("'", "\\'") : "" %>')">Edit</button>
