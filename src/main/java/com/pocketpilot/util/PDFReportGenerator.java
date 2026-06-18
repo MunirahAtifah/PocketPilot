@@ -83,6 +83,7 @@ public class PDFReportGenerator {
             String fileName = String.format("PocketPilot_Report_%s_%s.pdf", 
                                            studentName.replace(" ", "_"), reportMonth);
             
+            response.reset();
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 

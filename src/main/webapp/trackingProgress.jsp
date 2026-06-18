@@ -353,7 +353,7 @@
                 </form>
             </div>
             <div>
-                <a href="TrackingProgressServlet?action=export&month=<%= reportMonth %><%= !"Student".equals(userRole) ? "&studentID=" + trackingStudentID : "" %>" class="button btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <a href="TrackingProgressServlet?action=export&month=<%= reportMonth %><%= !"Student".equals(userRole) ? "&studentID=" + trackingStudentID : "" %>" download class="button btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                     Download
                 </a>
             </div>
