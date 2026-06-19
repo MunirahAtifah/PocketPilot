@@ -124,11 +124,12 @@ public class AIService {
                 if (result != null) {
                     result = result.trim();
                     if (result.matches("[1-8]")) {
+                        System.out.println("[AIService] Category successfully suggested by GEMINI AI: " + result + " for description: \"" + description + "\"");
                         return Integer.parseInt(result);
                     }
                 }
             } catch (Exception e) {
-                // Ignore and fall back to rule-based suggestion
+                System.err.println("[AIService] Gemini API request failed, falling back: " + e.getMessage());
             }
         }
         
@@ -137,7 +138,9 @@ public class AIService {
     }
 
     public static int getRuleBasedCategorySuggestion(String description) {
+        int result = 8;
         if (description == null || description.trim().isEmpty()) {
+            System.out.println("[AIService] Category suggested by Rule-Based fallback code: 8 (default 'Other') for empty description");
             return 8; // Default to 'Other'
         }
         String desc = description.toLowerCase();
@@ -146,58 +149,53 @@ public class AIService {
         if (desc.contains("book") || desc.contains("pen") || desc.contains("pencil") || desc.contains("notebook") || 
             desc.contains("stationery") || desc.contains("school") || desc.contains("tuition") || desc.contains("exam") || 
             desc.contains("fee") || desc.contains("course") || desc.contains("class") || desc.contains("material")) {
-            return 1;
+            result = 1;
         }
-        
         // Food
-        if (desc.contains("food") || desc.contains("eat") || desc.contains("lunch") || desc.contains("dinner") || 
+        else if (desc.contains("food") || desc.contains("eat") || desc.contains("lunch") || desc.contains("dinner") || 
             desc.contains("breakfast") || desc.contains("restaurant") || desc.contains("cafe") || desc.contains("meal") || 
             desc.contains("snack") || desc.contains("drink") || desc.contains("coffee") || desc.contains("starbucks") || 
             desc.contains("mcd") || desc.contains("kfc") || desc.contains("grocery") || desc.contains("groceries") || 
             desc.contains("rice") || desc.contains("water") || desc.contains("dine") || desc.contains("dining")) {
-            return 2;
+            result = 2;
         }
-        
         // Transport
-        if (desc.contains("taxi") || desc.contains("bus") || desc.contains("transport") || desc.contains("fuel") || 
+        else if (desc.contains("taxi") || desc.contains("bus") || desc.contains("transport") || desc.contains("fuel") || 
             desc.contains("car") || desc.contains("bike") || desc.contains("train") || desc.contains("travel") || 
             desc.contains("commute") || desc.contains("grab") || desc.contains("petrol") || desc.contains("parking") || 
             desc.contains("toll") || desc.contains("lrt") || desc.contains("mrt")) {
-            return 3;
+            result = 3;
         }
-        
         // Entertainment
-        if (desc.contains("movie") || desc.contains("game") || desc.contains("entertainment") || desc.contains("play") || 
+        else if (desc.contains("movie") || desc.contains("game") || desc.contains("entertainment") || desc.contains("play") || 
             desc.contains("cinema") || desc.contains("fun") || desc.contains("hobby") || desc.contains("recreation") || 
             desc.contains("ticket") || desc.contains("concert") || desc.contains("netflix") || desc.contains("spotify") || 
             desc.contains("steam") || desc.contains("pubg")) {
-            return 4;
+            result = 4;
         }
-        
         // Utilities
-        if (desc.contains("electricity") || desc.contains("water") || desc.contains("gas") || desc.contains("internet") || 
+        else if (desc.contains("electricity") || desc.contains("water") || desc.contains("gas") || desc.contains("internet") || 
             desc.contains("utility") || desc.contains("bill") || desc.contains("phone") || desc.contains("mobile") || 
             desc.contains("wifi") || desc.contains("unifi") || desc.contains("digi") || desc.contains("maxis") || 
             desc.contains("celcom") || desc.contains("hotlink")) {
-            return 5;
+            result = 5;
         }
-        
         // Healthcare
-        if (desc.contains("gym") || desc.contains("fitness") || desc.contains("health") || desc.contains("exercise") || 
+        else if (desc.contains("gym") || desc.contains("fitness") || desc.contains("health") || desc.contains("exercise") || 
             desc.contains("sport") || desc.contains("medicine") || desc.contains("doctor") || desc.contains("medical") || 
             desc.contains("clinic") || desc.contains("hospital") || desc.contains("pill") || desc.contains("dentist") || 
             desc.contains("supplement")) {
-            return 6;
+            result = 6;
         }
-        
         // Shopping
-        if (desc.contains("cloth") || desc.contains("shirt") || desc.contains("pant") || desc.contains("shoe") || 
+        else if (desc.contains("cloth") || desc.contains("shirt") || desc.contains("pant") || desc.contains("shoe") || 
             desc.contains("dress") || desc.contains("clothing") || desc.contains("wear") || desc.contains("apparel") || 
             desc.contains("fashion") || desc.contains("gift") || desc.contains("gadget") || desc.contains("shopee") || 
             desc.contains("lazada") || desc.contains("amazon") || desc.contains("mall") || desc.contains("buy")) {
-            return 7;
+            result = 7;
         }
         
-        return 8; // Other
+        System.out.println("[AIService] Category suggested by Rule-Based fallback code: " + result + " for description: \"" + description + "\"");
+        return result;
     }
 }
