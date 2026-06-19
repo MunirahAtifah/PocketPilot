@@ -317,7 +317,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>📊 Financial Tracking Progress</h1>
+        <h1>Financial Tracking Progress</h1>
         <p>Analyze budget metrics and visual breakdown reports</p>
     </div>
 
@@ -343,6 +343,9 @@
     <div class="container">
         <%
             String msg = (String) request.getAttribute("msg");
+            if (msg == null) {
+                msg = request.getParameter("msg");
+            }
             if ("success".equals(msg)) {
         %>
             <div class="success-alert" style="background: #DEF7EC; color: #03543F; border: 1px solid #BCF0DA; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.1);">
@@ -357,7 +360,7 @@
                     <% if (!"Student".equals(userRole)) { %>
                         <input type="hidden" name="studentID" value="<%= trackingStudentID %>">
                     <% } %>
-                    <label for="monthInput">📅 Report Period: </label>
+                    <label for="monthInput">Report Period: </label>
                     <input type="month" id="monthInput" name="month" value="<%= reportMonth %>" onchange="this.form.submit()">
                 </form>
             </div>
@@ -371,23 +374,23 @@
         <!-- Metric Summary Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>💰 Total Budget</h3>
+                <h3>Total Budget</h3>
                 <div class="amount">RM <%= totalBudget %></div>
             </div>
             <div class="stat-card">
-                <h3>💸 Total Expenses</h3>
+                <h3>Total Expenses</h3>
                 <div class="amount">RM <%= totalExpense %></div>
             </div>
             <div class="stat-card">
-                <h3>💵 Daily Average</h3>
+                <h3>Daily Average</h3>
                 <div class="amount">RM <%= averageExpense %></div>
             </div>
             <div class="stat-card <%= surplusStatus %>">
                 <h3>
                     <% if ("surplus".equals(surplusStatus)) { %>
-                        ✓ Surplus
+                        Surplus
                     <% } else if ("deficit".equals(surplusStatus)) { %>
-                        ⚠ Deficit
+                        Deficit
                     <% } else { %>
                         balanced
                     <% } %>
@@ -395,7 +398,7 @@
                 <div class="amount">RM <%= surplusDeficit.replace("-", "") %></div>
             </div>
             <div class="stat-card">
-                <h3>📈 Budget Utilization</h3>
+                <h3>Budget Utilization</h3>
                 <div class="amount"><%= budgetUtilization %>%</div>
             </div>
         </div>
@@ -403,7 +406,7 @@
         <!-- AI Guidance block -->
         <% if (aiGuidance != null && !aiGuidance.isEmpty()) { %>
             <div class="ai-guidance">
-                <h3>🤖 PocketPilot AI Insights</h3>
+                <h3>PocketPilot AI Insights</h3>
                 <p><%= aiGuidance %></p>
                 <% if (spendingTrend != null && spendingTrend.get("trend") != null) { %>
                     <span class="trend-badge"><%= spendingTrend.get("trend") %> (<%= spendingTrend.get("percentage") %>)</span>
@@ -672,10 +675,14 @@
         
         <%
             String msgToast = (String) request.getAttribute("msg");
+            if (msgToast == null) {
+                msgToast = request.getParameter("msg");
+            }
             if ("success".equals(msgToast)) {
         %>
             window.addEventListener('DOMContentLoaded', () => {
                 showToast("Saved Successfully!");
+                alert("Saved Successfully!");
             });
         <% } %>
     </script>

@@ -56,7 +56,7 @@ public class TrackingProgressCalculator {
             return trend;
         }
         double change = ((current - previous) / previous) * 100;
-        trend.put("trend", change > 10 ? "📈 Increase" : change < -10 ? "📉 Decrease" : "➡ Stable");
+        trend.put("trend", change > 10 ? "Increase" : change < -10 ? "Decrease" : "Stable");
         trend.put("percentage", String.format("%.1f%%", Math.abs(change)));
         return trend;
     }

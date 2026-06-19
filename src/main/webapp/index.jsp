@@ -606,7 +606,6 @@
     <!-- Transparent Navigation -->
     <nav>
         <a href="index.jsp" class="logo-container">
-            <span class="logo-icon">🎯</span>
             <span class="logo-text">PocketPilot</span>
         </a>
         <div class="nav-actions">
@@ -658,7 +657,7 @@
 
                 <!-- Mock AI Suggestion Widget -->
                 <div class="mock-ai-bubble">
-                    <span style="font-size: 18px;">🤖</span>
+                    <span style="font-weight: bold; font-size: 16px; color: var(--primary);">AI</span>
                     <div>
                         <strong style="display: block; font-size: 13px; margin-bottom: 2px;">AI Assistant</strong>
                         "You've saved RM 45.00 on coffee this week. You are on track for a surplus!"
@@ -668,33 +667,12 @@
         </div>
     </section>
 
-    <!-- Live Stats Strip -->
-    <div class="stats-strip">
-        <div class="stat-item">
-            <div class="value">10,000+</div>
-            <div class="label">Active Students</div>
-        </div>
-        <div class="stat-item">
-            <div class="value">RM 2.5M+</div>
-            <div class="label">Savings Tracked</div>
-        </div>
-        <div class="stat-item">
-            <div class="value">100%</div>
-            <div class="label">AI Auto-Categorized</div>
-        </div>
-        <div class="stat-item">
-            <div class="value">4.9/5★</div>
-            <div class="label">User Satisfaction</div>
-        </div>
-    </div>
-
     <!-- Interactive Simulator Section -->
     <section class="simulator-section" id="simulator">
         <div class="simulator-content">
             <h2>See the AI difference in action</h2>
             <p>Drag the slider to test how setting smart monthly budgets translates to direct monthly savings with PocketPilot's proactive category suggestions and tracking features.</p>
             <div style="display: flex; gap: 15px; align-items: center; margin-top: 15px;">
-                <span style="font-size: 32px;">📈</span>
                 <div>
                     <h4 style="font-weight: 700; color: var(--dark);">Estimate Your Surplus</h4>
                     <p style="margin-bottom: 0; font-size: 14px; color: #7F8C8D;">See how even minor cuts compound into healthy savings.</p>
@@ -713,7 +691,7 @@
             
             <div class="simulation-output">
                 <div class="sim-ai-header">
-                    <span>🤖 PocketPilot Suggestion:</span>
+                    <span>PocketPilot Suggestion:</span>
                 </div>
                 <p class="sim-ai-text" id="aiSimText">"Based on an RM 600 monthly allowance, we recommend restricting non-essentials to RM 120 (20%). Expected surplus at month end: RM 180!"</p>
             </div>
@@ -730,21 +708,21 @@
         <div class="features-grid">
             <!-- Feature 1 -->
             <div class="feature-card">
-                <div class="feature-icon-wrapper">🤖</div>
+                <div class="feature-icon-wrapper">AI</div>
                 <h3>AI Category Suggester</h3>
                 <p>Describe your budget or expenses, and our built-in AI will dynamically analyze, suggest categories, and calculate instant aggregates.</p>
             </div>
             
             <!-- Feature 2 -->
             <div class="feature-card">
-                <div class="feature-icon-wrapper">👥</div>
+                <div class="feature-icon-wrapper">Supervision</div>
                 <h3>Parent Supervision Access</h3>
                 <p>Provide peace of mind. Connected parent accounts view real-time graphical progress statements and surplus/deficit reports.</p>
             </div>
             
             <!-- Feature 3 -->
             <div class="feature-card">
-                <div class="feature-icon-wrapper">🛡️</div>
+                <div class="feature-icon-wrapper">Advisory</div>
                 <h3>Counsellor Oversight Portal</h3>
                 <p>Connect with registered students upon mutual approvals to offer advisory financial sessions and review monthly spending charts.</p>
             </div>
@@ -753,7 +731,7 @@
 
     <!-- Footer -->
     <footer>
-        <span class="logo-text">🎯 PocketPilot</span>
+        <span class="logo-text">PocketPilot</span>
         <p>Providing students and parents with smart tools to monitor budgets, manage debt risk, and master financial growth.</p>
         <p>&copy; 2026 PocketPilot. Designed for Visual Excellence and Security.</p>
     </footer>

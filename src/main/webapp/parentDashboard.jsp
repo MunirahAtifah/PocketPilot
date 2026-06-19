@@ -469,7 +469,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>👨‍👩‍👧‍👦 Parent Dashboard</h1>
+        <h1>Parent Dashboard</h1>
         <p>Monitor your children's financial activities</p>
     </div>
     
@@ -484,7 +484,7 @@
         
         <% if (linkedChildren.isEmpty()) { %>
             <div class="no-data-alert">
-                👨‍👩‍👧‍👦 You haven't linked any children to your account yet. Please visit the 
+                You haven't linked any children to your account yet. Please visit the 
                 <a href="supervisionAccess.jsp" style="color: #6B46C1; text-decoration: underline;">Supervision Access</a> 
                 page and use your child's supervision code to link their account.
             </div>
@@ -521,19 +521,19 @@
             <!-- Statistics Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>💰 Total Budget</h3>
+                    <h3>Total Budget</h3>
                     <div class="amount">RM <%= String.format("%.2f", totalBudget) %></div>
                 </div>
                 <div class="stat-card">
-                    <h3>💸 Total Expenses</h3>
+                    <h3>Total Expenses</h3>
                     <div class="amount">RM <%= String.format("%.2f", totalExpense) %></div>
                 </div>
                 <div class="stat-card">
-                    <h3>📊 Status</h3>
+                    <h3>Status</h3>
                     <div class="amount" style="color: <%= statusColor %>;"><%= statusStr %></div>
                 </div>
                 <div class="stat-card">
-                    <h3>💵 Daily Average</h3>
+                    <h3>Daily Average</h3>
                     <div class="amount">RM <%= String.format("%.2f", dailyAverage) %></div>
                 </div>
             </div>
@@ -557,7 +557,7 @@
             
             <!-- Children Overview Table -->
             <div class="students-table">
-                <h3>👨‍👩‍👧‍👦 Your Children's Overview (This Month)</h3>
+                <h3>Your Children's Overview (This Month)</h3>
                 <table>
                     <thead>
                         <tr>

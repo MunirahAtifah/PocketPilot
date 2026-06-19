@@ -409,35 +409,35 @@
     %>
     
     <div class="header">
-        <h1>🛡️ Student Counsellor Dashboard</h1>
+        <h1>Student Counsellor Dashboard</h1>
         <p>Manage student approvals and view financial tracking</p>
     </div>
     
     <div class="navbar">
-        <a href="StudentCounsellorDashboard" class="active">📊 Dashboard</a>
-        <a href="LogoutServlet" class="logout-btn">🚪 Logout</a>
+        <a href="StudentCounsellorDashboard" class="active">Dashboard</a>
+        <a href="LogoutServlet" class="logout-btn">Logout</a>
     </div>
     
     <div class="container">
         <!-- Statistics Cards -->
         <div class="main-content">
             <div class="stat-card">
-                <h3>⏳ Pending Approvals</h3>
+                <h3>Pending Approvals</h3>
                 <div class="count"><%= pendingCount %></div>
             </div>
             <div class="stat-card">
-                <h3>✅ Approved Students</h3>
+                <h3>Approved Students</h3>
                 <div class="count"><%= approvedCount %></div>
             </div>
             <div class="stat-card">
-                <h3>👥 Total Students</h3>
+                <h3>Total Students</h3>
                 <div class="count"><%= allStudents.size() %></div>
             </div>
         </div>
 
         <!-- Students Table -->
         <div class="students-section">
-            <h2>📋 All Registered Students</h2>
+            <h2>All Registered Students</h2>
             
             <% if (allStudents.isEmpty()) { %>
                 <div class="no-data">
@@ -467,7 +467,7 @@
                     
                     boolean fullyConnected = isApprovedByStudent && "Approved".equalsIgnoreCase(accessStatus);
                     String studentApprovalBadge = isApprovedByStudent ? "badge-approved" : "badge-pending";
-                    String studentApprovalText = isApprovedByStudent ? "✓ Approved" : "⏳ Awaiting Student Approval";
+                    String studentApprovalText = isApprovedByStudent ? "Approved" : "Awaiting Student Approval";
                     
                     String counsellorStatusBadge = "badge-pending";
                     if ("Approved".equalsIgnoreCase(accessStatus)) counsellorStatusBadge = "badge-approved";
@@ -498,10 +498,10 @@
                             <% if (accessID == 0) { %>
                                 <button class="btn-approve" onclick="connectStudent(<%= studentID %>, <%= staffID %>)">Connect</button>
                             <% } else if (!"Approved".equalsIgnoreCase(accessStatus)) { %>
-                                <button class="btn-approve" onclick="approveStudent(<%= accessID %>)">✓ APPROVE</button>
-                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">✗ DISAPPROVE</button>
+                                <button class="btn-approve" onclick="approveStudent(<%= accessID %>)">APPROVE</button>
+                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">DISAPPROVE</button>
                             <% } else { %>
-                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">✗ REVOKE</button>
+                                <button class="btn-disapprove" onclick="disapproveStudent(<%= accessID %>)">REVOKE</button>
                             <% } %>
                             </div>
                         </td>
@@ -531,10 +531,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('✓ ' + data.message);
+                    alert(data.message);
                     location.reload();
                 } else {
-                    alert('✗ ' + data.message);
+                    alert(data.message);
                 }
             })
             .catch(error => {
@@ -566,10 +566,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('✓ ' + data.message);
+                    alert(data.message);
                     location.reload();
                 } else {
-                    alert('✗ ' + data.message);
+                    alert(data.message);
                 }
             })
             .catch(error => {

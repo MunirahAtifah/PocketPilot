@@ -262,9 +262,9 @@
            
            if (displayMessage != null) {
                if (isSuccess) { %>
-                   <div class="success-message">✓ <%= displayMessage %></div>
+                   <div class="success-message"><%= displayMessage %></div>
                <% } else { %>
-                   <div class="error-message">✗ <%= displayMessage %></div>
+                   <div class="error-message"><%= displayMessage %></div>
                <% }
            }
         %>
@@ -292,7 +292,7 @@
                         placeholder="Enter your password"
                         required
                     >
-                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)" style="font-size: 12px; font-weight: 600;">Show</span>
                 </div>
             </div>
             
@@ -309,10 +309,10 @@
             const passwordInput = document.getElementById(fieldId);
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                toggleElement.textContent = "🙈";
+                toggleElement.textContent = "Hide";
             } else {
                 passwordInput.type = "password";
-                toggleElement.textContent = "👁️";
+                toggleElement.textContent = "Show";
             }
         }
     </script>

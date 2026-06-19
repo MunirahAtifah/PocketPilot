@@ -400,7 +400,7 @@
         <!-- Month Selector Form -->
         <div class="month-selector" style="margin-bottom: 25px; background: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid #E0D5C7; max-width: fit-content;">
             <form method="GET" action="budget.jsp">
-                <label for="monthInput" style="color: #6B46C1; font-weight: 700; font-size: 14px; margin-right: 10px;">📅 Select Month/Year: </label>
+                <label for="monthInput" style="color: #6B46C1; font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
                 <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid #E0D5C7; border-radius: 6px; color: #6B46C1; font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: #FDFBF7;">
             </form>
         </div>
@@ -408,13 +408,13 @@
         <% String successMsg = request.getParameter("success");
            if (successMsg != null && !successMsg.isEmpty()) { %>
             <div style="padding: 15px; background-color: #E8F5E9; color: #2E7D32; border-left: 5px solid #2E7D32; border-radius: 8px; margin-bottom: 20px; font-size: 14px; font-weight: 600;">
-                ✅ <%= successMsg %>
+                <%= successMsg %>
             </div>
         <% } %>
         <% String errorMsg = request.getParameter("error");
            if (errorMsg != null && !errorMsg.isEmpty()) { %>
             <div style="padding: 15px; background-color: #FFEBEE; color: #C62828; border-left: 5px solid #C62828; border-radius: 8px; margin-bottom: 20px; font-size: 14px; font-weight: 600;">
-                ❌ <%= errorMsg %>
+                <%= errorMsg %>
             </div>
         <% } %>
 
@@ -477,7 +477,7 @@
                             oninput="suggestCategory()"
                         >
                         <div id="aiSuggestion" style="margin-top: 10px; padding: 10px; background: #E9D5FF; border-radius: 5px; display: none;">
-                            <span style="color: #6B46C1; font-weight: 600;">🤖 AI Suggestion:</span>
+                            <span style="color: #6B46C1; font-weight: 600;">AI Suggestion:</span>
                             <span id="suggestionText" style="color: #6B46C1;"></span>
                         </div>
                     </div>

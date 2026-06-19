@@ -109,7 +109,6 @@
 </head>
 <body>
     <div class="error-card">
-        <div class="error-icon">⚠️</div>
         <h1>Something went wrong</h1>
         <p><%= message %></p>
         <div style="display: flex; justify-content: center; gap: 10px;">

@@ -352,21 +352,21 @@ public class NotificationScheduler {
      * Get daily reminder message
      */
     private static String getDailyReminderMessage() {
-        return "📝 Daily Reminder: Don't forget to log your expenses today! Keep your budget records up to date.";
+        return "Daily Reminder: Don't forget to log your expenses today! Keep your budget records up to date.";
     }
 
     /**
      * Get monthly budget reminder message
      */
     private static String getMonthlyBudgetReminderMessage() {
-        return "💰 Monthly Budget Reminder: It's the 1st of the month! Time to review and plan your budget for the month ahead.";
+        return "Monthly Budget Reminder: It's the 1st of the month! Time to review and plan your budget for the month ahead.";
     }
 
     /**
      * Get monthly expense reminder message
      */
     private static String getMonthlyExpenseReminderMessage() {
-        return "📊 Monthly Expense Review: Review your expenses from the past month and see how well you managed your budget!";
+        return "Monthly Expense Review: Review your expenses from the past month and see how well you managed your budget!";
     }
 
     /**

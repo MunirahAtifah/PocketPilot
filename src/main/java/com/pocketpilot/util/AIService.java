@@ -96,9 +96,9 @@ public class AIService {
     }
 
     public static String generateRuleBasedGuidance(String status, double util, double avg, double budget, double diff) {
-        if ("surplus".equals(status)) return "✓ Great job! You have a surplus of RM" + String.format("%.2f", diff) + ". Keep it up!";
-        if ("deficit".equals(status)) return "⚠ Alert: You exceeded your budget. Try reducing daily spend to RM" + String.format("%.2f", avg * 0.8) + ".";
-        return "✓ You are on track with your budget. Maintain your current spending habits.";
+        if ("surplus".equals(status)) return "Great job! You have a surplus of RM" + String.format("%.2f", diff) + ". Keep it up!";
+        if ("deficit".equals(status)) return "Alert: You exceeded your budget. Try reducing daily spend to RM" + String.format("%.2f", avg * 0.8) + ".";
+        return "You are on track with your budget. Maintain your current spending habits.";
     }
 
     public static int suggestCategoryID(String description) {

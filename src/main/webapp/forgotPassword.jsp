@@ -212,7 +212,7 @@
 <body>
     <div class="container">
         <div class="logo-section">
-            <h1>🔒 Reset Password</h1>
+            <h1>Reset Password</h1>
             <p>Regain access to your account</p>
         </div>
         
@@ -253,7 +253,7 @@
                             minlength="6"
                             required
                         >
-                        <span class="toggle-password" onclick="togglePasswordVisibility('new-password', this)">👁️</span>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('new-password', this)" style="font-size: 12px; font-weight: 600;">Show</span>
                     </div>
                 </div>
                 
@@ -268,7 +268,7 @@
                             minlength="6"
                             required
                         >
-                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">👁️</span>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)" style="font-size: 12px; font-weight: 600;">Show</span>
                     </div>
                 </div>
                 
@@ -280,25 +280,25 @@
                 if ("success".equals(resetStatus)) {
             %>
                 <div class="message success" style="margin-top: 20px;">
-                    ✅ Password reset successful! You can now login with your new password.
+                    Password reset successful! You can now login with your new password.
                 </div>
             <% 
                 } else if ("invalid_email".equals(resetStatus)) {
             %>
                 <div class="message error" style="margin-top: 20px;">
-                    ❌ Email address not found. Please try again.
+                    Email address not found. Please try again.
                 </div>
             <% 
                 } else if ("mismatch".equals(resetStatus)) {
             %>
                 <div class="message error" style="margin-top: 20px;">
-                    ❌ Passwords do not match. Please try again.
+                    Passwords do not match. Please try again.
                 </div>
             <% 
                 } else if ("error".equals(resetStatus)) {
             %>
                 <div class="message error" style="margin-top: 20px;">
-                    ❌ An error occurred. Please try again.
+                    An error occurred. Please try again.
                 </div>
             <% } %>
         </div>
@@ -329,10 +329,10 @@
             const passwordInput = document.getElementById(fieldId);
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                toggleElement.textContent = "🙈";
+                toggleElement.textContent = "Hide";
             } else {
                 passwordInput.type = "password";
-                toggleElement.textContent = "👁️";
+                toggleElement.textContent = "Show";
             }
         }
     </script>

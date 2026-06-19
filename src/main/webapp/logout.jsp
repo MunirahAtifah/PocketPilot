@@ -87,7 +87,6 @@
 </head>
 <body>
     <div class="logout-container">
-        <div class="logout-icon">👋</div>
         <h2>You've been logged out</h2>
         <p>Thank you for using PocketPilot. Your session has been safely closed.</p>
         

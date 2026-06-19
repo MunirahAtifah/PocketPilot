@@ -282,11 +282,11 @@ public class ReportGenerator {
         double percentChange = ((currentMonthTotal - previousMonthTotal) / previousMonthTotal) * 100;
 
         if (percentChange > 10) {
-            trend.put("trend", "📈 Spending INCREASED");
+            trend.put("trend", "Spending INCREASED");
         } else if (percentChange < -10) {
-            trend.put("trend", "📉 Spending DECREASED");
+            trend.put("trend", "Spending DECREASED");
         } else {
-            trend.put("trend", "➡ Spending STABLE");
+            trend.put("trend", "Spending STABLE");
         }
 
         trend.put("percentage", String.format("%.1f%%", Math.abs(percentChange)));

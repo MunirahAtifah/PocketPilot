@@ -202,7 +202,7 @@
     
     <div class="signup-container">
         <div class="signup-header">
-            <h1>💰 Create Account</h1>
+            <h1>Create Account</h1>
             <p>Join PocketPilot to manage your finances</p>
         </div>
         
@@ -215,9 +215,9 @@
                 <label for="role">Select Your Role</label>
                 <select name="role" id="role" required>
                     <option value="">-- Choose a role --</option>
-                    <option value="Student">👨‍🎓 Student</option>
-                    <option value="Parent">👨‍👩‍👧 Parent</option>
-                    <option value="Student_Counsellor">👨‍🏫 Student Counsellor</option>
+                    <option value="Student">Student</option>
+                    <option value="Parent">Parent</option>
+                    <option value="Student_Counsellor">Student Counsellor</option>
                 </select>
             </div>
             
@@ -278,10 +278,10 @@
                         placeholder="Minimum 6 characters"
                         required
                     >
-                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">Show</span>
                 </div>
                 <div id="passwordWarning" style="display: none; color: #c62828; font-size: 13px; margin-top: 5px; font-weight: 500; align-items: center; gap: 4px; transition: all 0.3s ease;">
-                    ⚠️ Password must be at least 6 characters
+                    Password must be at least 6 characters
                 </div>
             </div>
             
@@ -295,7 +295,7 @@
                         placeholder="Re-enter your password"
                         required
                     >
-                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">👁️</span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">Show</span>
                 </div>
             </div>
             
@@ -333,18 +333,13 @@
             }
         }
 
-        // Check URL parameters for success/error messages
-        const urlParams = new URLSearchParams(window.location.search);
-        const errorMessage = urlParams.get('error');
-        const successMessage = urlParams.get('success');
-        
         if (errorMessage) {
-            document.getElementById('errorMessage').textContent = '❌ ' + decodeURIComponent(errorMessage);
+            document.getElementById('errorMessage').textContent = decodeURIComponent(errorMessage);
             document.getElementById('errorMessage').style.display = 'block';
         }
         
         if (successMessage) {
-            document.getElementById('successMessage').textContent = '✓ ' + decodeURIComponent(successMessage);
+            document.getElementById('successMessage').textContent = decodeURIComponent(successMessage);
             document.getElementById('successMessage').style.display = 'block';
             setTimeout(() => {
                 window.location.href = 'login.jsp?success=' + encodeURIComponent(successMessage);
@@ -362,28 +357,28 @@
             errorDiv.style.display = 'none';
             
             if (!role) {
-                errorDiv.textContent = '❌ Please select a role';
+                errorDiv.textContent = 'Please select a role';
                 errorDiv.style.display = 'block';
                 e.preventDefault();
                 return;
             }
 
             if (!fullName.trim()) {
-                errorDiv.textContent = '❌ Full name is required';
+                errorDiv.textContent = 'Full name is required';
                 errorDiv.style.display = 'block';
                 e.preventDefault();
                 return;
             }
             
             if (password !== confirmPassword) {
-                errorDiv.textContent = '❌ Passwords do not match';
+                errorDiv.textContent = 'Passwords do not match';
                 errorDiv.style.display = 'block';
                 e.preventDefault();
                 return;
             }
             
             if (password.length < 6) {
-                errorDiv.textContent = '❌ Password must be at least 6 characters';
+                errorDiv.textContent = 'Password must be at least 6 characters';
                 errorDiv.style.display = 'block';
                 e.preventDefault();
                 return;
@@ -394,10 +389,10 @@
             const passwordInput = document.getElementById(fieldId);
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                toggleElement.textContent = "🙈";
+                toggleElement.textContent = "Hide";
             } else {
                 passwordInput.type = "password";
-                toggleElement.textContent = "👁️";
+                toggleElement.textContent = "Show";
             }
         }
     </script>

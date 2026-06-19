@@ -98,11 +98,11 @@
         } else if (totalBudget == 0) {
             aiGuidance = "You have recorded RM" + String.format("%.2f", totalExpense) + " in expenses, but have not set a budget for " + selectedMonth + ". Go to the Budget tab to set limits!";
         } else if (budgetUsagePercent > 100) {
-            aiGuidance = "⚠️ Over-budget Warning: You have exceeded your monthly limit by RM" + String.format("%.2f", totalExpense - totalBudget) + " (" + String.format("%.1f", budgetUsagePercent) + "% utilization). Please review your category chart to locate major leaks.";
+            aiGuidance = "Over-budget Warning: You have exceeded your monthly limit by RM" + String.format("%.2f", totalExpense - totalBudget) + " (" + String.format("%.1f", budgetUsagePercent) + "% utilization). Please review your category chart to locate major leaks.";
         } else if (budgetUsagePercent > 85) {
-            aiGuidance = "⚠️ Tight Budget Alert: You have utilized " + String.format("%.1f", budgetUsagePercent) + "% of your budget. With only RM" + String.format("%.2f", totalBudget - totalExpense) + " left, freeze non-essential spending.";
+            aiGuidance = "Tight Budget Alert: You have utilized " + String.format("%.1f", budgetUsagePercent) + "% of your budget. With only RM" + String.format("%.2f", totalBudget - totalExpense) + " left, freeze non-essential spending.";
         } else {
-            aiGuidance = "🎉 Healthy Balance: Your spending is under control at " + String.format("%.1f", budgetUsagePercent) + "% of your budget. You have RM" + String.format("%.2f", totalBudget - totalExpense) + " remaining. Excellent job keeping to your goals!";
+            aiGuidance = "Healthy Balance: Your spending is under control at " + String.format("%.1f", budgetUsagePercent) + "% of your budget. You have RM" + String.format("%.2f", totalBudget - totalExpense) + " remaining. Excellent job keeping to your goals!";
         }
     } catch (SQLException e) {
         System.err.println("SQL Error loading student dashboard metrics: " + e.getMessage());
@@ -345,7 +345,7 @@
         <div class="notification-center" id="notificationCenter" style="margin-bottom: 30px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #E0D5C7; border-left: 5px solid #FF9F43; transition: all 0.3s ease;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #FFF3E0; padding-bottom: 10px;">
                 <h3 style="color: #D35400; margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                    🔔 Notification Center (<span id="notifCount"><%= unreadNotifications.size() %></span>)
+                    Notification Center (<span id="notifCount"><%= unreadNotifications.size() %></span>)
                 </h3>
                 <button onclick="markAllNotificationsAsRead()" style="background: none; border: none; color: #E67E22; font-weight: 600; font-size: 14px; cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='#D35400'" onmouseout="this.style.color='#E67E22'">
                     Mark All as Read
@@ -366,7 +366,7 @@
         
         <!-- Month Selector Form -->
         <div class="month-selector">
-            <label for="monthSelect">📅 Report Month:</label>
+            <label for="monthSelect">Report Month:</label>
             <select id="monthSelect" onchange="loadMonthData()">
                 <%
                     YearMonth curr = YearMonth.now();
@@ -387,26 +387,26 @@
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>💰 Total Budget</h3>
+                <h3>Total Budget</h3>
                 <div class="amount">RM <%= String.format("%.2f", totalBudget) %></div>
             </div>
             <div class="stat-card">
-                <h3>💸 Total Expenses</h3>
+                <h3>Total Expenses</h3>
                 <div class="amount">RM <%= String.format("%.2f", totalExpense) %></div>
             </div>
             <div class="stat-card">
-                <h3>📊 Budget Usage</h3>
+                <h3>Budget Usage</h3>
                 <div class="amount"><%= String.format("%.1f", budgetUsagePercent) %>%</div>
             </div>
             <div class="stat-card">
-                <h3>💵 Daily Average</h3>
+                <h3>Daily Average</h3>
                 <div class="amount">RM <%= String.format("%.2f", dailyAverage) %></div>
             </div>
         </div>
         
         <!-- AI Guidance Alert -->
         <div class="ai-guidance">
-            <h3>🤖 PocketPilot AI Guidance</h3>
+            <h3>PocketPilot AI Guidance</h3>
             <p><%= aiGuidance %></p>
         </div>
         
