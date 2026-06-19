@@ -7,9 +7,9 @@
 <%@ page import="com.pocketpilot.dao.NotificationDAO" %>
 <%@ page import="com.pocketpilot.model.Notification" %>
 <%
-    // Verify session & role
     Integer userID = (Integer) session.getAttribute("userID");
     String role = (String) session.getAttribute("role");
+    String username = (String) session.getAttribute("username");
     if (userID == null || !"Student".equals(role)) {
         response.sendRedirect("login.jsp");
         return;
@@ -325,7 +325,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Student Dashboard</h1>
+        <h1>Welcome, Student <%= username %></h1>
         <p>Track your budget and expenses dynamically</p>
     </div>
     

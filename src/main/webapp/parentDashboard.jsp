@@ -4,9 +4,9 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.pocketpilot.util.DatabaseConnection" %>
 <%
-    // Validate session & role
     Integer userID = (Integer) session.getAttribute("userID");
     String role = (String) session.getAttribute("role");
+    String username = (String) session.getAttribute("username");
     if (userID == null || !"Parent".equals(role)) {
         response.sendRedirect("login.jsp");
         return;
@@ -469,7 +469,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Parent Dashboard</h1>
+        <h1>Welcome, Parent <%= username %></h1>
         <p>Monitor your children's financial activities</p>
     </div>
     

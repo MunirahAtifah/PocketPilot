@@ -383,6 +383,7 @@
         // Check if user is logged in
         Integer userID = (Integer) session.getAttribute("userID");
         String userRole = (String) session.getAttribute("role");
+        String username = (String) session.getAttribute("username");
         
         if (userID == null) {
             response.sendRedirect("login.jsp");
@@ -409,7 +410,7 @@
     %>
     
     <div class="header">
-        <h1>Student Counsellor Dashboard</h1>
+        <h1>Welcome, Counsellor <%= username %></h1>
         <p>Manage student approvals and view financial tracking</p>
     </div>
     
