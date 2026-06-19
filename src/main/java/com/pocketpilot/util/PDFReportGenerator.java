@@ -74,7 +74,8 @@ public class PDFReportGenerator {
             String aiGuidance,
             List<Map<String, Object>> budgets,
             List<Map<String, Object>> expenses,
-            Map<String, Double> topCategories) {
+            Map<String, Double> topCategories,
+            String userRole) {
 
         try {
             // ================================================
@@ -139,7 +140,7 @@ public class PDFReportGenerator {
             // Step 6: Add budgets table
             // ================================================
             if (budgets != null && !budgets.isEmpty()) {
-                addBudgetsTable(document, budgets);
+                addBudgetsTable(document, budgets, userRole);
                 document.add(new Paragraph("\n"));
             }
 
@@ -147,7 +148,7 @@ public class PDFReportGenerator {
             // Step 7: Add expenses table
             // ================================================
             if (expenses != null && !expenses.isEmpty()) {
-                addExpensesTable(document, expenses);
+                addExpensesTable(document, expenses, userRole);
                 document.add(new Paragraph("\n"));
             }
 
@@ -245,13 +246,13 @@ public class PDFReportGenerator {
     /**
      * Add budgets table to PDF
      */
-    private static void addBudgetsTable(Document document, List<Map<String, Object>> budgets) {
+    private static void addBudgetsTable(Document document, List<Map<String, Object>> budgets, String role) {
         Paragraph heading = new Paragraph("Budget Breakdown")
                 .setFontSize(14)
                 .setBold();
         document.add(heading);
 
-        Table table = new Table(4);
+        Table table = new Table(5);
         table.setWidth(UnitValue.createPercentValue(100));
 
         // Header row
@@ -259,17 +260,41 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell("Category"));
         table.addCell(createHeaderCell("Description"));
         table.addCell(createHeaderCell("Amount"));
+        table.addCell(createHeaderCell("Student".equals(role) ? "Comments" : "Comment"));
 
         // Data rows
         double totalAmount = 0;
         for (Map<String, Object> budget : budgets) {
             table.addCell(createDataCell(budget.get("budgetDate").toString()));
             table.addCell(createDataCell(budget.get("categoryName").toString()));
-            table.addCell(createDataCell(budget.get("budgetDesc").toString()));
+            table.addCell(createDataCell(budget.get("budgetDesc") != null ? budget.get("budgetDesc").toString() : "-"));
             
             double amount = (double) budget.get("budgetAmount");
             table.addCell(createDataCell(String.format("RM%.2f", amount)));
             totalAmount += amount;
+
+            // Comment cell
+            String parentComment = (String) budget.get("parentComment");
+            String counsellorComment = (String) budget.get("counsellorComment");
+            String displayComment = "-";
+
+            if ("Parent".equals(role)) {
+                displayComment = (parentComment != null && !parentComment.trim().isEmpty()) ? parentComment : "-";
+            } else if ("Student_Counsellor".equals(role)) {
+                displayComment = (counsellorComment != null && !counsellorComment.trim().isEmpty()) ? counsellorComment : "-";
+            } else {
+                // Student sees both
+                StringBuilder sb = new StringBuilder();
+                if (parentComment != null && !parentComment.trim().isEmpty()) {
+                    sb.append("Parent: ").append(parentComment);
+                }
+                if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
+                    if (sb.length() > 0) sb.append("\n");
+                    sb.append("Counsellor: ").append(counsellorComment);
+                }
+                displayComment = sb.length() > 0 ? sb.toString() : "-";
+            }
+            table.addCell(createDataCell(displayComment));
         }
 
         // Total row
@@ -277,6 +302,7 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell("TOTAL"));
         table.addCell(createHeaderCell(String.format("RM%.2f", totalAmount)));
+        table.addCell(createHeaderCell(""));
 
         document.add(table);
     }
@@ -284,13 +310,13 @@ public class PDFReportGenerator {
     /**
      * Add expenses table to PDF
      */
-    private static void addExpensesTable(Document document, List<Map<String, Object>> expenses) {
+    private static void addExpensesTable(Document document, List<Map<String, Object>> expenses, String role) {
         Paragraph heading = new Paragraph("Expense Breakdown")
                 .setFontSize(14)
                 .setBold();
         document.add(heading);
 
-        Table table = new Table(4);
+        Table table = new Table(5);
         table.setWidth(UnitValue.createPercentValue(100));
 
         // Header row
@@ -298,17 +324,41 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell("Category"));
         table.addCell(createHeaderCell("Description"));
         table.addCell(createHeaderCell("Amount"));
+        table.addCell(createHeaderCell("Student".equals(role) ? "Comments" : "Comment"));
 
         // Data rows
         double totalAmount = 0;
         for (Map<String, Object> expense : expenses) {
             table.addCell(createDataCell(expense.get("expenseDate").toString()));
             table.addCell(createDataCell(expense.get("categoryName").toString()));
-            table.addCell(createDataCell(expense.get("expenseDesc").toString()));
+            table.addCell(createDataCell(expense.get("expenseDesc") != null ? expense.get("expenseDesc").toString() : "-"));
             
             double amount = (double) expense.get("expenseAmount");
             table.addCell(createDataCell(String.format("RM%.2f", amount)));
             totalAmount += amount;
+
+            // Comment cell
+            String parentComment = (String) expense.get("parentComment");
+            String counsellorComment = (String) expense.get("counsellorComment");
+            String displayComment = "-";
+
+            if ("Parent".equals(role)) {
+                displayComment = (parentComment != null && !parentComment.trim().isEmpty()) ? parentComment : "-";
+            } else if ("Student_Counsellor".equals(role)) {
+                displayComment = (counsellorComment != null && !counsellorComment.trim().isEmpty()) ? counsellorComment : "-";
+            } else {
+                // Student sees both
+                StringBuilder sb = new StringBuilder();
+                if (parentComment != null && !parentComment.trim().isEmpty()) {
+                    sb.append("Parent: ").append(parentComment);
+                }
+                if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
+                    if (sb.length() > 0) sb.append("\n");
+                    sb.append("Counsellor: ").append(counsellorComment);
+                }
+                displayComment = sb.length() > 0 ? sb.toString() : "-";
+            }
+            table.addCell(createDataCell(displayComment));
         }
 
         // Total row
@@ -316,6 +366,7 @@ public class PDFReportGenerator {
         table.addCell(createHeaderCell(""));
         table.addCell(createHeaderCell("TOTAL"));
         table.addCell(createHeaderCell(String.format("RM%.2f", totalAmount)));
+        table.addCell(createHeaderCell(""));
 
         document.add(table);
     }

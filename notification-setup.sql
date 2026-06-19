@@ -5,7 +5,7 @@
 -- reminders for students to complete their budget and expense records
 -- ============================================================
 
-USE PP;
+USE pp;
 
 -- ============================================================
 -- NOTIFICATION TABLE

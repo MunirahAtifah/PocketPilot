@@ -138,11 +138,8 @@ public class ReportGenerator {
         return report;
     }
 
-    /**
-     * Export report as PDF
-     */
     public static boolean exportReportAsPDF(HttpServletResponse response, String studentName,
-                                            YearMonth reportMonth, ReportData report) {
+                                            YearMonth reportMonth, ReportData report, String role) {
         return PDFReportGenerator.generateTrackingProgressReport(
             response,
             studentName,
@@ -156,7 +153,8 @@ public class ReportGenerator {
             report.aiGuidance,
             report.budgets,
             report.expenses,
-            report.topCategories
+            report.topCategories,
+            role
         );
     }
 

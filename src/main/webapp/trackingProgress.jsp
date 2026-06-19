@@ -341,6 +341,15 @@
     </div>
 
     <div class="container">
+        <%
+            String msg = (String) request.getAttribute("msg");
+            if ("success".equals(msg)) {
+        %>
+            <div class="success-alert" style="background: #DEF7EC; color: #03543F; border: 1px solid #BCF0DA; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.1);">
+                <span>✓ Saved Successfully !</span>
+            </div>
+        <% } %>
+
         <!-- Month Selector and PDF Export Button -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
             <div class="month-selector" style="margin-bottom: 0;">
@@ -354,7 +363,7 @@
             </div>
             <div>
                 <a href="TrackingProgressServlet?action=export&month=<%= reportMonth %><%= !"Student".equals(userRole) ? "&studentID=" + trackingStudentID : "" %>" download class="button btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    Download
+                    Download PDF
                 </a>
             </div>
         </div>
@@ -603,6 +612,72 @@
                 }
             });
         });
+    </script>
+    <!-- Toast Notification Container -->
+    <div id="toastNotification" class="toast-notification">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">Saved Successfully!</span>
+    </div>
+
+    <style>
+        .toast-notification {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #6B46C1;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(107, 70, 193, 0.35);
+            z-index: 9999;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid #8B5CF6;
+        }
+        .toast-notification.show {
+            top: 30px;
+            opacity: 1;
+        }
+        .toast-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            if (toast) {
+                if (message) {
+                    toast.querySelector('.toast-message').innerText = message;
+                }
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+        
+        <%
+            String msgToast = (String) request.getAttribute("msg");
+            if ("success".equals(msgToast)) {
+        %>
+            window.addEventListener('DOMContentLoaded', () => {
+                showToast("Saved Successfully!");
+            });
+        <% } %>
     </script>
 </body>
 </html>

@@ -247,7 +247,7 @@ public class TrackingProgressServlet extends HttpServlet {
             // ================================================
             if ("export".equals(action)) {
                 String studentName = getStudentName(trackingStudentID);
-                boolean success = ReportGenerator.exportReportAsPDF(response, studentName, reportMonth, report);
+                boolean success = ReportGenerator.exportReportAsPDF(response, studentName, reportMonth, report, role);
                 if (success) {
                     return; // PDF was written to response
                 }
@@ -269,6 +269,11 @@ public class TrackingProgressServlet extends HttpServlet {
             request.setAttribute("trackingStudentID", trackingStudentID);
             request.setAttribute("budgets", report.budgets);
             request.setAttribute("expenses", report.expenses);
+            
+            String msg = request.getParameter("msg");
+            if (msg != null) {
+                request.setAttribute("msg", msg);
+            }
 
             // ================================================
             // Step 9: Forward to JSP for display
@@ -343,7 +348,7 @@ public class TrackingProgressServlet extends HttpServlet {
             }
 
             // Redirect back to GET request
-            String redirectUrl = "TrackingProgressServlet?studentID=" + studentIDStr + "&month=" + monthStr;
+            String redirectUrl = "TrackingProgressServlet?studentID=" + studentIDStr + "&month=" + monthStr + "&msg=success";
             response.sendRedirect(redirectUrl);
         }
     }
