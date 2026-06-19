@@ -156,7 +156,8 @@ public class AIService {
             desc.contains("breakfast") || desc.contains("restaurant") || desc.contains("cafe") || desc.contains("meal") || 
             desc.contains("snack") || desc.contains("drink") || desc.contains("coffee") || desc.contains("starbucks") || 
             desc.contains("mcd") || desc.contains("kfc") || desc.contains("grocery") || desc.contains("groceries") || 
-            desc.contains("rice") || desc.contains("water") || desc.contains("dine") || desc.contains("dining")) {
+            desc.contains("rice") || desc.contains("water") || desc.contains("dine") || desc.contains("dining") ||
+            desc.contains("ice cream") || desc.contains("icecream") || desc.contains("dessert")) {
             result = 2;
         }
         // Transport
