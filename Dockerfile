@@ -5,7 +5,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run
-FROM tomcat:9.0-jdk17-openjdk-slim
+FROM tomcat:9.0-jre17-temurin-jammy
 
 # 1. Purge default apps
 RUN rm -rf /usr/local/tomcat/webapps/*
