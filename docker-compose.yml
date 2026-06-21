@@ -23,8 +23,9 @@ services:
       - DB_NAME=pp
       - DB_USER=root
       - DB_PASSWORD=rootpassword
+      - GROQ_API_KEY=${GROQ_API_KEY}
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on:
       - pocketpilot-db
 
