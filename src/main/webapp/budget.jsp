@@ -573,6 +573,7 @@
 
     <script>
         let debounceTimer;
+        let lastSuggestedCategoryId = null;
         function suggestCategory() {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
@@ -589,10 +590,13 @@
                 fetch('AISuggestServlet?description=' + encodeURIComponent(description))
                     .then(response => response.json())
                     .then(data => {
-                        if (data && data.categoryID) {
-                            categorySelect.value = data.categoryID;
-                            suggestionText.textContent = ' Select "' + data.categoryName + '" for this budget?';
+                        // Only suggest if it is a specific category (not 'Other' fallback ID 8) 
+                        // and is different from current selection
+                        if (data && data.categoryID && data.categoryID !== 8 && String(categorySelect.value) !== String(data.categoryID)) {
+                            lastSuggestedCategoryId = data.categoryID;
+                            suggestionText.innerHTML = ' Select "<strong>' + data.categoryName + '</strong>" for this budget? <span style="text-decoration: underline; font-weight: bold; margin-left: 5px;">[Click to Apply]</span>';
                             suggestionDiv.style.display = 'block';
+                            suggestionDiv.style.cursor = 'pointer';
                         } else {
                             suggestionDiv.style.display = 'none';
                         }
@@ -602,6 +606,13 @@
                     });
             }, 300);
         }
+
+        document.getElementById('aiSuggestion').addEventListener('click', function() {
+            if (lastSuggestedCategoryId) {
+                document.getElementById('category').value = lastSuggestedCategoryId;
+                document.getElementById('aiSuggestion').style.display = 'none';
+            }
+        });
         // Edit budget helpers
         function enableEdit(id, categoryID, amount, date, desc) {
             document.getElementById('formCardTitle').textContent = 'Edit Budget';

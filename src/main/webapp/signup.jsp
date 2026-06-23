@@ -333,6 +333,10 @@
             }
         }
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMessage = urlParams.get('error');
+        const successMessage = urlParams.get('success');
+
         if (errorMessage) {
             document.getElementById('errorMessage').textContent = decodeURIComponent(errorMessage);
             document.getElementById('errorMessage').style.display = 'block';

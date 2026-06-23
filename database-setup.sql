@@ -47,7 +47,9 @@ CREATE TABLE `budget` (
 INSERT INTO `budget` (`budgetID`, `budgetDate`, `budgetDesc`, `budgetAmount`, `categoryID`, `studentID`, `parentID`) VALUES
 (2, '2026-01-01', 'Food', 400.00, 2, 1, NULL),
 (4, '2026-01-01', 'Fuel', 150.00, 3, 1, NULL),
-(8, '2026-02-01', 'Electric', 30.00, 5, 1, NULL);
+(8, '2026-02-01', 'Electric', 30.00, 5, 1, NULL),
+(10, '2026-06-01', 'buy textbooks', 60.00, 1, 1, NULL),
+(11, '2026-06-01', 'Ice cream', 40.00, 8, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -92,6 +94,13 @@ CREATE TABLE `expense` (
   `parentComment` varchar(255) DEFAULT NULL,
   `counsellorComment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `expense`
+--
+
+INSERT INTO `expense` (`expenseID`, `expenseDate`, `expenseDesc`, `expenseAmount`, `categoryID`, `studentID`, `parentID`, `comment`, `parentComment`, `counsellorComment`) VALUES
+(2, '2026-06-14', 'ice cream', 10.00, 2, 1, NULL, NULL, 'banyak teh duit', 'use the money carefully');
 
 -- --------------------------------------------------------
 
@@ -157,7 +166,8 @@ INSERT INTO `registration` (`userID`, `username`, `phone_number`, `email`, `role
 (5, 'Ummi', '0139647354', 'ummimusallah@gmail.com', 'Parent', 'ummi1234'),
 (6, 'Mazlan', '0133029282', 'mazlan@gmail.com', 'Parent', 'mazlan5159'),
 (7, 'Fara', '0122576289', 'fara@gmail.com', 'Student', 'fara13'),
-(8, 'Ali', '0112345624', 'ali123@gmail.com', 'Parent', '3456789');
+(8, 'Ali', '0112345624', 'ali123@gmail.com', 'Parent', '3456789'),
+(9, 'Counsellor1', '0123456789', 'counsellor1@gmail.com', 'Student_Counsellor', '987654');
 
 -- --------------------------------------------------------
 
@@ -214,6 +224,13 @@ CREATE TABLE `studentcounselloraccess` (
   `studentApprovalDate` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `studentcounselloraccess`
+--
+
+INSERT INTO `studentcounselloraccess` (`accessID`, `studentID`, `staffID`, `accessStatus`, `createdDate`, `approvedDate`, `approvedByStudent`, `studentApprovalDate`) VALUES
+(1, 1, 1, 'Approved', '2026-06-14 19:58:30', NULL, 1, '2026-06-14 19:58:42');
+
 -- --------------------------------------------------------
 
 --
@@ -226,6 +243,13 @@ CREATE TABLE `student_counsellor` (
   `staffName` varchar(255) NOT NULL,
   `createdDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student_counsellor`
+--
+
+INSERT INTO `student_counsellor` (`staffID`, `userID`, `staffName`, `createdDate`) VALUES
+(1, 9, 'Counsellor1', '2026-06-14 19:28:46');
 
 -- --------------------------------------------------------
 
@@ -248,7 +272,8 @@ CREATE TABLE `supervisionaccess` (
 --
 
 INSERT INTO `supervisionaccess` (`id`, `code`, `approvalStatus`, `studentID`, `parentID`, `relationship`, `createdDate`) VALUES
-(1, 'QC0A6R', 'Approved', 1, 3, 'Mother', '2026-01-19 16:34:08');
+(1, 'QC0A6R', 'Approved', 1, 3, 'Mother', '2026-01-20 00:34:08'),
+(2, 'KISODX', 'Approved', 1, NULL, NULL, '2026-06-18 18:43:39');
 
 --
 -- Indexes for dumped tables
@@ -360,7 +385,7 @@ ALTER TABLE `supervisionaccess`
 -- AUTO_INCREMENT for table `budget`
 --
 ALTER TABLE `budget`
-  MODIFY `budgetID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `budgetID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -372,7 +397,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `expenseID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `expenseID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `parent`
@@ -390,7 +415,7 @@ ALTER TABLE `parentchildaccess`
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `report`
@@ -408,19 +433,19 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `studentcounselloraccess`
 --
 ALTER TABLE `studentcounselloraccess`
-  MODIFY `accessID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `accessID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `student_counsellor`
 --
 ALTER TABLE `student_counsellor`
-  MODIFY `staffID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `staffID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `supervisionaccess`
 --
 ALTER TABLE `supervisionaccess`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
