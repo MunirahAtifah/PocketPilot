@@ -327,7 +327,7 @@
         passwordInput.addEventListener('input', function() {
             if (passwordInput.value.length >= 6) {
                 passwordWarning.style.display = 'none';
-                passwordInput.style.borderColor = '#E0D5C7';
+                passwordInput.style.borderColor = 'var(--border-color)';
             }
         });
 
@@ -337,7 +337,7 @@
                 passwordInput.style.borderColor = '#c62828';
             } else {
                 passwordWarning.style.display = 'none';
-                passwordInput.style.borderColor = '#E0D5C7';
+                passwordInput.style.borderColor = 'var(--border-color)';
             }
         }
 

@@ -108,7 +108,7 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -133,14 +133,14 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
             justify-content: center;
         }
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -149,17 +149,17 @@
             border-radius: 6px;
         }
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
             border-bottom: none;
         }
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -170,7 +170,7 @@
             font-family: inherit;
         }
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
         }
@@ -185,7 +185,7 @@
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
         .card:hover {
@@ -193,7 +193,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         }
         .card h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -201,7 +201,7 @@
             padding-bottom: 10px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -222,7 +222,7 @@
         }
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 700;
             margin-bottom: 8px;
             font-size: 14px;
@@ -230,14 +230,14 @@
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
             outline: none;
             transition: all 0.3s;
         }
         .form-group input:focus, .form-group select:focus {
-            border-color: #8B5CF6;
+            border-color: var(--primary-hover);
         }
         .table {
             width: 100%;
@@ -245,11 +245,11 @@
             margin-top: 15px;
         }
         .table thead {
-            background: #F5F1E8;
-            border-bottom: 2px solid #6B46C1;
+            background: var(--body-bg);
+            border-bottom: 2px solid var(--primary-color);
         }
         .table th {
-            color: #6B46C1;
+            color: var(--primary-color);
             padding: 12px;
             text-align: left;
             font-weight: 700;
@@ -257,9 +257,9 @@
         }
         .table td {
             padding: 12px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
-            color: #2C3E50;
+            color: var(--title-color);
         }
         .status-badge {
             padding: 4px 10px;
@@ -289,14 +289,14 @@
         }
         .code-box {
             font-family: 'Courier New', monospace;
-            background: #F5F1E8;
+            background: var(--body-bg);
             padding: 15px;
             border-radius: 8px;
-            border: 2px dashed #6B46C1;
+            border: 2px dashed var(--primary-color);
             font-size: 24px;
             text-align: center;
             font-weight: 700;
-            color: #6B46C1;
+            color: var(--primary-color);
             margin: 20px 0;
             max-width: 250px;
         }
@@ -454,7 +454,7 @@
                 %>
                 
                 <% if (hasPendingCode) { %>
-                    <p style="font-weight: bold; color: #6B46C1;">Your active pending code is:</p>
+                    <p style="font-weight: bold; color: var(--primary-color);">Your active pending code is:</p>
                     <div class="code-box"><%= activeCode %></div>
                     <p style="color: #7F8C8D; font-size: 13px;">Provide this 6-character code to your parent to link accounts.</p>
                 <% } else { %>
@@ -493,7 +493,7 @@
                                 <tr>
                                     <td style="font-weight: 600;"><%= parent.get("parentName") %></td>
                                     <td><%= parent.get("relationship") %></td>
-                                    <td style="font-family: monospace; font-weight: 700; color: #6B46C1;"><%= parent.get("code") %></td>
+                                    <td style="font-family: monospace; font-weight: 700; color: var(--primary-color);"><%= parent.get("code") %></td>
                                     <td>
                                         <span class="status-badge" style="background: #E8F5E9; color: #2E7D32;">
                                             Approved

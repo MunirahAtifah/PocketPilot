@@ -234,7 +234,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -259,14 +259,14 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
             justify-content: center;
         }
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -275,17 +275,17 @@
             border-radius: 6px;
         }
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
             border-bottom: none;
         }
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -295,7 +295,7 @@
             box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
         }
@@ -313,20 +313,20 @@
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             max-width: fit-content;
         }
         .selector-row label {
             margin-bottom: 0;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 15px;
         }
         .selector-row select {
             padding: 8px 16px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
@@ -334,7 +334,7 @@
             transition: all 0.3s;
         }
         .selector-row select:focus {
-            border-color: #8B5CF6;
+            border-color: var(--primary-hover);
         }
         .stats-grid {
             display: grid;
@@ -347,7 +347,7 @@
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #6B46C1;
+            border-left: 5px solid var(--primary-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -365,7 +365,7 @@
             letter-spacing: 0.5px;
         }
         .stat-card .amount {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             font-weight: 800;
         }
@@ -380,10 +380,10 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
         }
         .chart-container h2 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -399,11 +399,11 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             margin-bottom: 30px;
         }
         .students-table h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -415,11 +415,11 @@
             border-collapse: collapse;
         }
         table thead {
-            background: #F5F1E8;
-            border-bottom: 2px solid #6B46C1;
+            background: var(--body-bg);
+            border-bottom: 2px solid var(--primary-color);
         }
         table th {
-            color: #6B46C1;
+            color: var(--primary-color);
             padding: 14px;
             text-align: left;
             font-weight: 700;
@@ -427,12 +427,12 @@
         }
         table td {
             padding: 14px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
-            color: #2C3E50;
+            color: var(--title-color);
         }
         table tbody tr:hover {
-            background: #FFFBF0;
+            background: var(--nav-link-hover-bg);
         }
         .status-badge {
             padding: 4px 10px;
@@ -485,7 +485,7 @@
         <% if (linkedChildren.isEmpty()) { %>
             <div class="no-data-alert">
                 You haven't linked any children to your account yet. Please visit the 
-                <a href="supervisionAccess.jsp" style="color: #6B46C1; text-decoration: underline;">Supervision Access</a> 
+                <a href="supervisionAccess.jsp" style="color: var(--primary-color); text-decoration: underline;">Supervision Access</a> 
                 page and use your child's supervision code to link their account.
             </div>
         <% } else { %>
@@ -572,7 +572,7 @@
                         <% for (Map<String, Object> ov : childOverviewList) { %>
                             <tr>
                                 <td>
-                                    <a href="parentDashboard.jsp?studentID=<%= ov.get("studentID") %>&month=<%= selectedMonth.toString() %>" style="color: #6B46C1; font-weight: bold; text-decoration: underline;">
+                                    <a href="parentDashboard.jsp?studentID=<%= ov.get("studentID") %>&month=<%= selectedMonth.toString() %>" style="color: var(--primary-color); font-weight: bold; text-decoration: underline;">
                                         <%= ov.get("studentName") %>
                                     </a>
                                 </td>
@@ -616,7 +616,7 @@
                         datasets: [{
                             label: 'Amount (RM)',
                             data: [<%= totalBudget %>,  <%= totalExpense %>],
-                            backgroundColor: ['#6B46C1', '#8B5CF6'],
+                            backgroundColor: ['var(--primary-color)', 'var(--primary-hover)'],
                             borderRadius: 8,
                             barThickness: 50
                         }]
@@ -650,11 +650,11 @@
                                 <%= weeklyExpenses[3] %>,
                                 <%= weeklyExpenses[4] %>
                             ],
-                            borderColor: '#6B46C1',
+                            borderColor: 'var(--primary-color)',
                             backgroundColor: 'rgba(107, 70, 193, 0.1)',
                             tension: 0.4,
                             fill: true,
-                            pointBackgroundColor: '#6B46C1',
+                            pointBackgroundColor: 'var(--primary-color)',
                             pointRadius: 5
                         }]
                     },

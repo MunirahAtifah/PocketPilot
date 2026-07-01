@@ -16,12 +16,12 @@
 
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FDFBF7 0%, #F5F1E8 100%);
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--body-bg) 100%);
             min-height: 100vh;
         }
 
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -56,7 +56,7 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -65,7 +65,7 @@
         }
 
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -75,19 +75,19 @@
         }
 
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
 
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
             border-bottom: none;
         }
 
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -102,7 +102,7 @@
         }
         
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
         }
@@ -120,7 +120,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #6B46C1;
+            border-left: 4px solid var(--primary-color);
             text-align: center;
         }
 
@@ -131,7 +131,7 @@
         }
 
         .stat-card .count {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             font-weight: bold;
         }
@@ -145,7 +145,7 @@
         }
 
         .students-section h2 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
         }
@@ -157,28 +157,28 @@
         }
 
         table thead {
-            background: #F5F1E8;
+            background: var(--body-bg);
         }
 
         table th {
             padding: 12px;
             text-align: left;
-            color: #6B46C1;
-            border-bottom: 2px solid #6B46C1;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
             font-weight: 600;
         }
 
         table td {
             padding: 12px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
         }
 
         table tbody tr:hover {
-            background: #FFFBF0;
+            background: var(--nav-link-hover-bg);
         }
 
         .student-name {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -297,7 +297,7 @@
         }
 
         input:checked + .slider {
-            background-color: #6B46C1;
+            background-color: var(--primary-color);
         }
 
         input:checked + .slider:before {
@@ -315,7 +315,7 @@
         }
 
         .view-details-btn {
-            background: #6B46C1;
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 8px 16px;
@@ -328,7 +328,7 @@
         }
 
         .view-details-btn:hover {
-            background: #8B5CF6;
+            background: var(--primary-hover);
         }
 
         .no-students {
@@ -478,7 +478,7 @@
                     <tr>
                         <td>
                             <% if (fullyConnected) { %>
-                                <a href="javascript:void(0)" onclick="viewStudentProfile(<%= studentID %>)" class="student-name" style="color:#6B46C1; text-decoration:underline;">
+                                <a href="javascript:void(0)" onclick="viewStudentProfile(<%= studentID %>)" class="student-name" style="color:var(--primary-color); text-decoration:underline;">
                                     <%= name %>
                                 </a>
                             <% } else { %>

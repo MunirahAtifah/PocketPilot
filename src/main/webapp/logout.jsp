@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
         }
         
         .logout-container {
-            background: #F5F1E8;
+            background: var(--body-bg);
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             width: 100%;
@@ -38,7 +38,7 @@
         }
         
         .logout-container h2 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 15px;
         }
         
@@ -66,7 +66,7 @@
         }
         
         .btn-login {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
         }
         
@@ -76,8 +76,8 @@
         }
         
         .btn-home {
-            background: #E0D5C7;
-            color: #6B46C1;
+            background: var(--border-color);
+            color: var(--primary-color);
         }
         
         .btn-home:hover {

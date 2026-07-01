@@ -29,10 +29,10 @@
             box-sizing: border-box;
         }
         :root {
-            --primary: #6B46C1;
-            --primary-light: #8B5CF6;
+            --primary: var(--primary-color);
+            --primary-light: var(--primary-hover);
             --dark: #1A0B2E;
-            --bg-gradient: radial-gradient(circle at 0% 0%, #F8F5FF 0%, #FFFDF9 70%, #F5F1E8 100%);
+            --bg-gradient: radial-gradient(circle at 0% 0%, #F8F5FF 0%, #FFFDF9 70%, var(--body-bg) 100%);
             --card-border: 1px solid rgba(224, 213, 199, 0.45);
         }
         body {

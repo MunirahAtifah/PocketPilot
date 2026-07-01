@@ -48,7 +48,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -73,7 +73,7 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -81,7 +81,7 @@
             align-items: center;
         }
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -90,16 +90,16 @@
             border-radius: 6px;
         }
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
         }
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -109,7 +109,7 @@
             box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
         }
@@ -127,29 +127,29 @@
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             max-width: fit-content;
         }
         .month-selector label {
             margin-bottom: 0;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 15px;
         }
         .month-selector input[type="month"] {
             padding: 8px 16px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
             outline: none;
             transition: all 0.3s;
-            background-color: #FDFBF7;
+            background-color: var(--card-bg);
         }
         .month-selector input[type="month"]:focus {
-            border-color: #8B5CF6;
+            border-color: var(--primary-hover);
         }
         .stats-grid {
             display: grid;
@@ -162,7 +162,7 @@
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #6B46C1;
+            border-left: 5px solid var(--primary-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -186,7 +186,7 @@
             letter-spacing: 0.5px;
         }
         .stat-card .amount {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             font-weight: 800;
         }
@@ -198,7 +198,7 @@
         }
         .ai-guidance {
             background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
-            border-left: 5px solid #8B5CF6;
+            border-left: 5px solid var(--primary-hover);
             padding: 20px 25px;
             border-radius: 15px;
             margin-bottom: 35px;
@@ -206,7 +206,7 @@
             animation: fadeIn 0.5s ease-in-out;
         }
         .ai-guidance h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 8px;
             font-size: 18px;
             font-weight: 700;
@@ -228,7 +228,7 @@
             padding: 2px 8px;
             border-radius: 12px;
             background: #F3E8FF;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
         }
         .charts-row {
@@ -242,10 +242,10 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
         }
         .chart-container h2 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -261,11 +261,11 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             margin-bottom: 30px;
         }
         .table-section h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -277,11 +277,11 @@
             border-collapse: collapse;
         }
         table thead {
-            background: #F5F1E8;
-            border-bottom: 2px solid #6B46C1;
+            background: var(--body-bg);
+            border-bottom: 2px solid var(--primary-color);
         }
         table th {
-            color: #6B46C1;
+            color: var(--primary-color);
             padding: 14px;
             text-align: left;
             font-weight: 700;
@@ -289,12 +289,12 @@
         }
         table td {
             padding: 14px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
-            color: #2C3E50;
+            color: var(--title-color);
         }
         table tbody tr:hover {
-            background: #FFFBF0;
+            background: var(--nav-link-hover-bg);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -456,7 +456,7 @@
                             <tr>
                                 <td><%= exDate != null ? exDate.format(dateFormatter) : "-" %></td>
                                 <td><%= expense.get("categoryName") %></td>
-                                <td style="font-weight: 700; color: #2C3E50;">RM <%= String.format("%.2f", (Double) expense.get("expenseAmount")) %></td>
+                                <td style="font-weight: 700; color: var(--title-color);">RM <%= String.format("%.2f", (Double) expense.get("expenseAmount")) %></td>
                                 <td><%= expense.get("expenseDesc") != null ? expense.get("expenseDesc") : "-" %></td>
                                 <td>
                                     <% if ("Parent".equals(userRole) || "Student_Counsellor".equals(userRole)) { %>
@@ -466,18 +466,18 @@
                                             <input type="hidden" name="id" value="<%= expense.get("expenseID") %>">
                                             <input type="hidden" name="studentID" value="<%= trackingStudentID %>">
                                             <input type="hidden" name="month" value="<%= reportMonth %>">
-                                            <input type="text" name="comment" value="<%= expComment != null ? expComment : "" %>" placeholder="Comment..." style="padding: 6px 10px; border: 1px solid #E0D5C7; border-radius: 4px; font-size: 13px; font-family: inherit; width: 180px;">
+                                            <input type="text" name="comment" value="<%= expComment != null ? expComment : "" %>" placeholder="Comment..." style="padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; font-family: inherit; width: 180px;">
                                             <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; text-transform: none; border-radius: 4px; height: auto;">Save</button>
                                         </form>
                                     <% } else { %>
                                         <%
                                             StringBuilder studentComment = new StringBuilder();
                                             if (parentComment != null && !parentComment.trim().isEmpty()) {
-                                                studentComment.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                                studentComment.append("<strong style='color: var(--primary-color);'>Parent:</strong> ").append(parentComment);
                                             }
                                             if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
                                                 if (studentComment.length() > 0) studentComment.append("<br>");
-                                                studentComment.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                                studentComment.append("<strong style='color: var(--primary-hover);'>Counsellor:</strong> ").append(counsellorComment);
                                             }
                                             if (studentComment.length() == 0) {
                                                 studentComment.append("-");
@@ -519,7 +519,7 @@
                             <tr>
                                 <td><%= bDate != null ? bDate.format(dateFormatter) : "-" %></td>
                                 <td><%= budget.get("categoryName") %></td>
-                                <td style="font-weight: 700; color: #2C3E50;">RM <%= String.format("%.2f", (Double) budget.get("budgetAmount")) %></td>
+                                <td style="font-weight: 700; color: var(--title-color);">RM <%= String.format("%.2f", (Double) budget.get("budgetAmount")) %></td>
                                 <td><%= budget.get("budgetDesc") != null ? budget.get("budgetDesc") : "-" %></td>
                                 <td>
                                     <% if ("Parent".equals(userRole) || "Student_Counsellor".equals(userRole)) { %>
@@ -529,18 +529,18 @@
                                             <input type="hidden" name="id" value="<%= budget.get("budgetID") %>">
                                             <input type="hidden" name="studentID" value="<%= trackingStudentID %>">
                                             <input type="hidden" name="month" value="<%= reportMonth %>">
-                                            <input type="text" name="comment" value="<%= budComment != null ? budComment : "" %>" placeholder="Comment..." style="padding: 6px 10px; border: 1px solid #E0D5C7; border-radius: 4px; font-size: 13px; font-family: inherit; width: 180px;">
+                                            <input type="text" name="comment" value="<%= budComment != null ? budComment : "" %>" placeholder="Comment..." style="padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; font-family: inherit; width: 180px;">
                                             <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; text-transform: none; border-radius: 4px; height: auto;">Save</button>
                                         </form>
                                     <% } else { %>
                                         <%
                                             StringBuilder studentComment = new StringBuilder();
                                             if (parentComment != null && !parentComment.trim().isEmpty()) {
-                                                studentComment.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                                studentComment.append("<strong style='color: var(--primary-color);'>Parent:</strong> ").append(parentComment);
                                             }
                                             if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
                                                 if (studentComment.length() > 0) studentComment.append("<br>");
-                                                studentComment.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                                studentComment.append("<strong style='color: var(--primary-hover);'>Counsellor:</strong> ").append(counsellorComment);
                                             }
                                             if (studentComment.length() == 0) {
                                                 studentComment.append("-");
@@ -569,7 +569,7 @@
                     datasets: [{
                         label: 'Amount (RM)',
                         data: [<%= totalBudget %>, <%= totalExpense %>],
-                        backgroundColor: ['#6B46C1', '#8B5CF6'],
+                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)'],
                         borderRadius: 8,
                         borderWidth: 0,
                         barThickness: 50
@@ -601,7 +601,7 @@
                     labels: <%= categoryJson %>,
                     datasets: [{
                         data: <%= amountJson %>,
-                        backgroundColor: ['#6B46C1', '#8B5CF6', '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', '#E0D5C7'],
+                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)', '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', 'var(--border-color)'],
                         borderWidth: 1,
                         borderColor: '#ffffff'
                     }]
@@ -628,7 +628,7 @@
             top: -100px;
             left: 50%;
             transform: translateX(-50%);
-            background: #6B46C1;
+            background: var(--primary-color);
             color: white;
             padding: 14px 28px;
             border-radius: 50px;
@@ -641,7 +641,7 @@
             gap: 10px;
             font-weight: 600;
             font-size: 15px;
-            border: 1px solid #8B5CF6;
+            border: 1px solid var(--primary-hover);
         }
         .toast-notification.show {
             top: 30px;

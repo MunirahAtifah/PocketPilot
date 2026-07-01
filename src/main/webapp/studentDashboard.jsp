@@ -135,7 +135,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -160,14 +160,14 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
             justify-content: center;
         }
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -176,17 +176,17 @@
             border-radius: 6px;
         }
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
             border-bottom: none;
         }
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -196,7 +196,7 @@
             box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
         }
@@ -214,20 +214,20 @@
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             max-width: fit-content;
         }
         .month-selector label {
             margin-bottom: 0;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 15px;
         }
         .month-selector select {
             padding: 8px 16px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
@@ -235,7 +235,7 @@
             transition: all 0.3s;
         }
         .month-selector select:focus {
-            border-color: #8B5CF6;
+            border-color: var(--primary-hover);
         }
         .stats-grid {
             display: grid;
@@ -248,7 +248,7 @@
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #6B46C1;
+            border-left: 5px solid var(--primary-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -266,13 +266,13 @@
             letter-spacing: 0.5px;
         }
         .stat-card .amount {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             font-weight: 800;
         }
         .ai-guidance {
             background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
-            border-left: 5px solid #8B5CF6;
+            border-left: 5px solid var(--primary-hover);
             padding: 20px 25px;
             border-radius: 15px;
             margin-bottom: 35px;
@@ -280,7 +280,7 @@
             animation: fadeIn 0.5s ease-in-out;
         }
         .ai-guidance h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 8px;
             font-size: 18px;
             font-weight: 700;
@@ -306,10 +306,10 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
         }
         .chart-container h2 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -358,7 +358,7 @@
         
         <!-- Notification Center Card -->
         <% if (!unreadNotifications.isEmpty()) { %>
-        <div class="notification-center" id="notificationCenter" style="margin-bottom: 30px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #E0D5C7; border-left: 5px solid #FF9F43; transition: all 0.3s ease;">
+        <div class="notification-center" id="notificationCenter" style="margin-bottom: 30px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); border-left: 5px solid #FF9F43; transition: all 0.3s ease;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #FFF3E0; padding-bottom: 10px;">
                 <h3 style="color: #D35400; margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
                     Notification Center (<span id="notifCount"><%= unreadNotifications.size() %></span>)
@@ -369,7 +369,7 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;" id="notificationsList">
                 <% for (Notification notif : unreadNotifications) { %>
-                    <div class="notif-item" id="notif-<%= notif.getNotificationID() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #FFFBF0; border-radius: 8px; border: 1px solid #FFE8CC; transition: all 0.3s;">
+                    <div class="notif-item" id="notif-<%= notif.getNotificationID() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: var(--nav-link-hover-bg); border-radius: 8px; border: 1px solid #FFE8CC; transition: all 0.3s;">
                         <span style="font-size: 14px; color: #5D4037; font-weight: 500;"><%= notif.getMessage() %></span>
                         <button onclick="markAsRead(<%= notif.getNotificationID() %>)" style="background: rgba(230, 126, 34, 0.1); border: none; color: #E67E22; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(230,126,34,0.2)'" onmouseout="this.style.background='rgba(230,126,34,0.1)'">
                             Dismiss
@@ -463,7 +463,7 @@
                     datasets: [{
                         label: 'Amount (RM)',
                         data: [<%= totalBudget %>, <%= totalExpense %>],
-                        backgroundColor: ['#6B46C1', '#8B5CF6'],
+                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)'],
                         borderRadius: 8,
                         borderWidth: 0,
                         barThickness: 50
@@ -519,7 +519,7 @@
                                 }
                             %>
                         ],
-                        backgroundColor: ['#6B46C1', '#8B5CF6', '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', '#E0D5C7'],
+                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)', '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', 'var(--border-color)'],
                         borderWidth: 1,
                         borderColor: '#ffffff'
                     }]

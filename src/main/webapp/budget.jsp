@@ -96,12 +96,12 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FDFBF7 0%, #F5F1E8 100%);
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--body-bg) 100%);
             min-height: 100vh;
         }
         
         .header {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -129,7 +129,7 @@
             padding: 15px 20px;
             display: flex;
             gap: 20px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -138,7 +138,7 @@
         }
         
         .navbar a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
@@ -148,19 +148,19 @@
         }
         
         .navbar a:hover {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.1);
         }
         
         .navbar a.active {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             background: rgba(139, 92, 246, 0.15);
             border-bottom: none;
         }
         
         .logout-btn {
             margin-left: auto;
-            background: #8B5CF6 !important;
+            background: var(--primary-hover) !important;
             color: white !important;
             padding: 8px 15px;
             border-radius: 6px;
@@ -171,7 +171,7 @@
         }
         
         .logout-btn:hover {
-            background: #6B46C1 !important;
+            background: var(--primary-color) !important;
             color: white !important;
             box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
             transform: translateY(-1px);
@@ -195,7 +195,7 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             box-shadow: 0 2px 8px rgba(107, 70, 193, 0.3);
         }
@@ -206,8 +206,8 @@
         }
         
         .btn-secondary {
-            background: #E0D5C7;
-            color: #6B46C1;
+            background: var(--border-color);
+            color: var(--primary-color);
         }
         
         .btn-secondary:hover {
@@ -229,7 +229,7 @@
             padding: 25px;
             margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0D5C7;
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
         
@@ -239,7 +239,7 @@
         }
         
         .card h3 {
-            color: #6B46C1;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
@@ -253,7 +253,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 5px;
             font-size: 13px;
@@ -264,7 +264,7 @@
         .form-group textarea {
             width: 100%;
             padding: 10px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 6px;
             font-size: 13px;
             font-family: inherit;
@@ -274,8 +274,8 @@
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--nav-link-hover-bg);
         }
         
         .form-row {
@@ -297,12 +297,12 @@
         }
         
         .table thead {
-            background: #F5F1E8;
-            border-bottom: 2px solid #6B46C1;
+            background: var(--body-bg);
+            border-bottom: 2px solid var(--primary-color);
         }
         
         .table th {
-            color: #6B46C1;
+            color: var(--primary-color);
             padding: 14px;
             text-align: left;
             font-weight: 700;
@@ -311,13 +311,13 @@
         
         .table td {
             padding: 14px;
-            border-bottom: 1px solid #E0D5C7;
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
-            color: #2C3E50;
+            color: var(--title-color);
         }
         
         .table tbody tr:hover {
-            background: #FFFBF0;
+            background: var(--nav-link-hover-bg);
         }
         
         .action-buttons {
@@ -336,7 +336,7 @@
         }
         
         .edit-btn {
-            background: #8B5CF6;
+            background: var(--primary-hover);
             color: white;
         }
         
@@ -357,7 +357,7 @@
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #6B46C1;
+            border-left: 5px solid var(--primary-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -378,7 +378,7 @@
         }
         
         .stat-card .amount {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             font-weight: 800;
         }
@@ -398,10 +398,10 @@
 
     <div class="container">
         <!-- Month Selector Form -->
-        <div class="month-selector" style="margin-bottom: 25px; background: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid #E0D5C7; max-width: fit-content;">
+        <div class="month-selector" style="margin-bottom: 25px; background: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: fit-content;">
             <form method="GET" action="budget.jsp">
-                <label for="monthInput" style="color: #6B46C1; font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
-                <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid #E0D5C7; border-radius: 6px; color: #6B46C1; font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: #FDFBF7;">
+                <label for="monthInput" style="color: var(--primary-color); font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
+                <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid var(--border-color); border-radius: 6px; color: var(--primary-color); font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: var(--card-bg);">
             </form>
         </div>
         <!-- Alerts for Success/Error feedback -->
@@ -477,8 +477,8 @@
                             oninput="suggestCategory()"
                         >
                         <div id="aiSuggestion" style="margin-top: 10px; padding: 10px; background: #E9D5FF; border-radius: 5px; display: none;">
-                            <span style="color: #6B46C1; font-weight: 600;">AI Suggestion:</span>
-                            <span id="suggestionText" style="color: #6B46C1;"></span>
+                            <span style="color: var(--primary-color); font-weight: 600;">AI Suggestion:</span>
+                            <span id="suggestionText" style="color: var(--primary-color);"></span>
                         </div>
                     </div>
                 </div>
@@ -540,11 +540,11 @@
                                          String counsellorComment = (String) b.get("counsellorComment");
                                          StringBuilder commentStr = new StringBuilder();
                                          if (parentComment != null && !parentComment.trim().isEmpty()) {
-                                             commentStr.append("<strong style='color: #6B46C1;'>Parent:</strong> ").append(parentComment);
+                                             commentStr.append("<strong style='color: var(--primary-color);'>Parent:</strong> ").append(parentComment);
                                          }
                                          if (counsellorComment != null && !counsellorComment.trim().isEmpty()) {
                                              if (commentStr.length() > 0) commentStr.append("<br>");
-                                             commentStr.append("<strong style='color: #8B5CF6;'>Counsellor:</strong> ").append(counsellorComment);
+                                             commentStr.append("<strong style='color: var(--primary-hover);'>Counsellor:</strong> ").append(counsellorComment);
                                          }
                                          if (commentStr.length() == 0) {
                                              commentStr.append("-");
