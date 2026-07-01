@@ -7,103 +7,103 @@
 
   /* Fonts */
   --font-body: 'Outfit', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
 
-  /* Theme variables - Light Mode (Default Portfolio Style) */
-  --bg-primary: hsl(270, 25%, 97%);
+  /* Theme variables - Light Mode (Default PocketPilot Style) */
+  --bg-primary: #FDFBF7;
   --bg-secondary: #ffffff;
-  --bg-alt: hsl(270, 25%, 94%);
+  --bg-alt: #F5F1E8;
   
-  --accent: #7b2cbf;
-  --accent-light: #9d4edd;
-  --accent-dark: #5a189a;
-  --accent-glow: rgba(123, 44, 191, 0.2);
-  --accent-gradient: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 50%, #5a189a 100%);
-  --text-gradient: linear-gradient(135deg, #5a189a 0%, #7b2cbf 60%, #9d4edd 100%);
+  --accent: #6B46C1;
+  --accent-light: #8B5CF6;
+  --accent-dark: #553C9A;
+  --accent-glow: rgba(107, 70, 193, 0.25);
+  --accent-gradient: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+  --text-gradient: linear-gradient(135deg, #553C9A 0%, #6B46C1 60%, #8B5CF6 100%);
   
-  --text-primary: #241435;
-  --text-secondary: #4a3465;
-  --text-muted: #6b5588;
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --text-muted: #777777;
   
-  --border-color: rgba(123, 44, 191, 0.1);
-  --border-hover: rgba(123, 44, 191, 0.3);
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(123, 44, 191, 0.12);
+  --border-color: #E0D5C7;
+  --border-hover: #C5B59F;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: #E0D5C7;
   
-  --shadow-sm: 0 4px 12px rgba(123, 44, 191, 0.05);
-  --shadow-md: 0 10px 25px rgba(123, 44, 191, 0.08);
-  --shadow-lg: 0 20px 40px rgba(123, 44, 191, 0.12);
-  --card-glow: 0 8px 30px rgba(123, 44, 191, 0.05);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 25px rgba(107, 70, 193, 0.15);
+  --shadow-lg: 0 20px 40px rgba(107, 70, 193, 0.2);
+  --card-glow: 0 8px 30px rgba(107, 70, 193, 0.05);
   
-  --scrollbar-track: hsl(270, 25%, 92%);
-  --scrollbar-thumb: hsl(270, 20%, 80%);
-  --scrollbar-thumb-hover: hsl(270, 20%, 70%);
+  --scrollbar-track: #F5F1E8;
+  --scrollbar-thumb: #C5B59F;
+  --scrollbar-thumb-hover: #A8957E;
 
   /* Backwards compatibility bindings for form/layout selectors */
   --primary-color: var(--accent);
   --primary-hover: var(--accent-light);
-  --body-bg-gradient: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-  --body-bg: var(--bg-primary);
+  --body-bg-gradient: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-alt) 100%);
+  --body-bg: var(--bg-alt);
   --text-color: var(--text-primary);
-  --title-color: var(--text-primary);
+  --title-color: #2c3e50;
   --card-bg: var(--bg-secondary);
   --card-shadow: var(--shadow-sm);
   --navbar-bg: var(--glass-bg);
   --navbar-text: var(--accent);
   --navbar-border: var(--glass-border);
-  --nav-link-hover-bg: var(--bg-alt);
+  --nav-link-hover-bg: #FFFBF0;
   --input-bg: var(--bg-secondary);
   --input-border: var(--border-color);
   --input-text: var(--text-primary);
   --header-bg-gradient: var(--accent-gradient);
   --header-shadow: var(--shadow-md);
-  --header-muted: var(--text-secondary);
+  --header-muted: #E9D5FF;
 }
 
 [data-theme="dark"] {
-  /* Theme variables - Dark Mode Portfolio Style */
-  --bg-primary: hsl(270, 35%, 7%);
-  --bg-secondary: hsl(270, 30%, 11%);
-  --bg-alt: hsl(270, 30%, 9%);
+  /* Theme variables - Dark Mode PocketPilot Style */
+  --bg-primary: #181524;
+  --bg-secondary: #1E1B29;
+  --bg-alt: #0F0D16;
   
-  --accent: #9d4edd;
-  --accent-light: #c77dff;
-  --accent-dark: #7b2cbf;
-  --accent-glow: rgba(157, 78, 221, 0.4);
-  --accent-gradient: linear-gradient(135deg, #c77dff 0%, #9d4edd 50%, #7b2cbf 100%);
-  --text-gradient: linear-gradient(135deg, #e0aaff 0%, #c77dff 50%, #9d4edd 100%);
+  --accent: #C0A9F5;
+  --accent-light: #D6BCFA;
+  --accent-dark: #6B46C1;
+  --accent-glow: rgba(192, 169, 245, 0.3);
+  --accent-gradient: linear-gradient(135deg, #2D1B4E 0%, #442B75 100%);
+  --text-gradient: linear-gradient(135deg, #C0A9F5 0%, #D6BCFA 50%, #FFFFFF 100%);
   
-  --text-primary: #f3e8ff;
-  --text-secondary: #c8b6ff;
-  --text-muted: #9b8bb8;
+  --text-primary: #F3F0FC;
+  --text-secondary: #E2DDF0;
+  --text-muted: #A0AEC0;
   
-  --border-color: rgba(157, 78, 221, 0.15);
-  --border-hover: rgba(157, 78, 221, 0.4);
-  --glass-bg: rgba(22, 12, 34, 0.7);
-  --glass-border: rgba(157, 78, 221, 0.15);
+  --border-color: #3D3552;
+  --border-hover: #4D4266;
+  --glass-bg: rgba(30, 27, 41, 0.9);
+  --glass-border: #3D3552;
   
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
-  --card-glow: 0 0 25px rgba(157, 78, 221, 0.12);
+  --card-glow: 0 0 25px rgba(192, 169, 245, 0.1);
   
-  --scrollbar-track: hsl(270, 30%, 5%);
-  --scrollbar-thumb: hsl(270, 30%, 18%);
-  --scrollbar-thumb-hover: hsl(270, 30%, 30%);
+  --scrollbar-track: #0F0D16;
+  --scrollbar-thumb: #3D3552;
+  --scrollbar-thumb-hover: #4D4266;
 
   /* Backwards compatibility bindings for form/layout selectors */
   --primary-color: var(--accent);
   --primary-hover: var(--accent-light);
-  --body-bg-gradient: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-  --body-bg: var(--bg-primary);
+  --body-bg-gradient: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-alt) 100%);
+  --body-bg: var(--bg-alt);
   --text-color: var(--text-primary);
-  --title-color: var(--text-primary);
+  --title-color: #FFFFFF;
   --card-bg: var(--bg-secondary);
   --card-shadow: var(--shadow-sm);
   --navbar-bg: var(--glass-bg);
   --navbar-text: var(--accent);
   --navbar-border: var(--glass-border);
-  --nav-link-hover-bg: var(--bg-alt);
+  --nav-link-hover-bg: #282436;
   --input-bg: var(--bg-secondary);
   --input-border: var(--border-color);
   --input-text: var(--text-primary);
