@@ -167,7 +167,8 @@
             right: 15px;
             cursor: pointer;
             color: #6B46C1;
-            font-size: 18px;
+            font-size: 12px;
+            font-weight: 600;
             user-select: none;
             z-index: 10;
         }
@@ -292,7 +293,7 @@
                         placeholder="Enter your password"
                         required
                     >
-                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)" style="font-size: 12px; font-weight: 600;">Show</span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">Show</span>
                 </div>
             </div>
             

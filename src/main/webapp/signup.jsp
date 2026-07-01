@@ -166,7 +166,8 @@
             right: 15px;
             cursor: pointer;
             color: #6B46C1;
-            font-size: 18px;
+            font-size: 12px;
+            font-weight: 600;
             user-select: none;
             z-index: 10;
         }
