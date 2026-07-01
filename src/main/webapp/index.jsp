@@ -8,6 +8,7 @@
     
     <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     
     <style>
         /* CSS Reset & Variables */
@@ -20,19 +21,18 @@
         :root {
             --primary: var(--primary-color);
             --primary-light: var(--primary-hover);
-            --accent: #FF7A00;
-            --dark: #1A0B2E;
-            --bg-gradient: radial-gradient(circle at 0% 0%, #F8F5FF 0%, #FFFDF9 70%, var(--body-bg) 100%);
-            --card-border: 1px solid rgba(224, 213, 199, 0.45);
-            --shadow: 0 10px 30px rgba(107, 70, 193, 0.08);
+            --accent: var(--accent-light);
+            --dark: var(--text-primary);
+            --bg-gradient: var(--bg-primary);
+            --card-border: 1px solid var(--border-color);
+            --shadow: var(--shadow-sm);
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--dark);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -68,7 +68,7 @@
         .logo-text {
             font-size: 24px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -94,7 +94,7 @@
 
         .btn-nav-signup {
             text-decoration: none;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             color: white;
             padding: 10px 24px;
             border-radius: 30px;
@@ -139,7 +139,7 @@
         }
 
         .hero-content h1 span {
-            background: linear-gradient(135deg, var(--primary) 0%, #C084FC 100%);
+            background: var(--primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -160,7 +160,7 @@
 
         .btn-primary {
             text-decoration: none;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             color: white;
             padding: 16px 38px;
             border-radius: 50px;
@@ -222,7 +222,7 @@
         }
 
         .mock-card {
-            background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 100%);
+            background: var(--primary-color);
             color: white;
             padding: 20px;
             border-radius: 16px;
@@ -304,7 +304,7 @@
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             border-radius: 10px;
             transition: width 1s ease-out;
         }
@@ -546,7 +546,7 @@
         }
 
         footer .logo-text {
-            background: linear-gradient(135deg, #A855F7 0%, #D8B4FE 100%);
+            background: var(--primary-hover);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 22px;

@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--card-bg) 0%, var(--body-bg) 100%);
+            background: var(--card-bg);
             min-height: 100vh;
         }
 

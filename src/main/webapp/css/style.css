@@ -10,16 +10,16 @@
   --font-heading: 'Space Grotesk', sans-serif;
 
   /* Theme variables - Dark Mode Portfolio Style (Default) */
-  --bg-primary: hsl(270, 35%, 7%);
-  --bg-secondary: hsl(270, 30%, 11%);
-  --bg-alt: hsl(270, 30%, 9%);
+  --bg-primary: #0c0714;
+  --bg-secondary: #160f24;
+  --bg-alt: #100a1c;
   
   --accent: #9d4edd;
   --accent-light: #c77dff;
   --accent-dark: #7b2cbf;
-  --accent-glow: rgba(157, 78, 221, 0.4);
-  --accent-gradient: linear-gradient(135deg, #c77dff 0%, #9d4edd 50%, #7b2cbf 100%);
-  --text-gradient: linear-gradient(135deg, #e0aaff 0%, #c77dff 50%, #9d4edd 100%);
+  --accent-glow: rgba(157, 78, 221, 0.2);
+  --accent-gradient: #9d4edd;
+  --text-gradient: #f3e8ff;
   
   --text-primary: #f3e8ff;
   --text-secondary: #c8b6ff;
@@ -27,7 +27,7 @@
   
   --border-color: rgba(157, 78, 221, 0.15);
   --border-hover: rgba(157, 78, 221, 0.4);
-  --glass-bg: rgba(22, 12, 34, 0.7);
+  --glass-bg: rgba(22, 12, 34, 0.75);
   --glass-border: rgba(157, 78, 221, 0.15);
   
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -35,14 +35,14 @@
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
   --card-glow: 0 0 25px rgba(157, 78, 221, 0.12);
   
-  --scrollbar-track: hsl(270, 30%, 5%);
-  --scrollbar-thumb: hsl(270, 30%, 18%);
-  --scrollbar-thumb-hover: hsl(270, 30%, 30%);
+  --scrollbar-track: #100a1c;
+  --scrollbar-thumb: #160f24;
+  --scrollbar-thumb-hover: #1e1430;
 
   /* Backwards compatibility bindings for form/layout selectors */
   --primary-color: var(--accent);
   --primary-hover: var(--accent-light);
-  --body-bg-gradient: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  --body-bg-gradient: var(--bg-primary);
   --body-bg: var(--bg-primary);
   --text-color: var(--text-primary);
   --title-color: var(--text-primary);
@@ -55,23 +55,23 @@
   --input-bg: var(--bg-secondary);
   --input-border: var(--border-color);
   --input-text: var(--text-primary);
-  --header-bg-gradient: var(--accent-gradient);
+  --header-bg-gradient: var(--accent);
   --header-shadow: var(--shadow-md);
   --header-muted: var(--text-secondary);
 }
 
 .light-theme {
   /* Theme variables - Light Mode Portfolio Style */
-  --bg-primary: hsl(270, 25%, 97%);
+  --bg-primary: #faf8fc;
   --bg-secondary: #ffffff;
-  --bg-alt: hsl(270, 25%, 94%);
+  --bg-alt: #f1ecf6;
   
   --accent: #7b2cbf;
   --accent-light: #9d4edd;
   --accent-dark: #5a189a;
-  --accent-glow: rgba(123, 44, 191, 0.2);
-  --accent-gradient: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 50%, #5a189a 100%);
-  --text-gradient: linear-gradient(135deg, #5a189a 0%, #7b2cbf 60%, #9d4edd 100%);
+  --accent-glow: rgba(123, 44, 191, 0.12);
+  --accent-gradient: #7b2cbf;
+  --text-gradient: #241435;
   
   --text-primary: #241435;
   --text-secondary: #4a3465;
@@ -79,22 +79,22 @@
   
   --border-color: rgba(123, 44, 191, 0.1);
   --border-hover: rgba(123, 44, 191, 0.3);
-  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(123, 44, 191, 0.12);
   
-  --shadow-sm: 0 4px 12px rgba(123, 44, 191, 0.05);
+  --shadow-sm: 0 4px 12px rgba(123, 44, 191, 0.04);
   --shadow-md: 0 10px 25px rgba(123, 44, 191, 0.08);
   --shadow-lg: 0 20px 40px rgba(123, 44, 191, 0.12);
   --card-glow: 0 8px 30px rgba(123, 44, 191, 0.05);
   
-  --scrollbar-track: hsl(270, 25%, 92%);
-  --scrollbar-thumb: hsl(270, 20%, 80%);
-  --scrollbar-thumb-hover: hsl(270, 20%, 70%);
+  --scrollbar-track: #f1ecf6;
+  --scrollbar-thumb: #e5dcf0;
+  --scrollbar-thumb-hover: #d2c2e5;
 
   /* Backwards compatibility bindings for form/layout selectors */
   --primary-color: var(--accent);
   --primary-hover: var(--accent-light);
-  --body-bg-gradient: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  --body-bg-gradient: var(--bg-primary);
   --body-bg: var(--bg-primary);
   --text-color: var(--text-primary);
   --title-color: var(--text-primary);
@@ -107,7 +107,7 @@
   --input-bg: var(--bg-secondary);
   --input-border: var(--border-color);
   --input-text: var(--text-primary);
-  --header-bg-gradient: var(--accent-gradient);
+  --header-bg-gradient: var(--accent);
   --header-shadow: var(--shadow-md);
   --header-muted: var(--text-secondary);
 }
@@ -175,7 +175,7 @@ a:hover {
    ============================================================================ */
 
 nav {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
   padding: 1rem 0;
   position: sticky;
   top: 0;
@@ -542,7 +542,7 @@ input[type="button"] {
 .btn-primary,
 button[type="submit"],
 input[type="submit"] {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
   color: white;
 }
 
@@ -561,7 +561,7 @@ input[type="submit"]:active {
 
 /* Secondary Button */
 .btn-secondary {
-  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  background: #95a5a6;
   color: white;
 }
 
@@ -572,7 +572,7 @@ input[type="submit"]:active {
 
 /* Success Button */
 .btn-success {
-  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  background: #27ae60;
   color: white;
 }
 
@@ -583,7 +583,7 @@ input[type="submit"]:active {
 
 /* Danger Button */
 .btn-danger {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: #e74c3c;
   color: white;
 }
 
@@ -929,7 +929,7 @@ tbody tr:nth-child(even):hover {
    ============================================================================ */
 
 footer {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
   color: #ecf0f1;
   padding: 2rem 0;
   text-align: center;

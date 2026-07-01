@@ -66,7 +66,7 @@
         h1 {
             font-size: 28px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
@@ -80,7 +80,7 @@
         .btn {
             display: inline-block;
             text-decoration: none;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             color: white;
             padding: 12px 30px;
             border-radius: 50px;

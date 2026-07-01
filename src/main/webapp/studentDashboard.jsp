@@ -271,7 +271,7 @@
             font-weight: 800;
         }
         .ai-guidance {
-            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+            background: var(--bg-alt);
             border-left: 5px solid var(--primary-hover);
             padding: 20px 25px;
             border-radius: 15px;
