@@ -146,7 +146,7 @@
 
         .hero-content p {
             font-size: 1.25rem;
-            color: #5D5470;
+            color: var(--text-secondary);
             margin-bottom: 35px;
             max-width: 550px;
             font-weight: 400;
@@ -203,7 +203,7 @@
         }
 
         .mock-dashboard {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: var(--card-border);
             border-radius: 24px;
@@ -296,7 +296,7 @@
         .progress-bar-container {
             width: 100%;
             height: 8px;
-            background: #F3E8FF;
+            background: var(--bg-alt);
             border-radius: 10px;
             margin-bottom: 10px;
             overflow: hidden;
@@ -314,11 +314,11 @@
             justify-content: space-between;
             font-size: 11px;
             font-weight: 600;
-            color: #5D5470;
+            color: var(--text-secondary);
         }
 
         .mock-ai-bubble {
-            background: #F3E8FF;
+            background: var(--bg-alt);
             border-left: 4px solid var(--primary-light);
             border-radius: 10px;
             padding: 12px;
@@ -386,13 +386,13 @@
         }
 
         .simulator-content p {
-            color: #6C5F80;
+            color: var(--text-secondary);
             font-size: 16px;
             margin-bottom: 30px;
         }
 
         .simulator-card {
-            background: #FAF8F5;
+            background: var(--bg-alt);
             border-radius: 20px;
             border: var(--card-border);
             padding: 30px;
@@ -415,7 +415,7 @@
             -webkit-appearance: none;
             height: 8px;
             border-radius: 5px;
-            background: #EAE3D9;
+            background: var(--border-color);
             outline: none;
             cursor: pointer;
         }
@@ -456,7 +456,7 @@
         }
 
         .sim-ai-text {
-            color: #4A3E56;
+            color: var(--text-primary);
             font-size: 14px;
             font-style: italic;
         }
@@ -510,16 +510,11 @@
         }
 
         .feature-icon-wrapper {
-            width: 60px;
-            height: 60px;
-            background: #F3E8FF;
-            border-radius: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-size: 26px;
+            font-weight: 800;
             margin-bottom: 20px;
             color: var(--primary);
+            display: inline-block;
         }
 
         .feature-card h3 {
@@ -530,14 +525,14 @@
         }
 
         .feature-card p {
-            color: #6C5F80;
+            color: var(--text-secondary);
             font-size: 14px;
             line-height: 1.6;
         }
 
         /* Footer */
         footer {
-            background: var(--dark);
+            background: #100a1c;
             color: #A09BAB;
             padding: 50px 8%;
             text-align: center;
