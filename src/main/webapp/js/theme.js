@@ -1,8 +1,8 @@
 // PocketPilot Theme Selector & Loader Script
 (function () {
     // 1. Immediately apply the saved theme to prevent white flash
-    const savedTheme = localStorage.getItem('pocketpilot-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const savedTheme = localStorage.getItem('pocketpilot-theme') || 'dark'; // Dark theme is default
+    document.documentElement.className = savedTheme + '-theme';
 
     // 2. Append the floating theme switch once the DOM is fully parsed
     document.addEventListener('DOMContentLoaded', function () {
@@ -10,7 +10,7 @@
         toggleBtn.className = 'theme-float-toggle';
         toggleBtn.id = 'themeFloatToggle';
         toggleBtn.setAttribute('aria-label', 'Toggle light/dark theme');
-        toggleBtn.textContent = savedTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        toggleBtn.textContent = savedTheme === 'light' ? 'Dark Mode' : 'Light Mode';
 
         // Add styling for the floating capsule button dynamically
         const style = document.createElement('style');
@@ -21,9 +21,9 @@
                 right: 25px;
                 padding: 10px 18px;
                 border-radius: 30px;
-                background: var(--primary-color, #6B46C1);
+                background: var(--accent, #9d4edd);
                 color: #ffffff;
-                border: 1px solid var(--border-color, #E0D5C7);
+                border: 1px solid var(--border-color);
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
                 cursor: pointer;
                 font-size: 13px;
@@ -34,7 +34,7 @@
             }
             .theme-float-toggle:hover {
                 transform: scale(1.05);
-                background: var(--primary-hover, #8B5CF6);
+                background: var(--accent-light, #c77dff);
             }
             .theme-float-toggle:active {
                 transform: scale(0.95);
@@ -45,12 +45,12 @@
 
         // 3. Toggle button event click handler
         toggleBtn.addEventListener('click', function () {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            const newTheme = isDark ? 'light' : 'dark';
             
-            document.documentElement.setAttribute('data-theme', newTheme);
+            document.documentElement.className = newTheme + '-theme';
             localStorage.setItem('pocketpilot-theme', newTheme);
-            toggleBtn.textContent = newTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            toggleBtn.textContent = newTheme === 'light' ? 'Dark Mode' : 'Light Mode';
         });
     });
 })();
