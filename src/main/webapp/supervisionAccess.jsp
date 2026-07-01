@@ -105,7 +105,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supervision Management - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.1">
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
     <style>
         .header {
             background: var(--header-bg-gradient);
@@ -616,6 +616,6 @@
         }
     </script>
 
-<script src="js/theme.js?v=1.0.1"></script>
+<script src="js/theme.js?v=1.0.2"></script>
 </body>
 </html>

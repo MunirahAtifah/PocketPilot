@@ -8,7 +8,7 @@
     
     <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=1.0.1">
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
     
     <style>
         /* CSS Reset & Variables */
@@ -756,6 +756,6 @@
         }
     </script>
 
-<script src="js/theme.js?v=1.0.1"></script>
+<script src="js/theme.js?v=1.0.2"></script>
 </body>
 </html>

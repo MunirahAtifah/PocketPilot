@@ -1179,3 +1179,12 @@ footer a:hover {
 /* ============================================================================
    END OF STYLESHEET
    ============================================================================ */
+
+/* Invert calendar picker indicator colors in dark mode */
+.dark-theme input[type="date"]::-webkit-calendar-picker-indicator,
+.dark-theme input[type="month"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] input[type="month"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}

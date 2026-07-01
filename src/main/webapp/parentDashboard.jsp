@@ -230,7 +230,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Dashboard - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.1">
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .header {
@@ -606,6 +606,9 @@
         
         // Render Charts using dynamically loaded DB values
         window.addEventListener('DOMContentLoaded', () => {
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#9d4edd';
+            const primaryHover = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim() || '#c77dff';
+            const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || 'rgba(157, 78, 221, 0.15)';
             <% if (activeStudentID > 0) { %>
                 // 1. Budget vs Expense Bar Chart
                 const budgetCtx = document.getElementById('budgetChart').getContext('2d');
@@ -616,7 +619,7 @@
                         datasets: [{
                             label: 'Amount (RM)',
                             data: [<%= totalBudget %>,  <%= totalExpense %>],
-                            backgroundColor: ['var(--primary-color)', 'var(--primary-hover)'],
+                            backgroundColor: [primaryColor, primaryHover],
                             borderRadius: 8,
                             barThickness: 50
                         }]
@@ -650,11 +653,11 @@
                                 <%= weeklyExpenses[3] %>,
                                 <%= weeklyExpenses[4] %>
                             ],
-                            borderColor: 'var(--primary-color)',
+                            borderColor: primaryColor,
                             backgroundColor: 'rgba(107, 70, 193, 0.1)',
                             tension: 0.4,
                             fill: true,
-                            pointBackgroundColor: 'var(--primary-color)',
+                            pointBackgroundColor: primaryColor,
                             pointRadius: 5
                         }]
                     },
@@ -675,6 +678,6 @@
         });
     </script>
 
-<script src="js/theme.js?v=1.0.1"></script>
+<script src="js/theme.js?v=1.0.2"></script>
 </body>
 </html>

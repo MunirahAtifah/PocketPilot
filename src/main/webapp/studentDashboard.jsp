@@ -131,7 +131,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.1">
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .header {
@@ -454,6 +454,9 @@
         
         // Render Charts using dynamically loaded DB values
         window.addEventListener('DOMContentLoaded', () => {
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#9d4edd';
+            const primaryHover = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim() || '#c77dff';
+            const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || 'rgba(157, 78, 221, 0.15)';
             // 1. Budget vs Expense Bar Chart
             const budgetCtx = document.getElementById('budgetChart').getContext('2d');
             new Chart(budgetCtx, {
@@ -463,7 +466,7 @@
                     datasets: [{
                         label: 'Amount (RM)',
                         data: [<%= totalBudget %>, <%= totalExpense %>],
-                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)'],
+                        backgroundColor: [primaryColor, primaryHover],
                         borderRadius: 8,
                         borderWidth: 0,
                         barThickness: 50
@@ -519,7 +522,7 @@
                                 }
                             %>
                         ],
-                        backgroundColor: ['var(--primary-color)', 'var(--primary-hover)', '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', 'var(--border-color)'],
+                        backgroundColor: [primaryColor, primaryHover, '#C084FC', '#D8B4FE', '#E9D5FF', '#F3E8FF', '#C084FC', borderColor],
                         borderWidth: 1,
                         borderColor: '#ffffff'
                     }]
@@ -592,6 +595,6 @@
         }
     </script>
 
-<script src="js/theme.js?v=1.0.1"></script>
+<script src="js/theme.js?v=1.0.2"></script>
 </body>
 </html>
