@@ -39,6 +39,16 @@
             .theme-float-toggle:active {
                 transform: scale(0.95);
             }
+            @media (max-width: 768px) {
+                .theme-float-toggle {
+                    bottom: 12px;
+                    right: 12px;
+                    padding: 6px 12px;
+                    font-size: 11px;
+                    border-radius: 20px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                }
+            }
         `;
         document.head.appendChild(style);
         document.body.appendChild(toggleBtn);
