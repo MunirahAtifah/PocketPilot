@@ -575,5 +575,7 @@
             .catch(error => console.error('Error mark all read:', error));
         }
     </script>
+
+<script src="js/theme.js"></script>
 </body>
 </html>

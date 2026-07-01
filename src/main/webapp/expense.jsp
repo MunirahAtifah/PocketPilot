@@ -692,5 +692,7 @@
             document.getElementById('cancelEditBtn').style.display = 'none';
         }
     </script>
+
+<script src="js/theme.js"></script>
 </body>
 </html>

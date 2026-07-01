@@ -116,5 +116,7 @@
             <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
+
+<script src="js/theme.js"></script>
 </body>
 </html>

@@ -583,5 +583,7 @@
             window.location.href = 'TrackingProgressServlet?studentID=' + studentID;
         }
     </script>
+
+<script src="js/theme.js"></script>
 </body>
 </html>
