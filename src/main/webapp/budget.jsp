@@ -86,7 +86,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Budget Management - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.0.1">
     <style>
         * {
             margin: 0;
@@ -651,6 +651,6 @@
         }
     </script>
 
-<script src="js/theme.js"></script>
+<script src="js/theme.js?v=1.0.1"></script>
 </body>
 </html>

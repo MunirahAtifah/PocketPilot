@@ -101,6 +101,6 @@
         session.invalidate();
     %>
 
-<script src="js/theme.js"></script>
+<script src="js/theme.js?v=1.0.1"></script>
 </body>
 </html>
