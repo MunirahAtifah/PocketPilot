@@ -119,16 +119,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Management - PocketPilot</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FDFBF7 0%, #F5F1E8 100%);
+            min-height: 100vh;
+        }
+        
         .header {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.25);
         }
         
         .header h1 {
@@ -144,6 +155,161 @@
             font-weight: 500;
         }
         
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #E0D5C7;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .navbar a {
+            color: #6B46C1;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        
+        .navbar a:hover {
+            color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .navbar a.active {
+            color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.15);
+            border-bottom: none;
+        }
+        
+        .logout-btn {
+            margin-left: auto;
+            background: #8B5CF6 !important;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+        
+        .logout-btn:hover {
+            background: #6B46C1 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(107, 70, 193, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #E0D5C7;
+            color: #6B46C1;
+        }
+        
+        .btn-secondary:hover {
+            background: #D4C4B0;
+        }
+        
+        .btn-danger {
+            background: #c62828;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E0D5C7;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card h3 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #F3E8FF;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #6B46C1;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #E0D5C7;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6B46C1;
+            background-color: #FFFBF0;
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -156,11 +322,42 @@
             }
         }
         
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .table thead {
+            background: #F5F1E8;
+            border-bottom: 2px solid #6B46C1;
+        }
+        
+        .table th {
+            color: #6B46C1;
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .table td {
+            padding: 14px;
+            border-bottom: 1px solid #E0D5C7;
+            font-size: 14px;
+            color: #2C3E50;
+        }
+        
+        .table tbody tr:hover {
+            background: #FFFBF0;
+        }
+        
         .action-buttons {
             display: flex;
             gap: 8px;
         }
         
+        .action-buttons a,
         .action-buttons button {
             padding: 6px 12px;
             font-size: 12px;
@@ -168,6 +365,54 @@
             border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
+        }
+        
+        .edit-btn {
+            background: #8B5CF6;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #c62828;
+            color: white;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #6B46C1;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card h4 {
+            color: #7F8C8D;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .amount {
+            color: #6B46C1;
+            font-size: 32px;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -178,38 +423,33 @@
     </div>
     
     <div class="navbar">
-        <a href="studentDashboard.jsp" class="navbar-brand">PocketPilot</a>
-        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
-        <div class="navbar-links" id="navbarLinks">
-            <a href="studentDashboard.jsp">Dashboard</a>
-            <a href="budget.jsp">Budget</a>
-            <a href="expense.jsp" class="active">Expense</a>
-            <a href="TrackingProgressServlet">Tracking Progress</a>
-            <a href="supervisionAccess.jsp">Supervision</a>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
-            <a href="LogoutServlet" class="logout-btn">Logout</a>
-        </div>
+        <a href="studentDashboard.jsp">Dashboard</a>
+        <a href="budget.jsp">Budget</a>
+        <a href="expense.jsp" class="active">Expense</a>
+        <a href="TrackingProgressServlet">Tracking Progress</a>
+        <a href="supervisionAccess.jsp">Supervision</a>
+        <a href="LogoutServlet" class="logout-btn">Logout</a>
     </div>
     
     <div class="container">
         <!-- Month/Year Selector Form -->
-        <div class="month-selector" style="margin-bottom: 25px; max-width: fit-content; padding: 15px 25px; border-radius: 10px;">
+        <div class="month-selector" style="margin-bottom: 25px; background: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid #E0D5C7; max-width: fit-content;">
             <form method="GET" action="expense.jsp">
-                <label for="monthInput" style="color: var(--primary-color); font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
-                <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid var(--border-color); border-radius: 6px; color: var(--primary-color); font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: var(--input-bg);">
+                <label for="monthInput" style="color: #6B46C1; font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
+                <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid #E0D5C7; border-radius: 6px; color: #6B46C1; font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: #FDFBF7;">
             </form>
         </div>
 
         <!-- Alerts for Success/Error feedback -->
         <% String successMsg = request.getParameter("success");
            if (successMsg != null && !successMsg.isEmpty()) { %>
-            <div class="alert alert-success">
+            <div style="padding: 15px; background-color: #E8F5E9; color: #2E7D32; border-left: 5px solid #2E7D32; border-radius: 8px; margin-bottom: 20px; font-size: 14px; font-weight: 600;">
                 <%= successMsg %>
             </div>
         <% } %>
         <% String errorMsg = request.getParameter("error");
            if (errorMsg != null && !errorMsg.isEmpty()) { %>
-            <div class="alert alert-danger">
+            <div style="padding: 15px; background-color: #FFEBEE; color: #C62828; border-left: 5px solid #C62828; border-radius: 8px; margin-bottom: 20px; font-size: 14px; font-weight: 600;">
                 <%= errorMsg %>
             </div>
         <% } %>

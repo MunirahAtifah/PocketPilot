@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Counsellor Dashboard - PocketPilot</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
     <style>
         * {
             margin: 0;
@@ -22,13 +21,13 @@
         }
 
         .header {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.25);
         }
 
         .header h1 {
@@ -179,8 +178,8 @@
         }
 
         .student-name {
+            color: #6B46C1;
             font-weight: 600;
-            color: var(--primary-color);
             text-decoration: none;
             cursor: pointer;
         }
@@ -416,13 +415,8 @@
     </div>
     
     <div class="navbar">
-        <a href="#" class="navbar-brand">PocketPilot</a>
-        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
-        <div class="navbar-links" id="navbarLinks">
-            <a href="StudentCounsellorDashboard" class="active">Dashboard</a>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
-            <a href="LogoutServlet" class="logout-btn">Logout</a>
-        </div>
+        <a href="StudentCounsellorDashboard" class="active">Dashboard</a>
+        <a href="LogoutServlet" class="logout-btn">Logout</a>
     </div>
     
     <div class="container">

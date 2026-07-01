@@ -6,23 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background: var(--bg-gradient);
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--text-color);
         }
         
         .container {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: #F5F1E8;
             border-radius: 15px;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 500px;
             padding: 40px;
@@ -34,20 +37,20 @@
         }
         
         .logo-section h1 {
-            color: var(--primary-color);
+            color: #6B46C1;
             font-size: 28px;
             margin-bottom: 10px;
         }
         
         .logo-section p {
-            color: var(--primary-light);
+            color: #8B5CF6;
             font-size: 14px;
         }
         
         .tabs {
             display: flex;
             margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid #E0D5C7;
         }
         
         .tab {
@@ -56,14 +59,14 @@
             text-align: center;
             cursor: pointer;
             border-bottom: 3px solid transparent;
-            color: var(--primary-light);
+            color: #999;
             font-weight: 600;
             transition: all 0.3s;
         }
         
         .tab.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
+            color: #6B46C1;
+            border-bottom-color: #6B46C1;
         }
         
         .tab-content {
@@ -80,7 +83,7 @@
         
         .form-group label {
             display: block;
-            color: var(--primary-color);
+            color: #6B46C1;
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -89,24 +92,22 @@
         .form-group input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #E0D5C7;
             border-radius: 8px;
             font-size: 14px;
-            color: var(--text-color);
-            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            background-color: var(--input-bg);
+            border-color: #6B46C1;
+            background-color: #FFFBF0;
         }
         
         .button {
             width: 100%;
             padding: 12px;
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -148,7 +149,7 @@
         }
         
         .info-text {
-            color: var(--primary-light);
+            color: #666;
             font-size: 13px;
             margin-bottom: 20px;
             line-height: 1.5;
@@ -160,14 +161,14 @@
         }
         
         .back-link a {
-            color: var(--primary-light);
+            color: #8B5CF6;
             text-decoration: none;
             font-size: 13px;
             transition: color 0.3s;
         }
         
         .back-link a:hover {
-            color: var(--primary-color);
+            color: #6B46C1;
             text-decoration: underline;
         }
         
@@ -184,7 +185,8 @@
             font-weight: bold;
             padding: 12px !important;
         }
- 
+
+        /* Password container with eye toggle */
         .password-container {
             position: relative;
             display: flex;
@@ -200,15 +202,14 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: var(--primary-color);
-            font-size: 14px;
+            color: #6B46C1;
+            font-size: 18px;
             user-select: none;
             z-index: 10;
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" onclick="toggleTheme()">🌓 Theme</button>
     <div class="container">
         <div class="logo-section">
             <h1>Reset Password</h1>

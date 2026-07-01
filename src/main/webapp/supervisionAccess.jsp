@@ -106,16 +106,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supervision Management - PocketPilot</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
     <style>
         .header {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.25);
         }
         .header h1 {
             color: white;
@@ -128,6 +127,140 @@
             font-size: 15px;
             font-weight: 500;
         }
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #E0D5C7;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            justify-content: center;
+        }
+        .navbar a {
+            color: #6B46C1;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        .navbar a:hover {
+            color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .navbar a.active {
+            color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.15);
+            border-bottom: none;
+        }
+        .logout-btn {
+            margin-left: auto;
+            background: #8B5CF6 !important;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+            font-family: inherit;
+        }
+        .logout-btn:hover {
+            background: #6B46C1 !important;
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
+            transform: translateY(-1px);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E0D5C7;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .card h3 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #F3E8FF;
+            padding-bottom: 10px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(107, 70, 193, 0.3);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.4);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #6B46C1;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0D5C7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #8B5CF6;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .table thead {
+            background: #F5F1E8;
+            border-bottom: 2px solid #6B46C1;
+        }
+        .table th {
+            color: #6B46C1;
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #E0D5C7;
+            font-size: 14px;
+            color: #2C3E50;
+        }
         .status-badge {
             padding: 4px 10px;
             border-radius: 20px;
@@ -135,16 +268,35 @@
             font-weight: 700;
             text-transform: uppercase;
         }
-        .code-box {
-            font-family: 'Courier New', monospace;
-            background: var(--input-bg);
+        .alert {
             padding: 15px;
             border-radius: 8px;
-            border: 2px dashed var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .alert-success {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            border-left: 5px solid #2E7D32;
+        }
+        .alert-danger {
+            background-color: #FFEBEE;
+            color: #C62828;
+            border-left: 5px solid #C62828;
+        }
+        .code-box {
+            font-family: 'Courier New', monospace;
+            background: #F5F1E8;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed #6B46C1;
             font-size: 24px;
             text-align: center;
             font-weight: 700;
-            color: var(--primary-color);
+            color: #6B46C1;
             margin: 20px 0;
             max-width: 250px;
         }
@@ -155,35 +307,30 @@
         <h1>Supervision Access Management</h1>
         <p>Manage family and academic tracking options</p>
     </div>
- 
+
     <div class="navbar">
-        <a href="#" class="navbar-brand">PocketPilot</a>
-        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
-        <div class="navbar-links" id="navbarLinks">
-            <% if ("Student".equals(role)) { %>
-                <a href="studentDashboard.jsp">Dashboard</a>
-                <a href="budget.jsp">Budget</a>
-                <a href="expense.jsp">Expense</a>
-                <a href="TrackingProgressServlet">Tracking Progress</a>
-                <a href="supervisionAccess.jsp" class="active">Supervision</a>
-            <% } else if ("Parent".equals(role)) { 
-                int firstChildID = -1;
-                for (Map<String, Object> link : supervisionLinks) {
-                    Object sIdObj = link.get("studentID");
-                    if (sIdObj != null) {
-                        firstChildID = (Integer) sIdObj;
-                        break;
-                    }
+        <% if ("Student".equals(role)) { %>
+            <a href="studentDashboard.jsp">Dashboard</a>
+            <a href="budget.jsp">Budget</a>
+            <a href="expense.jsp">Expense</a>
+            <a href="TrackingProgressServlet">Tracking Progress</a>
+            <a href="supervisionAccess.jsp" class="active">Supervision</a>
+        <% } else if ("Parent".equals(role)) { 
+            int firstChildID = -1;
+            for (Map<String, Object> link : supervisionLinks) {
+                Object sIdObj = link.get("studentID");
+                if (sIdObj != null) {
+                    firstChildID = (Integer) sIdObj;
+                    break;
                 }
-                String trackingUrl = firstChildID > 0 ? "TrackingProgressServlet?studentID=" + firstChildID : "TrackingProgressServlet";
-            %>
-                <a href="parentDashboard.jsp">Dashboard</a>
-                <a href="<%= trackingUrl %>">Tracking Progress</a>
-                <a href="supervisionAccess.jsp" class="active">Supervision</a>
-            <% } %>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
-            <a href="LogoutServlet" class="logout-btn">Logout</a>
-        </div>
+            }
+            String trackingUrl = firstChildID > 0 ? "TrackingProgressServlet?studentID=" + firstChildID : "TrackingProgressServlet";
+        %>
+            <a href="parentDashboard.jsp">Dashboard</a>
+            <a href="<%= trackingUrl %>">Tracking Progress</a>
+            <a href="supervisionAccess.jsp" class="active">Supervision</a>
+        <% } %>
+        <a href="LogoutServlet" class="logout-btn">Logout</a>
     </div>
 
     <div class="container">
