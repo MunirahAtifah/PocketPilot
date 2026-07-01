@@ -500,7 +500,7 @@
                             int cIndex = 0;
                             for (String catName : categoryExpenses.keySet()) {
                                 if (cIndex > 0) out.print(", ");
-                                out.print("'" + catName + "'");
+                                out.print("'" + catName.replace("'", "\\'") + "'");
                                 cIndex++;
                             }
                             if (categoryExpenses.isEmpty()) {

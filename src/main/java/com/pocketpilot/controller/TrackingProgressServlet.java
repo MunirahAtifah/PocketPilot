@@ -179,12 +179,12 @@ public class TrackingProgressServlet extends HttpServlet {
                 }
             }
             // Step 8: Pass report data to JSP for display
-            request.setAttribute("totalBudget", String.format("%.2f", report.totalBudget));
-            request.setAttribute("totalExpense", String.format("%.2f", report.totalExpense));
-            request.setAttribute("averageExpense", String.format("%.2f", report.averageExpense));
-            request.setAttribute("surplusDeficit", String.format("%.2f", report.surplusDeficit));
+            request.setAttribute("totalBudget", String.format(Locale.US, "%.2f", report.totalBudget));
+            request.setAttribute("totalExpense", String.format(Locale.US, "%.2f", report.totalExpense));
+            request.setAttribute("averageExpense", String.format(Locale.US, "%.2f", report.averageExpense));
+            request.setAttribute("surplusDeficit", String.format(Locale.US, "%.2f", report.surplusDeficit));
             request.setAttribute("surplusStatus", report.surplusStatus);
-            request.setAttribute("budgetUtilization", String.format("%.1f", report.budgetUtilization));
+            request.setAttribute("budgetUtilization", String.format(Locale.US, "%.1f", report.budgetUtilization));
             request.setAttribute("aiGuidance", report.aiGuidance);
             request.setAttribute("topCategories", report.topCategories);
             request.setAttribute("spendingTrend", report.spendingTrend);

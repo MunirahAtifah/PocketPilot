@@ -31,7 +31,7 @@
     StringBuilder catAmounts = new StringBuilder("[");
     if (topCategories != null && !topCategories.isEmpty()) {
         for (Map.Entry<String, Double> entry : topCategories.entrySet()) {
-            catNames.append("'").append(entry.getKey()).append("',");
+            catNames.append("'").append(entry.getKey().replace("'", "\\'")).append("',");
             catAmounts.append(entry.getValue()).append(",");
         }
     }
