@@ -45,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracking Progress - PocketPilot</title>
     <link rel="stylesheet" href="css/style.css?v=1.0.2">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.js"></script>
     <style>
         .header {
             background: var(--header-bg-gradient);
