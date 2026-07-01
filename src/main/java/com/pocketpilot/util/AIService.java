@@ -24,8 +24,7 @@ public class AIService {
                 totalBudget, surplusDeficitAmount, spendingTrend, topCategories);
 
         if (aiGuidance == null || aiGuidance.isEmpty()) {
-            aiGuidance = generateRuleBasedGuidance(surplusStatus, budgetUtilization, averageDailyExpense, totalBudget,
-                    surplusDeficitAmount);
+            aiGuidance = "AI guidance is currently unavailable. Please check your network connection or API configuration.";
         }
         return aiGuidance;
     }
