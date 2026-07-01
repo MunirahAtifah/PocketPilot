@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -15,19 +16,20 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--body-bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            color: var(--text-color);
         }
         
         .back-link {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             display: flex;
@@ -38,12 +40,14 @@
         
         .back-link:hover {
             transform: translateX(-5px);
+            color: var(--primary-hover);
         }
         
         .login-container {
-            background: #F5F1E8;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
             width: 100%;
             max-width: 450px;
             padding: 40px;
@@ -55,13 +59,13 @@
         }
         
         .logo-section h1 {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             margin-bottom: 10px;
         }
         
         .logo-section p {
-            color: #8B5CF6;
+            color: var(--text-muted);
             font-size: 14px;
         }
         
@@ -71,7 +75,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -80,22 +84,24 @@
         .form-group input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             font-size: 14px;
+            color: var(--input-text);
+            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--input-bg);
         }
         
         .login-button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -109,7 +115,7 @@
         
         .login-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
+            box-shadow: 0 5px 20px var(--accent-glow);
         }
         
         .links {
@@ -120,34 +126,34 @@
         }
         
         .links a {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             text-decoration: none;
             transition: color 0.3s;
         }
         
         .links a:hover {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: underline;
         }
         
         .error-message {
-            background-color: #ffebee;
-            color: #c62828;
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #ef4444;
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 13px;
-            border-left: 4px solid #c62828;
+            border-left: 4px solid #ef4444;
         }
         
         .success-message {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 13px;
-            border-left: 4px solid #2e7d32;
+            border-left: 4px solid #10b981;
         }
         
         /* Password container with eye toggle */
@@ -166,71 +172,11 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 12px;
             font-weight: 600;
             user-select: none;
             z-index: 10;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            color: #6B46C1;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #E0D5C7;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: inherit;
-        }
-        
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
-        }
-        
-        .links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 13px;
-        }
-        
-        .links a {
-            color: #8B5CF6;
-            text-decoration: none;
-            transition: color 0.3s;
         }
         </style>
 </head>

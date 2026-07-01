@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -15,18 +16,20 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--body-bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: var(--text-color);
         }
         
         .signup-container {
-            background: white;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
             max-width: 500px;
             width: 100%;
             padding: 40px;
@@ -38,13 +41,13 @@
         }
         
         .signup-header h1 {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             margin-bottom: 10px;
         }
         
         .signup-header p {
-            color: #999;
+            color: var(--text-muted);
             font-size: 14px;
         }
         
@@ -54,7 +57,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -64,18 +67,20 @@
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             font-size: 14px;
             font-family: inherit;
+            color: var(--input-text);
+            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--input-bg);
         }
         
         .form-row {
@@ -93,7 +98,7 @@
         .btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -107,45 +112,46 @@
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
+            box-shadow: 0 5px 20px var(--accent-glow);
         }
         
         .login-link {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
-            color: #666;
+            color: var(--text-muted);
         }
         
         .login-link a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
         }
         
         .login-link a:hover {
             text-decoration: underline;
+            color: var(--primary-hover);
         }
         
         .error-message {
-            color: #c62828;
+            color: #ef4444;
             font-size: 13px;
             margin-bottom: 15px;
             padding: 12px;
-            background: #FFEBEE;
+            background: rgba(220, 38, 38, 0.1);
             border-radius: 8px;
-            border-left: 4px solid #c62828;
+            border-left: 4px solid #ef4444;
             display: none;
         }
         
         .success-message {
-            color: #2e7d32;
+            color: #10b981;
             font-size: 13px;
             margin-bottom: 15px;
             padding: 12px;
-            background: #E8F5E9;
+            background: rgba(16, 185, 129, 0.1);
             border-radius: 8px;
-            border-left: 4px solid #2e7d32;
+            border-left: 4px solid #10b981;
             display: none;
         }
 
@@ -165,7 +171,7 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 12px;
             font-weight: 600;
             user-select: none;
@@ -175,7 +181,7 @@
         .dynamic-fields {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #E0D5C7;
+            border-top: 1px solid var(--border-color);
         }
 
         .field-hidden {
@@ -183,11 +189,12 @@
         }
 
         .role-description {
-            background: #F5F1E8;
+            background: var(--bg-alt);
             padding: 10px;
             border-radius: 8px;
             font-size: 12px;
-            color: #666;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
             margin-top: 5px;
         }
     </style>

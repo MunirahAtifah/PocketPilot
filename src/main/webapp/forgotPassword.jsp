@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -15,17 +16,19 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--body-bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: var(--text-color);
         }
         
         .container {
-            background: #F5F1E8;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
             width: 100%;
             max-width: 500px;
             padding: 40px;
@@ -37,20 +40,20 @@
         }
         
         .logo-section h1 {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 28px;
             margin-bottom: 10px;
         }
         
         .logo-section p {
-            color: #8B5CF6;
+            color: var(--text-muted);
             font-size: 14px;
         }
         
         .tabs {
             display: flex;
             margin-bottom: 30px;
-            border-bottom: 2px solid #E0D5C7;
+            border-bottom: 2px solid var(--border-color);
         }
         
         .tab {
@@ -59,14 +62,14 @@
             text-align: center;
             cursor: pointer;
             border-bottom: 3px solid transparent;
-            color: #999;
+            color: var(--text-muted);
             font-weight: 600;
             transition: all 0.3s;
         }
         
         .tab.active {
-            color: #6B46C1;
-            border-bottom-color: #6B46C1;
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
         }
         
         .tab-content {
@@ -83,7 +86,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -92,22 +95,24 @@
         .form-group input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             font-size: 14px;
+            color: var(--input-text);
+            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--input-bg);
         }
         
         .button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--header-bg-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -120,7 +125,7 @@
         
         .button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
+            box-shadow: 0 5px 20px var(--accent-glow);
         }
         
         .message {
@@ -131,25 +136,25 @@
         }
         
         .message.success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border-left: 4px solid #2e7d32;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-left: 4px solid #10b981;
         }
         
         .message.error {
-            background-color: #ffebee;
-            color: #c62828;
-            border-left: 4px solid #c62828;
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #ef4444;
+            border-left: 4px solid #ef4444;
         }
         
         .message.info {
-            background-color: #e3f2fd;
-            color: #1565c0;
-            border-left: 4px solid #1565c0;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border-left: 4px solid #3b82f6;
         }
         
         .info-text {
-            color: #666;
+            color: var(--text-muted);
             font-size: 13px;
             margin-bottom: 20px;
             line-height: 1.5;
@@ -161,14 +166,14 @@
         }
         
         .back-link a {
-            color: #8B5CF6;
+            color: var(--primary-hover);
             text-decoration: none;
             font-size: 13px;
             transition: color 0.3s;
         }
         
         .back-link a:hover {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: underline;
         }
         
@@ -184,8 +189,11 @@
             font-size: 24px;
             font-weight: bold;
             padding: 12px !important;
+            color: var(--input-text);
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
         }
-
+        
         /* Password container with eye toggle */
         .password-container {
             position: relative;
@@ -202,8 +210,9 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: #6B46C1;
-            font-size: 18px;
+            color: var(--primary-color);
+            font-size: 12px;
+            font-weight: 600;
             user-select: none;
             z-index: 10;
         }
