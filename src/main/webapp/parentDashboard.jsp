@@ -230,7 +230,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Dashboard - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.2">
+    <link rel="stylesheet" href="css/style.css?v=1.0.3">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <style>
         .header {
@@ -678,6 +678,7 @@
         });
     </script>
 
-<script src="js/theme.js?v=1.0.2"></script>
+<script src="js/theme.js?v=1.0.3"></script>
 </body>
 </html>
+

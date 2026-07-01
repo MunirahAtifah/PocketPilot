@@ -118,7 +118,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Management - PocketPilot</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.2">
+    <link rel="stylesheet" href="css/style.css?v=1.0.3">
     <style>
         * {
             margin: 0;
@@ -693,6 +693,7 @@
         }
     </script>
 
-<script src="js/theme.js?v=1.0.2"></script>
+<script src="js/theme.js?v=1.0.3"></script>
 </body>
 </html>
+
