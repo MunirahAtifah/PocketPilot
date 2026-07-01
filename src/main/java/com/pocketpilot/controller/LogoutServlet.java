@@ -8,38 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-/**
- * LogoutServlet - Handle User Logout
- * 
- * Purpose: Process user logout and invalidate session
- * 
- * Features:
- *   - Invalidates user session
- *   - Clears all session attributes
- *   - Redirects to login page
- * 
- * URL Mapping: GET/POST /LogoutServlet
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/LogoutServlet")
 public class LogoutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle GET requests - Process logout
-     */
+    // Handle GET requests - Process logout
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logout(request, response);
     }
 
-    /**
-     * Handle POST requests - Process logout
-     */
+    // Handle POST requests - Process logout
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

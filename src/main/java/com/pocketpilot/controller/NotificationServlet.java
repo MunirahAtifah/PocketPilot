@@ -106,9 +106,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get unread notifications for student
-     */
+    // Get unread notifications for student
     private void getUnreadNotifications(HttpServletResponse response, int studentID)
             throws IOException {
         try {
@@ -124,9 +122,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get all notifications for student
-     */
+    // Get all notifications for student
     private void getAllNotifications(HttpServletResponse response, int studentID)
             throws IOException {
         try {
@@ -142,9 +138,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get unread notification count
-     */
+    // Get unread notification count
     private void getUnreadCount(HttpServletResponse response, int studentID)
             throws IOException {
         try {
@@ -158,9 +152,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get notification preferences
-     */
+    // Get notification preferences
     private void getNotificationPreferences(HttpServletResponse response, int studentID)
             throws IOException {
         try {
@@ -180,9 +172,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Mark notification as read
-     */
+    // Mark notification as read
     private void markNotificationAsRead(HttpServletRequest request, HttpServletResponse response, 
                                        int studentID) throws IOException {
         try {
@@ -198,9 +188,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Mark all notifications as read for student
-     */
+    // Mark all notifications as read for student
     private void markAllAsRead(HttpServletResponse response, int studentID)
             throws IOException {
         try {
@@ -214,9 +202,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Update notification preferences
-     */
+    // Update notification preferences
     private void updateNotificationPreferences(HttpServletRequest request, HttpServletResponse response,
                                              int studentID) throws IOException {
         try {
@@ -242,9 +228,7 @@ public class NotificationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Send error response
-     */
+    // Send error response
     private void sendError(HttpServletResponse response, int statusCode, String message)
             throws IOException {
         response.setStatus(statusCode);
@@ -253,9 +237,7 @@ public class NotificationServlet extends HttpServlet {
         out.flush();
     }
 
-    /**
-     * Escape special characters for JSON
-     */
+    // Escape special characters for JSON
     private String escapeJson(String text) {
         return text.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
     }

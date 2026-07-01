@@ -21,74 +21,17 @@ import com.pocketpilot.util.DatabaseConnection;
 import com.pocketpilot.util.ReportGenerator;
 import com.pocketpilot.util.ReportGenerator.ReportData;
 import com.pocketpilot.util.TrackingProgressCalculator;
-
-/**
- * TrackingProgressServlet - Generate financial tracking progress reports
- * 
- * Purpose: Calculate and display budget vs expense analysis with AI guidance
- * 
- * Flow:
- * 1. User (Student or Chancellor) logs in and navigates to "Tracking Progress" section
- * 2. If Chancellor, verify student granted permission to view reports
- * 3. User specifies time period (month/year)
- * 4. System queries stored expense and budget data for specified period
- * 5. Financial logic algorithm performs calculations:
- *    a) Calculates total monthly spending vs total budget
- *    b) Calculates average expense to detect spending trends
- * 6. If surplus detected, AI provides actionable guidance
- * 7. System generates and displays visual progress report and summary
- * 8. Student/Chancellor can export report as PDF
- * 
- * Features:
- *   - Budget vs Expense analysis
- *   - Surplus/Deficit detection
- *   - Average daily expense calculation
- *   - Top spending categories identification
- *   - Month-over-month trend analysis
- *   - AI-powered guidance generation
- *   - Report export to PDF
- * 
- * URL Mapping: GET /TrackingProgress
- * 
- * Request Parameters:
- *   - studentID: Student whose progress to track (for Chancellor view)
- *   - month: Month for report (format: YYYY-MM or current month)
- *   - action: "view" (default) or "export"
- * 
- * Session Requirements:
- *   - userID: Must be set (Student or Chancellor)
- *   - role: Must be "Student" or "Chancellor"
- * 
- * Response Attributes:
- *   - totalBudget: Total budgeted amount for month
- *   - totalExpense: Total spent amount for month
- *   - averageExpense: Average daily spending
- *   - surplusDeficit: Surplus (positive) or Deficit (negative)
- *   - surplusStatus: "surplus", "deficit", or "balanced"
- *   - budgetUtilization: Percentage of budget used
- *   - aiGuidance: AI-generated actionable recommendations
- *   - topCategories: Map of top spending categories
- *   - spendingTrend: Trend compared to previous month
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/TrackingProgressServlet")
 public class TrackingProgressServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle GET requests - Load tracking progress report
-     */
+    // Handle GET requests - Load tracking progress report
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-
-        // ================================================
         // Step 1: Get session and verify user
-        // ================================================
         HttpSession session = request.getSession(false);
 
         if (session == null) {
@@ -106,17 +49,11 @@ public class TrackingProgressServlet extends HttpServlet {
 
         int userID = (Integer) userIDObj;
         String role = (String) roleObj;
-
-        // ================================================
         // Step 2: Get parameters from request
-        // ================================================
         String studentIDStr = request.getParameter("studentID");
         String monthStr = request.getParameter("month");
         String action = request.getParameter("action");
-
-        // ================================================
         // Step 3: Determine which student to track
-        // ================================================
         int trackingStudentID = -1;
 
         if ("Student".equals(role)) {
@@ -208,10 +145,7 @@ public class TrackingProgressServlet extends HttpServlet {
             response.sendRedirect("error.jsp?message=Unauthorized+access");
             return;
         }
-
-        // ================================================
         // Step 4: Get month for report (default to current month)
-        // ================================================
         YearMonth reportMonth;
         if (monthStr != null && !monthStr.isEmpty()) {
             try {
@@ -229,22 +163,14 @@ public class TrackingProgressServlet extends HttpServlet {
         }
 
         try {
-            // ================================================
             // Step 5: Load budget and expense data
-            // ================================================
             List<Map<String, Object>> budgets = getBudgetsForMonth(trackingStudentID, reportMonth);
             List<Map<String, Object>> expenses = getExpensesForMonth(trackingStudentID, reportMonth);
             List<Map<String, Object>> previousMonthExpenses = getExpensesForMonth(trackingStudentID, reportMonth.minusMonths(1));
-
-            // ================================================
             // Step 6: Generate complete report using unified ReportGenerator
-            // ================================================
             ReportData report = ReportGenerator.generateReport(trackingStudentID, reportMonth, 
                                                                budgets, expenses, previousMonthExpenses);
-
-            // ================================================
             // Step 7: Check if this is a PDF export request
-            // ================================================
             if ("export".equals(action)) {
                 String studentName = getStudentName(trackingStudentID);
                 boolean success = ReportGenerator.exportReportAsPDF(response, studentName, reportMonth, report, role);
@@ -252,10 +178,7 @@ public class TrackingProgressServlet extends HttpServlet {
                     return; // PDF was written to response
                 }
             }
-
-            // ================================================
             // Step 8: Pass report data to JSP for display
-            // ================================================
             request.setAttribute("totalBudget", String.format("%.2f", report.totalBudget));
             request.setAttribute("totalExpense", String.format("%.2f", report.totalExpense));
             request.setAttribute("averageExpense", String.format("%.2f", report.averageExpense));
@@ -274,10 +197,7 @@ public class TrackingProgressServlet extends HttpServlet {
             if (msg != null) {
                 request.setAttribute("msg", msg);
             }
-
-            // ================================================
             // Step 9: Forward to JSP for display
-            // ================================================
             request.getRequestDispatcher("trackingProgress.jsp").forward(request, response);
 
         } catch (Exception e) {
@@ -287,9 +207,7 @@ public class TrackingProgressServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handle POST requests - Save comments on budget or expense
-     */
+    // Handle POST requests - Save comments on budget or expense
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -353,9 +271,7 @@ public class TrackingProgressServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get budgets for a specific month
-     */
+    // Get budgets for a specific month
     private List<Map<String, Object>> getBudgetsForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> budgets = new ArrayList<>();
         
@@ -391,9 +307,7 @@ public class TrackingProgressServlet extends HttpServlet {
         return budgets;
     }
 
-    /**
-     * Get expenses for a specific month
-     */
+    // Get expenses for a specific month
     private List<Map<String, Object>> getExpensesForMonth(int studentID, YearMonth month) throws SQLException {
         List<Map<String, Object>> expenses = new ArrayList<>();
         
@@ -429,9 +343,7 @@ public class TrackingProgressServlet extends HttpServlet {
         return expenses;
     }
 
-    /**
-     * Handle PDF export (now delegated to ReportGenerator)
-     */
+    // Handle PDF export (now delegated to ReportGenerator)
     private void handlePDFExport(HttpServletRequest request, HttpServletResponse response,
                                  int userID, String role, String studentIDStr, String monthStr) 
             throws IOException {
@@ -439,9 +351,7 @@ public class TrackingProgressServlet extends HttpServlet {
         response.sendRedirect("error.jsp?message=Use+the+Report+Generation+endpoint");
     }
 
-    /**
-     * Get student name by student ID
-     */
+    // Get student name by student ID
     private String getStudentName(int studentID) {
         String sql = "SELECT studentName FROM student WHERE studentID = ?";
 

@@ -6,22 +6,6 @@ import com.pocketpilot.util.DatabaseConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
-
-/**
- * NotificationDAO - Data access object for Notification operations
- * 
- * Purpose: Manage database operations for notifications
- * 
- * Operations:
- * - Create new notifications
- * - Retrieve notifications for students
- * - Mark notifications as read
- * - Delete old notifications
- * - Get notification preferences
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 public class NotificationDAO {
     
     // Create notifications
@@ -320,9 +304,7 @@ public class NotificationDAO {
     
     // Helper methods
     
-    /**
-     * Map ResultSet row to Notification object
-     */
+    // Map ResultSet row to Notification object
     private static Notification mapResultSetToNotification(ResultSet rs) throws SQLException {
         Notification notification = new Notification();
         notification.setNotificationID(rs.getInt("notificationID"));

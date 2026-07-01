@@ -19,53 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.pocketpilot.dao.StudentCounsellorDAO;
 import com.pocketpilot.util.DatabaseConnection;
-
-/**
- * SignupServlet - Handle User Registration
- * 
- * Purpose: Process signup form submissions and create new user accounts
- * 
- * Features:
- *   - Validates user input (username, email, phone, role, password)
- *   - Checks for duplicate email and username
- *   - Inserts user into Registration table
- *   - Creates corresponding Student, Parent, or IT_Support record
- *   - Provides appropriate success/error messages
- * 
- * URL Mapping: POST /SignupServlet
- * 
- * Request Parameters:
- *   - username: String (3-50 chars, alphanumeric with . - _)
- *   - email: String (valid email address)
- *   - phoneNumber: String (10-11 digits)
- *   - role: String ('Student', 'Parent', 'IT_Support', 'Student_Counsellor')
- *   - password: String (6+ characters)
- * 
- * Response Messages:
- *   - Success: "Account created. Please log in."
- *   - Email exists: "Account already exists"
- *   - Username exists: "Username already taken. Please choose a different one."
- *   - Validation error: Appropriate error message
- *   - DB error: "An error occurred. Please try again later."
- * 
- * Database Operations:
- *   1. Check if email exists in Registration table
- *   2. Check if username exists in Registration table
- *   3. Insert into Registration table
- *   4. Get generated userID
- *   5. Insert into Student, Parent, or IT_Support table based on role
- *   6. Redirect to login page with success message
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/SignupServlet")
 public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Log message to both console and file
-     */
+    // Log message to both console and file
     private void logDebug(String message) {
         System.out.println("[SignupServlet] " + message);
         try {
@@ -78,18 +36,13 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handle POST requests - Process signup
-     */
+    // Handle POST requests - Process signup
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-
-        // ================================================
         // Step 1: Get parameters from request
-        // ================================================
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
@@ -108,20 +61,14 @@ public class SignupServlet extends HttpServlet {
         logDebug("Email: " + email);
         logDebug("Phone: " + phoneNumber);
         logDebug("Role: " + role);
-
-        // ================================================
         // Step 2: Validate input data
-        // ================================================
         String validationError = validateInput(username, email, phoneNumber, role, password);
         if (validationError != null) {
             logDebug("Validation error: " + validationError);
             redirectWithError(response, validationError);
             return;
         }
-
-        // ================================================
         // Step 3: Check for duplicate email and username
-        // ================================================
         try {
             // Check if email already exists
             if (emailExists(email)) {
@@ -143,19 +90,13 @@ public class SignupServlet extends HttpServlet {
             redirectWithError(response, "An error occurred. Please try again later.");
             return;
         }
-
-        // ================================================
         // Step 4: Register user in database
-        // ================================================
         int userID = -1;
         try {
             userID = registerUser(username, email, phoneNumber, role, password);
 
             if (userID > 0) {
-        // ================================================
-        // ================================================
         // Step 5: Create Student, Parent, or IT_Support profile
-        // ================================================
                 boolean profileCreated = false;
 
                 if ("Student".equals(role)) {
@@ -271,9 +212,7 @@ public class SignupServlet extends HttpServlet {
         return null; // All valid
     }
 
-    /**
-     * Check if email already exists in database
-     */
+    // Check if email already exists in database
     private boolean emailExists(String email) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -298,9 +237,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Check if username already exists in database
-     */
+    // Check if username already exists in database
     private boolean usernameExists(String username) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -325,9 +262,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Register user in Registration table
-     */
+    // Register user in Registration table
     private int registerUser(String username, String email, String phoneNumber, String role, String password)
             throws SQLException {
         Connection conn = null;
@@ -365,9 +300,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Create Student profile
-     */
+    // Create Student profile
     private boolean createStudentProfile(int userID, String studentName) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -389,9 +322,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Create Parent profile
-     */
+    // Create Parent profile
     private boolean createParentProfile(int userID, String parentName) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -425,9 +356,7 @@ public class SignupServlet extends HttpServlet {
         return true;
     }
 
-    /**
-     * Create Student Counsellor profile
-     */
+    // Create Student Counsellor profile
     private boolean createStudentCounsellorProfile(int userID, String counsellorName) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -449,9 +378,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Delete user (used if profile creation fails)
-     */
+    // Delete user (used if profile creation fails)
     private void deleteUser(int userID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -472,9 +399,7 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get studentID by userID
-     */
+    // Get studentID by userID
     private int getStudentIDByUserID(int userID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -500,17 +425,13 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Redirect to login page with error message
-     */
+    // Redirect to login page with error message
     private void redirectWithError(HttpServletResponse response, String errorMessage) throws IOException {
         String encodedError = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
         response.sendRedirect("signup.jsp?error=" + encodedError);
     }
 
-    /**
-     * Redirect to login page with success message
-     */
+    // Redirect to login page with success message
     private void redirectWithSuccess(HttpServletResponse response, String successMessage) throws IOException {
         String encodedMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
         response.sendRedirect("login.jsp?success=" + encodedMessage);

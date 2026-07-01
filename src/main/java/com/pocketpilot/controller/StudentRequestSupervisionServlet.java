@@ -8,54 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-/**
- * StudentRequestSupervisionServlet - Request Supervision from Another Student
- * 
- * Purpose: Allow one student to request supervision from another student
- * 
- * Features:
- *   - Validates student is logged in
- *   - Validates supervision code exists
- *   - Prevents self-supervision
- *   - Prevents duplicate supervision links
- *   - Creates supervision access record
- *   - Generates unique access code
- * 
- * URL Mapping: POST /StudentRequestSupervisionServlet
- * 
- * Request Parameters:
- *   - supervisionCode: String (code from target student to supervise)
- * 
- * Session Requirements:
- *   - userID: Must be set in session
- *   - role: Must be "Student"
- * 
- * Flow:
- *   1. Validate student login
- *   2. Get target student ID from supervision code
- *   3. Get current student ID
- *   4. Validate self-supervision is not attempted
- *   5. Check existing supervision links
- *   6. Create new supervision access record
- *   7. Redirect with success or error message
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/StudentRequestSupervisionServlet")
 public class StudentRequestSupervisionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle POST requests - Request supervision access
-     */
+    // Handle POST requests - Request supervision access
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        // ================================================
         // Step 1: Get session and validate authentication
-        // ================================================
         HttpSession session = request.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
         String role = (String) session.getAttribute("role");
@@ -65,10 +25,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             response.sendRedirect("login.jsp?error=Access+denied");
             return;
         }
-        
-        // ================================================
         // Step 2: Get supervision code from parameter
-        // ================================================
         String supervisionCode = request.getParameter("supervisionCode");
         
         // Validate code is provided
@@ -76,21 +33,13 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             response.sendRedirect("supervisionAccess.jsp?error=Please+enter+a+supervision+code");
             return;
         }
-        
-        // ================================================
         // Step 3: Normalize input (trim and convert to uppercase for case-insensitive comparison)
-        // ================================================
         supervisionCode = supervisionCode.trim().toUpperCase();
         
         try {
-            // ================================================
             // Step 4: Get database connection from utility
-            // ================================================
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
-            
-            // ================================================
             // Step 5: Validate the supervision code exists in Student table
-            // ================================================
             String validateSql = "SELECT s.studentID, s.supervisionCode FROM student s WHERE UPPER(s.supervisionCode) = ?";
             PreparedStatement validateStmt = conn.prepareStatement(validateSql);
             validateStmt.setString(1, supervisionCode);
@@ -109,10 +58,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             int targetStudentID = validateRs.getInt("studentID");
             validateRs.close();
             validateStmt.close();
-            
-            // ================================================
             // Step 6: Get current student ID from userID
-            // ================================================
             String getStudentIdSql = "SELECT studentID FROM student WHERE userID = ?";
             PreparedStatement getStudentStmt = conn.prepareStatement(getStudentIdSql);
             getStudentStmt.setInt(1, userID);
@@ -131,19 +77,13 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             int currentStudentID = studentRs.getInt("studentID");
             studentRs.close();
             getStudentStmt.close();
-            
-            // ================================================
             // Step 7: Prevent self-supervision (security check)
-            // ================================================
             if (currentStudentID == targetStudentID) {
                 conn.close();
                 response.sendRedirect("supervisionAccess.jsp?error=You+cannot+supervise+yourself");
                 return;
             }
-            
-            // ================================================
             // Step 8: Check if supervision link already exists (prevent duplicates)
-            // ================================================
             String checkExistingSql = "SELECT id FROM supervisionaccess WHERE studentID = ? AND parentID = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkExistingSql);
             checkStmt.setInt(1, currentStudentID);  // Current student is the supervised one
@@ -161,10 +101,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             
             checkRs.close();
             checkStmt.close();
-            
-            // ================================================
             // Step 9: Create supervision access record
-            // ================================================
             String insertSql = "INSERT INTO supervisionaccess (code, studentID, parentID, approvalStatus) VALUES (?, ?, ?, 'Approved')";
             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
             insertStmt.setString(1, generateAccessCode(10));  // Generate unique 10-char code
@@ -175,10 +112,7 @@ public class StudentRequestSupervisionServlet extends HttpServlet {
             // Close resources
             insertStmt.close();
             conn.close();
-            
-            // ================================================
             // Step 10: Redirect based on success or failure
-            // ================================================
             if (affectedRows > 0) {
                 // Success - redirect with success message
                 response.sendRedirect("supervisionAccess.jsp?success=Supervision+access+granted+successfully");

@@ -18,15 +18,6 @@ import javax.servlet.http.HttpSession;
 
 import com.pocketpilot.util.DatabaseConnection;
 import com.pocketpilot.dao.StudentCounsellorDAO;
-
-/**
- * StudentCounsellorDashboardServlet - Handle counsellor dashboard and student approval
- * 
- * Responsibilities:
- * 1. Display ALL registered students with approval status
- * 2. Show APPROVE/DISAPPROVE buttons
- * 3. If approved, allow clicking student name to view budget/expense/tracking
- */
 @WebServlet("/StudentCounsellorDashboard")
 public class StudentCounsellorDashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -181,9 +172,7 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Get ALL students registered in the system with their approval status for this counsellor
-     */
+    // Get ALL students registered in the system with their approval status for this counsellor
     private List<Map<String, Object>> getAllStudentsWithStatus(Integer staffID) throws Exception {
         List<Map<String, Object>> students = new ArrayList<>();
         Connection conn = null;

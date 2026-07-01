@@ -5,41 +5,13 @@ import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
-
-/**
- * RemoveSupervisionServlet - Remove Supervision Access Link
- * 
- * Purpose: Allow parents to remove supervision access to a student account
- * 
- * Features:
- *   - Validates user is logged in and is a parent
- *   - Verifies parent owns the supervision link (security check)
- *   - Deletes the supervision access record
- *   - Redirects with success/error messages
- * 
- * URL Mapping: POST /RemoveSupervisionServlet
- * 
- * Request Parameters:
- *   - accessId: String (supervision code to remove)
- * 
- * Session Requirements:
- *   - userID: Must be set in session
- *   - role: Must be "Parent"
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/RemoveSupervisionServlet")
 public class RemoveSupervisionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle POST requests - Remove supervision link
-     */
+    // Handle POST requests - Remove supervision link
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ================================================
         // Step 1: Check if user is logged in
-        // ================================================
         HttpSession session = request.getSession(false);
         Integer userID = (Integer) (session != null ? session.getAttribute("userID") : null);
         String role = (String) (session != null ? session.getAttribute("role") : null);
@@ -50,9 +22,7 @@ public class RemoveSupervisionServlet extends HttpServlet {
         }
 
         try {
-            // ================================================
             // Step 2: Get accessId (supervision code) from parameter
-            // ================================================
             String accessId = request.getParameter("accessId");
             if (accessId == null || accessId.trim().isEmpty()) {
                 response.sendRedirect("supervisionAccess.jsp?error=Invalid+request");
@@ -60,18 +30,12 @@ public class RemoveSupervisionServlet extends HttpServlet {
             }
 
             accessId = accessId.trim();
-
-            // ================================================
             // Step 3: Verify parent has permission to remove this link (SECURITY)
-            // ================================================
             if (!isParentAuthorized(userID, accessId)) {
                 response.sendRedirect("supervisionAccess.jsp?error=You+are+not+authorized+to+remove+this+link");
                 return;
             }
-
-            // ================================================
             // Step 4: Remove the supervision access from database
-            // ================================================
             if (removeSupervisionAccess(accessId)) {
                 // Success - redirect with success message
                 response.sendRedirect("supervisionAccess.jsp?success=Child+supervision+access+removed+successfully");

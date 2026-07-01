@@ -61,9 +61,7 @@ public class ParentDashboardServlet extends HttpServlet {
         request.getRequestDispatcher("parentDashboard.jsp").forward(request, response);
     }
 
-    /**
-     * POST request handler - Handle parent dashboard updates
-     */
+    // POST request handler - Handle parent dashboard updates
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);

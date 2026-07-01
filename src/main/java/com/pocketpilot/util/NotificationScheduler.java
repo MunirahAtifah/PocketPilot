@@ -10,34 +10,11 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-/**
- * NotificationScheduler - Scheduled notification generator
- * 
- * Purpose: Automatically create and manage notifications for students
- * 
- * Features:
- * - Generate daily reminders for students to add expenses/budgets
- * - Generate monthly reminders on the 1st for budget and expense review
- * - Respect student notification preferences
- * - Run scheduled tasks automatically
- * 
- * Scheduling:
- * - Daily reminders: 9:00 AM every day
- * - Monthly reminders: 1st of every month at 9:00 AM
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 public class NotificationScheduler {
 
     private static ScheduledExecutorService scheduler;
     private static final String TAG = "[NotificationScheduler]";
-
-    // ============================================================
     // INITIALIZATION
-    // ============================================================
-
     /**
      * Initialize and start the notification scheduler
      * Should be called when application starts
@@ -72,11 +49,7 @@ public class NotificationScheduler {
             System.out.println(TAG + " Notification scheduler stopped");
         }
     }
-
-    // ============================================================
     // SCHEDULED TASKS
-    // ============================================================
-
     /**
      * Schedule daily notifications task
      * Runs every day at 9:00 AM
@@ -116,14 +89,8 @@ public class NotificationScheduler {
             }
         }, initialDelay, 30, TimeUnit.DAYS); // Approximate 30 days for simplicity
     }
-
-    // ============================================================
     // NOTIFICATION GENERATION
-    // ============================================================
-
-    /**
-     * Generate daily reminders for all students
-     */
+    // Generate daily reminders for all students
     private static void generateDailyNotifications() {
         try {
             List<Integer> allStudents = getAllStudentIds();
@@ -149,9 +116,7 @@ public class NotificationScheduler {
         }
     }
 
-    /**
-     * Generate monthly reminders for all students on the 1st of the month
-     */
+    // Generate monthly reminders for all students on the 1st of the month
     private static void generateMonthlyNotifications() {
         try {
             List<Integer> allStudents = getAllStudentIds();
@@ -188,16 +153,12 @@ public class NotificationScheduler {
         }
     }
 
-    /**
-     * Manually trigger daily notifications (for testing)
-     */
+    // Manually trigger daily notifications (for testing)
     public static void triggerDailyNotifications() {
         generateDailyNotifications();
     }
 
-    /**
-     * Manually trigger monthly notifications (for testing)
-     */
+    // Manually trigger monthly notifications (for testing)
     public static void triggerMonthlyNotifications() {
         generateMonthlyNotifications();
     }
@@ -280,14 +241,8 @@ public class NotificationScheduler {
             e.printStackTrace();
         }
     }
-
-    // ============================================================
     // HELPER METHODS
-    // ============================================================
-
-    /**
-     * Get all student IDs from the database
-     */
+    // Get all student IDs from the database
     private static List<Integer> getAllStudentIds() {
         List<Integer> studentIds = new ArrayList<>();
 
@@ -309,9 +264,7 @@ public class NotificationScheduler {
         return studentIds;
     }
 
-    /**
-     * Calculate delay in milliseconds until a specific time today or tomorrow
-     */
+    // Calculate delay in milliseconds until a specific time today or tomorrow
     private static long calculateDelayUntilTime(int hour, int minute) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime targetTime = now.withHour(hour).withMinute(minute).withSecond(0).withNano(0);
@@ -325,9 +278,7 @@ public class NotificationScheduler {
         return duration.toMillis();
     }
 
-    /**
-     * Calculate delay in milliseconds until the 1st of next month at 9:00 AM
-     */
+    // Calculate delay in milliseconds until the 1st of next month at 9:00 AM
     private static long calculateDelayUntilMonthStart() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime nextMonthStart = now.withDayOfMonth(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
@@ -348,30 +299,22 @@ public class NotificationScheduler {
         return Math.max(duration.toMillis(), 1000); // At least 1 second delay
     }
 
-    /**
-     * Get daily reminder message
-     */
+    // Get daily reminder message
     private static String getDailyReminderMessage() {
         return "Daily Reminder: Don't forget to log your expenses today! Keep your budget records up to date.";
     }
 
-    /**
-     * Get monthly budget reminder message
-     */
+    // Get monthly budget reminder message
     private static String getMonthlyBudgetReminderMessage() {
         return "Monthly Budget Reminder: It's the 1st of the month! Time to review and plan your budget for the month ahead.";
     }
 
-    /**
-     * Get monthly expense reminder message
-     */
+    // Get monthly expense reminder message
     private static String getMonthlyExpenseReminderMessage() {
         return "Monthly Expense Review: Review your expenses from the past month and see how well you managed your budget!";
     }
 
-    /**
-     * Get scheduler status
-     */
+    // Get scheduler status
     public static String getStatus() {
         if (scheduler == null || scheduler.isShutdown()) {
             return "Notification scheduler is not running";

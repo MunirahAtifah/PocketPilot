@@ -5,42 +5,13 @@ import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
-
-/**
- * RevokeSupervisionAccessServlet - Revoke Supervision Links
- * 
- * Purpose: Allow students and parents to revoke supervision relationships
- * 
- * Features:
- *   - Students can revoke parent access to their account
- *   - Parents can revoke student supervision links  
- *   - Verifies authorization (security check)
- *   - Deletes supervision access record
- *   - Provides appropriate redirects for each role
- * 
- * URL Mapping: POST /RevokeSupervisionAccessServlet
- * 
- * Request Parameters:
- *   - accessId: String (supervision code to revoke)
- * 
- * Session Requirements:
- *   - userID: Must be set in session
- *   - role: Must be "Student" or "Parent"
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/RevokeSupervisionAccessServlet")
 public class RevokeSupervisionAccessServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle POST requests - Revoke supervision access
-     */
+    // Handle POST requests - Revoke supervision access
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ================================================
         // Step 1: Check if user is logged in
-        // ================================================
         HttpSession session = request.getSession(false);
         Integer userID = (Integer) (session != null ? session.getAttribute("userID") : null);
         String role = (String) (session != null ? session.getAttribute("role") : null);
@@ -51,9 +22,7 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
         }
 
         try {
-            // ================================================
             // Step 2: Get supervision code from parameter
-            // ================================================
             String supervisionCode = request.getParameter("accessId");
             if (supervisionCode == null || supervisionCode.trim().isEmpty()) {
                 // Redirect to appropriate page based on role
@@ -66,15 +35,9 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
             }
 
             supervisionCode = supervisionCode.trim();
-
-            // ================================================
             // Step 3: Handle based on user role
-            // ================================================
             if ("Student".equals(role)) {
-                // ================================================
                 // STUDENT REVOCATION: Student revoking parent access
-                // ================================================
-                
                 // Verify student owns this supervision link
                 if (!isStudentAuthorized(userID, supervisionCode)) {
                     response.sendRedirect("supervisionAccess.jsp?error=You+are+not+authorized+to+revoke+this+link");
@@ -89,10 +52,7 @@ public class RevokeSupervisionAccessServlet extends HttpServlet {
                 }
                 
             } else if ("Parent".equals(role)) {
-                // ================================================
                 // PARENT REVOCATION: Parent unlink from student
-                // ================================================
-                
                 // Verify parent owns this supervision link
                 if (!isParentAuthorized(userID, supervisionCode)) {
                     response.sendRedirect("supervisionAccess.jsp?error=You+are+not+authorized+to+revoke+this+link");

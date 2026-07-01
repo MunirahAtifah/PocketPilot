@@ -3,32 +3,12 @@ package com.pocketpilot.util;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
-/**
- * ApplicationContextListener - Listens to application lifecycle events
- * 
- * Purpose: Initialize and cleanup application resources
- * 
- * Events:
- * - contextInitialized: Called when application starts
- * - contextDestroyed: Called when application stops
- * 
- * Responsibilities:
- * - Start notification scheduler
- * - Stop notification scheduler
- * - Log application events
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
     
     private static final String TAG = "[ApplicationContextListener]";
     
-    /**
-     * Called when the web application is deployed and ready to process requests
-     */
+    // Called when the web application is deployed and ready to process requests
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println(TAG + " Application started");
@@ -44,9 +24,7 @@ public class ApplicationContextListener implements ServletContextListener {
         }
     }
     
-    /**
-     * Called when the web application is about to be shut down
-     */
+    // Called when the web application is about to be shut down
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         System.out.println(TAG + " Application shutting down");

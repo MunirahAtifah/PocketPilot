@@ -9,9 +9,7 @@ import java.util.Map;
 public class SupervisionAccessDAO {
     // Database connection is managed by com.pocketpilot.util.DatabaseConnection
 
-    /**
-     * Validate if a supervision code exists and is valid
-     */
+    // Validate if a supervision code exists and is valid
     public boolean isValidSupervisionCode(String supervisionCode) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
@@ -32,9 +30,7 @@ public class SupervisionAccessDAO {
         }
     }
 
-    /**
-     * Get Student ID by Supervision Code
-     */
+    // Get Student ID by Supervision Code
     public int getStudentIDBySupervisionCode(String supervisionCode) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
@@ -59,9 +55,7 @@ public class SupervisionAccessDAO {
         }
     }
 
-    /**
-     * Check if supervision link already exists
-     */
+    // Check if supervision link already exists
     public boolean supervisionLinkExists(int studentID, int parentID) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
@@ -83,9 +77,7 @@ public class SupervisionAccessDAO {
         }
     }
 
-    /**
-     * Create supervision access record
-     */
+    // Create supervision access record
     public boolean createSupervisionAccess(int studentID, int parentID, String accessCode) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
@@ -106,9 +98,7 @@ public class SupervisionAccessDAO {
         }
     }
 
-    /**
-     * Get all supervision access records for a student
-     */
+    // Get all supervision access records for a student
     public List<Map<String, Object>> getStudentSupervisionAccess(int studentID) {
         List<Map<String, Object>> supervisionList = new ArrayList<>();
         
@@ -146,9 +136,7 @@ public class SupervisionAccessDAO {
         return supervisionList;
     }
 
-    /**
-     * Revoke supervision access
-     */
+    // Revoke supervision access
     public boolean revokeSupervisionAccess(int supervisionID) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();
@@ -167,9 +155,7 @@ public class SupervisionAccessDAO {
         }
     }
 
-    /**
-     * Check if parent has access to student's data
-     */
+    // Check if parent has access to student's data
     public boolean hasSupervisionAccess(int studentID, int parentID) {
         try {
             Connection conn = com.pocketpilot.util.DatabaseConnection.getConnection();

@@ -1,33 +1,6 @@
 package com.pocketpilot.model;
 
 import java.time.LocalDateTime;
-
-/**
- * ChancellorStudentAccess - Model class representing Chancellor-Student access relationship
- * 
- * Purpose: Manages permission and access control between Chancellor and Student
- * 
- * Features:
- *   - Tracks which students a Chancellor has access to
- *   - Maintains approval status (pending/approved)
- *   - ON/OFF toggle for enabling/disabling access
- *   - Tracks when access was created
- * 
- * Access Status Values:
- *   - "pending": Student hasn't approved Chancellor access yet
- *   - "approved": Chancellor has been granted access to student's financial data
- * 
- * Attributes:
- *   - accessID: Unique identifier for this access relationship
- *   - chancellorID: Chancellor who requested access
- *   - studentID: Student being supervised/monitored
- *   - accessStatus: "approved" or "pending"
- *   - isEnabled: Boolean ON/OFF toggle for access
- *   - createdDate: When this access relationship was created
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 public class ChancellorStudentAccess {
     // Instance variables representing database columns
     private int accessID;              // Primary key in ChancellorStudentAccess table
@@ -37,9 +10,7 @@ public class ChancellorStudentAccess {
     private boolean isEnabled;         // ON/OFF toggle for access
     private LocalDateTime createdDate; // Date/time when access was created
 
-    /**
-     * Default constructor - creates empty ChancellorStudentAccess object
-     */
+    // Default constructor - creates empty ChancellorStudentAccess object
     public ChancellorStudentAccess() {
     }
 
@@ -167,9 +138,7 @@ public class ChancellorStudentAccess {
         this.createdDate = createdDate;
     }
 
-    /**
-     * toString method for debugging
-     */
+    // toString method for debugging
     @Override
     public String toString() {
         return "ChancellorStudentAccess{" +

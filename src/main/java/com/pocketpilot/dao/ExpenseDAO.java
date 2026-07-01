@@ -8,29 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/**
- * ExpenseDAO - Data Access Object for Expense entity
- * 
- * Purpose: Handle all database operations for expenses
- * 
- * Responsibilities:
- *   - Create new expense records
- *   - Read expense data from database
- *   - Update existing expenses
- *   - Delete expenses (with ownership verification)
- *   - Query expenses by student and month
- *   - Calculate expense totals and aggregates
- * 
- * Features:
- *   - PreparedStatements for SQL injection prevention
- *   - Try-with-resources for automatic connection management
- *   - Ownership verification for security
- *   - Month/year filtering capabilities
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 public class ExpenseDAO {
 
     /**

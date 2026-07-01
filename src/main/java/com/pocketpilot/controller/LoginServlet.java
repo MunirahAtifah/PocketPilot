@@ -15,34 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import com.pocketpilot.model.User;
 import com.pocketpilot.util.DatabaseConnection;
-
-/**
- * LoginServlet - Handle User Login
- * * Purpose: Process login form submissions and authenticate users
- * * Features:
- * - Validates user credentials against Registration table
- * - Creates session with user information
- * - Redirects based on user role
- * - Handles login failures with error messages
- * - URL Mapping: POST /LoginServlet
- * - Request Parameters:
- * - email: String (user's email address)
- * - password: String (user password)
- * - rememberMe: boolean (optional, for future cookie implementation)
- * - Session Attributes Created:
- * - userID: Integer (user's unique ID)
- * - username: String (user's username)
- * - role: String ('Student', 'Parent', 'IT_Support', 'Student_Counsellor')
- * - email: String (user's email)
- * - Redirect Destinations:
- * - Student → studentDashboard.jsp
- * - Parent → parentDashboard.jsp
- * - IT_Support → staffDashboard.jsp
- * - Student_Counsellor → studentCounsellorDashboard.jsp
- * - Failed → login.jsp?error=Invalid+credentials
- * - @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -72,10 +44,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-
-        // ================================================
         // Step 1: Get parameters from request
-        // ================================================
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
@@ -91,10 +60,7 @@ public class LoginServlet extends HttpServlet {
         System.out.println("=== LoginServlet ===");
         System.out.println("Email/Username: " + email);
         System.out.println("Remember Me: " + rememberMe);
-
-        // ================================================
         // Step 2: Validate input
-        // ================================================
         if (email == null || email.isEmpty()) {
             redirectWithError(response, "Email is required");
             return;
@@ -104,20 +70,14 @@ public class LoginServlet extends HttpServlet {
             redirectWithError(response, "Password is required");
             return;
         }
-
-        // ================================================
         // Step 3: Query database for user
-        // ================================================
         try {
             User user = authenticateUser(email, password);
 
             if (user != null) {
                 // Ensure profile exists (self-healing broken/missing profiles)
                 com.pocketpilot.dao.UserDAO.ensureProfileExists(user.getUserID(), user.getRole(), user.getUsername());
-
-                // ================================================
                 // Step 4: Create session with user information
-                // ================================================
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userID", user.getUserID());
                 session.setAttribute("username", user.getUsername());
@@ -126,10 +86,7 @@ public class LoginServlet extends HttpServlet {
 
                 System.out.println("Login successful for: " + user.getUsername() + 
                                    " (Role: " + user.getRole() + ")");
-
-                // ================================================
                 // Step 5: Redirect based on user role
-                // ================================================
                 String role = user.getRole();
                 String redirectUrl = "";
 
@@ -147,9 +104,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(redirectUrl);
 
             } else {
-                // ================================================
                 // Step 6: Login failed - invalid credentials
-                // ================================================
                 System.out.println("Login failed for email: " + email);
                 redirectWithError(response, "Invalid credentials");
             }

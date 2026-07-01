@@ -9,23 +9,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.pocketpilot.util.DatabaseConnection;
-
-/**
- * ParentSupervisionDAO - Data Access Object for Parent Child Relationships
- * 
- * Purpose: Handle parent-child connections via supervision codes
- * 
- * Workflow:
- *   - Student generates unique 8-character code for each parent connection
- *   - Parent enters the code to connect to student
- *   - Parent can connect to multiple students (multiple children)
- *   - Parent sees all connected children and can click to view budget/expense
- */
 public class ParentSupervisionDAO {
     
-    /**
-     * Generate a unique 8-character supervision code
-     */
+    // Generate a unique 8-character supervision code
     private static String generateSupervisionCode() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder code = new StringBuilder();
@@ -38,9 +24,7 @@ public class ParentSupervisionDAO {
         return code.toString();
     }
 
-    /**
-     * Create a new supervision code for a student to share with a parent
-     */
+    // Create a new supervision code for a student to share with a parent
     public static String createSupervisionCode(int studentID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -84,9 +68,7 @@ public class ParentSupervisionDAO {
         }
     }
 
-    /**
-     * Connect a parent to a student using supervision code
-     */
+    // Connect a parent to a student using supervision code
     public static boolean connectParentToStudent(int parentID, String supervisionCode) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -144,9 +126,7 @@ public class ParentSupervisionDAO {
         }
     }
 
-    /**
-     * Get all students connected to a parent
-     */
+    // Get all students connected to a parent
     public static List<Integer> getConnectedStudentIDs(int parentID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -176,9 +156,7 @@ public class ParentSupervisionDAO {
         return studentIDs;
     }
 
-    /**
-     * Get all pending supervision codes for a student (codes not yet claimed by parent)
-     */
+    // Get all pending supervision codes for a student (codes not yet claimed by parent)
     public static List<String> getPendingCodesForStudent(int studentID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -209,9 +187,7 @@ public class ParentSupervisionDAO {
         return codes;
     }
 
-    /**
-     * Get parent's access to a specific student
-     */
+    // Get parent's access to a specific student
     public static boolean hasAccessToStudent(int parentID, int studentID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -241,9 +217,7 @@ public class ParentSupervisionDAO {
         }
     }
 
-    /**
-     * Revoke parent's access to a student
-     */
+    // Revoke parent's access to a student
     public static boolean revokeAccess(int parentID, int studentID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;

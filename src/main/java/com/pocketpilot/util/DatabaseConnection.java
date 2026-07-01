@@ -3,54 +3,6 @@ package com.pocketpilot.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-/**
- * DatabaseConnection - Utility class for database connectivity
- * 
- * Purpose: Manage MySQL database connections for the PP application
- * 
- * IMPORTANT - DATABASE SCOPE:
- * ──────────────────────────
- * This class is exclusively for the PocketPilot (PP) application.
- * It connects ONLY to the 'PP' database.
- * 
- * All database operations for PP must use this connection class.
- * This ensures:
- *   ✓ Centralized database configuration
- *   ✓ Single database scope (no cross-database queries)
- *   ✓ Consistent connection management
- *   ✓ Security isolation from other applications
- * 
- * SECURITY & PASSWORD HANDLING:
- * ────────────────────────────
- * ✓ Passwords are stored securely in the 'PP' database
- * ✓ Passwords are NEVER exposed through this connection class
- * ✓ Staff interface displays MASKED passwords (e.g., a****b)
- * ✓ Actual passwords remain encrypted in the database
- * ✓ Password masking happens at the UI layer only
- * 
- * Features:
- *   - Loads MySQL JDBC driver
- *   - Creates and returns database connections
- *   - Centralizes database configuration
- *   - Handles connection errors
- *   - PocketPilot (PP) application only
- * 
- * Database Configuration:
- *   - Database Name: PP (PP exclusive)
- *   - Host: localhost
- *   - Port: 3306
- *   - Username: root
- *   - Password: (empty for XAMPP default)
- * 
- * Usage:
- *   Connection conn = DatabaseConnection.getConnection();
- *   // Use connection for PP database operations
- *   conn.close();
- * 
- * @author PP Development Team
- * @version 1.0
- */
 public class DatabaseConnection {
 
     /** MySQL JDBC Driver Class */
@@ -61,11 +13,7 @@ public class DatabaseConnection {
     private static String resolvedUser = "root";
     private static String resolvedPassword = "";
     private static final Object lock = new Object();
-
-    // ================================================
     // Static Initializer - Load JDBC Driver
-    // ================================================
-    
     static {
         try {
             // Load MySQL JDBC Driver
@@ -144,11 +92,7 @@ public class DatabaseConnection {
             System.err.println("⚠ All database connection attempts failed. Falling back to default: " + resolvedUrl);
         }
     }
-
-    // ================================================
     // Public Methods
-    // ================================================
-
     /**
      * Get a database connection
      * 

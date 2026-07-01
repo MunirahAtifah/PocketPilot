@@ -6,39 +6,13 @@ import java.util.Random;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
-
-/**
- * GenerateSupervisionCodeServlet - Generate Supervision Code for Student
- * 
- * Purpose: Allow students to generate a unique code that parents can use to link supervision
- * 
- * Features:
- *   - Generates unique 6-character alphanumeric codes
- *   - Validates user is logged in and is a student
- *   - Checks for existing codes (prevent duplicates)
- *   - Inserts code into SupervisionAccess table
- *   - Provides success/error messages
- * 
- * URL Mapping: POST /GenerateSupervisionCodeServlet
- * 
- * Session Requirements:
- *   - userID: Must be set in session
- *   - role: Must be "Student"
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/GenerateSupervisionCodeServlet")
 public class GenerateSupervisionCodeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle POST requests - Generate supervision code
-     */
+    // Handle POST requests - Generate supervision code
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ================================================
         // Step 1: Check if user is logged in and is a student
-        // ================================================
         HttpSession session = request.getSession(false);
         Integer userID = (Integer) (session != null ? session.getAttribute("userID") : null);
         String role = (String) (session != null ? session.getAttribute("role") : null);
@@ -56,33 +30,22 @@ public class GenerateSupervisionCodeServlet extends HttpServlet {
         }
 
         try {
-            // ================================================
             // Step 2: Get student ID from the userID
-            // ================================================
             int studentID = getStudentID(userID);
             if (studentID <= 0) {
                 response.sendRedirect("supervisionAccess.jsp?error=Student+profile+not+found");
                 return;
             }
-
-            // ================================================
             // Step 3: Check if student already has a code
-            // ================================================
             String existingCode = getExistingCode(studentID);
             if (existingCode != null && !existingCode.isEmpty()) {
                 // Student already has a code - inform them
                 response.sendRedirect("supervisionAccess.jsp?success=Code+already+exists");
                 return;
             }
-
-            // ================================================
             // Step 4: Generate unique 6-character alphanumeric code
-            // ================================================
             String generatedCode = generateUniqueCode();
-
-            // ================================================
             // Step 5: Insert code into SupervisionAccess table
-            // ================================================
             if (insertSupervisionCode(generatedCode, studentID)) {
                 // Success - redirect with success message
                 response.sendRedirect("supervisionAccess.jsp?success=Code+created+successfully");

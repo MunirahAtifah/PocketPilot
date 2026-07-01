@@ -1,21 +1,4 @@
 package com.pocketpilot.model;
-
-/**
- * User - Model class representing a user entity
- * 
- * Purpose: Encapsulates user data and provides getters/setters
- * 
- * Attributes:
- *   - userID: Unique identifier for user
- *   - username: User's unique username
- *   - email: User's email address
- *   - role: User's role ('Student', 'Parent', 'IT_Support')
- *   - phoneNumber: User's phone number (optional)
- *   - password: User's password (optional, should not be exposed)
- * 
- * @author PP Development Team
- * @version 1.0
- */
 public class User {
     private int userID;
     private String username;
@@ -24,15 +7,11 @@ public class User {
     private String phoneNumber;
     private String password;
 
-    /**
-     * Default constructor
-     */
+    // Default constructor
     public User() {
     }
 
-    /**
-     * Constructor with basic fields
-     */
+    // Constructor with basic fields
     public User(int userID, String username, String email, String role) {
         this.userID = userID;
         this.username = username;
@@ -40,9 +19,7 @@ public class User {
         this.role = role;
     }
 
-    /**
-     * Constructor with all fields
-     */
+    // Constructor with all fields
     public User(int userID, String username, String email, String role, String phoneNumber, String password) {
         this.userID = userID;
         this.username = username;
@@ -102,9 +79,7 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * toString method for debugging
-     */
+    // toString method for debugging
     @Override
     public String toString() {
         return "User{" +

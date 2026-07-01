@@ -5,54 +5,13 @@ import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
-
-/**
- * LinkSupervisionCodeServlet - Link Parent to Student via Supervision Code
- * 
- * Purpose: Allow parents to link themselves to a student account using a code
- * 
- * Features:
- *   - Validates parent login
- *   - Accepts supervision code and relationship from parent
- *   - Validates code exists and student can be found
- *   - Prevents duplicate links
- *   - Updates SupervisionAccess table with parentID and relationship
- *   - Provides success/error messages
- * 
- * URL Mapping: POST /LinkSupervisionCodeServlet
- * 
- * Request Parameters:
- *   - supervisionCode: String (code provided by student, converted to uppercase)
- *   - relationship: String (e.g., "Father", "Mother", "Guardian")
- * 
- * Session Requirements:
- *   - userID: Must be set in session
- *   - role: Must be "Parent"
- *   - username: Used for logging
- * 
- * Flow:
- *   1. Validate parent is logged in
- *   2. Get parent profile from Parent table
- *   3. Validate supervision code exists
- *   4. Get student ID associated with code
- *   5. Check if link doesn't already exist
- *   6. Update SupervisionAccess with parent info and relationship
- *   7. Redirect with success or error message
- * 
- * @author PocketPilot Development Team
- * @version 1.0
- */
 @WebServlet("/LinkSupervisionCodeServlet")
 public class LinkSupervisionCodeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Handle POST requests - Link parent to student via code
-     */
+    // Handle POST requests - Link parent to student via code
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ================================================
         // Step 1: Check if user is logged in and is a parent
-        // ================================================
         HttpSession session = request.getSession(false);
         Integer userID = (Integer) (session != null ? session.getAttribute("userID") : null);
         String role = (String) (session != null ? session.getAttribute("role") : null);
@@ -71,74 +30,48 @@ public class LinkSupervisionCodeServlet extends HttpServlet {
         }
 
         try {
-            // ================================================
             // Step 2: Get parameters from request
-            // ================================================
             String supervisionCode = request.getParameter("supervisionCode");
             String relationship = request.getParameter("relationship");
             
             System.out.println("[LinkSupervisionCodeServlet] Code: " + supervisionCode + ", Relationship: " + relationship);
-            
-            // ================================================
             // Step 3: Validate supervision code is provided
-            // ================================================
             if (supervisionCode == null || supervisionCode.trim().isEmpty()) {
                 response.sendRedirect("supervisionAccess.jsp?error=Please+enter+a+supervision+code");
                 return;
             }
-            
-            // ================================================
             // Step 4: Validate relationship is provided
-            // ================================================
             if (relationship == null || relationship.trim().isEmpty()) {
                 response.sendRedirect("supervisionAccess.jsp?error=Please+select+your+relationship");
                 return;
             }
-
-            // ================================================
             // Step 5: Normalize input (trim and convert to uppercase)
-            // ================================================
             supervisionCode = supervisionCode.trim().toUpperCase();
             relationship = relationship.trim();
             
             System.out.println("[LinkSupervisionCodeServlet] Processed Code: " + supervisionCode + ", Relationship: " + relationship);
-
-            // ================================================
             // Step 6: Get parent ID from userID
-            // ================================================
             int parentID = getParentID(userID);
             System.out.println("[LinkSupervisionCodeServlet] Parent ID: " + parentID);
             if (parentID <= 0) {
                 response.sendRedirect("supervisionAccess.jsp?error=Parent+profile+not+found");
                 return;
             }
-
-            // ================================================
             // Step 7: Validate code exists and get student ID
-            // ================================================
             int studentID = getStudentIDByCode(supervisionCode);
             System.out.println("[LinkSupervisionCodeServlet] Student ID: " + studentID);
             if (studentID <= 0) {
                 response.sendRedirect("supervisionAccess.jsp?error=Invalid+supervision+code");
                 return;
             }
-
-            // ================================================
             // Step 8: Check if parent-student link already exists
-            // ================================================
             if (alreadyLinked(studentID, parentID)) {
                 response.sendRedirect("supervisionAccess.jsp?error=You+are+already+linked+to+this+child");
                 return;
             }
-
-            // ================================================
             // Step 9: Get student username for display in success message
-            // ================================================
             String studentUsername = getStudentUsername(studentID);
-
-            // ================================================
             // Step 10: Update SupervisionAccess with parentID and relationship
-            // ================================================
             System.out.println("[LinkSupervisionCodeServlet] Updating with Code: " + supervisionCode + ", ParentID: " + parentID + ", Relationship: " + relationship);
             if (updateSupervisionLink(supervisionCode, parentID, relationship)) {
                 // Success - redirect to parent supervision page with success message
