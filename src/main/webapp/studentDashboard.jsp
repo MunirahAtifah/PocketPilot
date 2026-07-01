@@ -92,17 +92,33 @@
             budgetUsagePercent = (totalExpense / totalBudget) * 100;
         }
 
-        // 5. Generate AI Guidance based on actual budget & expense ratios
+        // 5. Generate AI Guidance using the central Groq AI Service
         if (totalBudget == 0 && totalExpense == 0) {
             aiGuidance = "No budget or expense records found for " + selectedMonth + ". Get started by recording a budget or logging your expenses!";
         } else if (totalBudget == 0) {
             aiGuidance = "You have recorded RM" + String.format("%.2f", totalExpense) + " in expenses, but have not set a budget for " + selectedMonth + ". Go to the Budget tab to set limits!";
-        } else if (budgetUsagePercent > 100) {
-            aiGuidance = "Over-budget Warning: You have exceeded your monthly limit by RM" + String.format("%.2f", totalExpense - totalBudget) + " (" + String.format("%.1f", budgetUsagePercent) + "% utilization). Please review your category chart to locate major leaks.";
-        } else if (budgetUsagePercent > 85) {
-            aiGuidance = "Tight Budget Alert: You have utilized " + String.format("%.1f", budgetUsagePercent) + "% of your budget. With only RM" + String.format("%.2f", totalBudget - totalExpense) + " left, freeze non-essential spending.";
         } else {
-            aiGuidance = "Healthy Balance: Your spending is under control at " + String.format("%.1f", budgetUsagePercent) + "% of your budget. You have RM" + String.format("%.2f", totalBudget - totalExpense) + " remaining. Excellent job keeping to your goals!";
+            String surplusStatus = "balanced";
+            double surplusDeficitAmount = totalBudget - totalExpense;
+            if (surplusDeficitAmount > 10.0) {
+                surplusStatus = "surplus";
+            } else if (surplusDeficitAmount < -10.0) {
+                surplusStatus = "deficit";
+            }
+
+            Map<String, String> dummyTrend = new HashMap<>();
+            dummyTrend.put("trend", "Stable");
+            dummyTrend.put("percentage", "0%");
+
+            aiGuidance = com.pocketpilot.util.AIService.generateAIGuidance(
+                surplusStatus,
+                budgetUsagePercent,
+                dailyAverage,
+                totalBudget,
+                surplusDeficitAmount,
+                dummyTrend,
+                categoryExpenses
+            );
         }
     } catch (SQLException e) {
         System.err.println("SQL Error loading student dashboard metrics: " + e.getMessage());
