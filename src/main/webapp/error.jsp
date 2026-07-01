@@ -47,7 +47,7 @@
             padding: 20px;
         }
         .error-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: var(--card-border);
             border-radius: 24px;
@@ -94,7 +94,7 @@
             box-shadow: 0 12px 30px rgba(107, 70, 193, 0.4);
         }
         .btn-secondary {
-            background: white;
+            background: var(--card-bg);
             color: var(--primary);
             border: 2px solid rgba(107, 70, 193, 0.15);
             margin-left: 10px;

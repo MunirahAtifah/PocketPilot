@@ -51,7 +51,7 @@
 
         /* Nav Bar */
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -116,7 +116,7 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -138,7 +138,7 @@
 
         /* Students Table */
         .students-section {
-            background: white;
+            background: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -291,7 +291,7 @@
             width: 26px;
             left: 4px;
             bottom: 4px;
-            background-color: white;
+            background-color: var(--card-bg);
             transition: 0.4s;
             border-radius: 50%;
         }
@@ -306,7 +306,7 @@
 
         .student-name {
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
         }
 
         .student-username {

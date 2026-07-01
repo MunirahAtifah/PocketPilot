@@ -42,7 +42,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: var(--card-border);
@@ -177,7 +177,7 @@
 
         .btn-secondary {
             text-decoration: none;
-            background: white;
+            background: var(--card-bg);
             color: var(--primary);
             padding: 16px 38px;
             border-radius: 50px;
@@ -276,7 +276,7 @@
         }
 
         .mock-widget {
-            background: white;
+            background: var(--card-bg);
             border-radius: 14px;
             padding: 15px;
             border: var(--card-border);
@@ -287,7 +287,7 @@
         .mock-widget h4 {
             font-size: 13px;
             text-transform: uppercase;
-            color: #7F8C8D;
+            color: var(--text-secondary);
             margin-bottom: 8px;
             font-weight: 700;
             letter-spacing: 0.5px;
@@ -323,7 +323,7 @@
             border-radius: 10px;
             padding: 12px;
             font-size: 12px;
-            color: #4C1D95;
+            color: var(--text-primary);
             display: flex;
             gap: 10px;
             align-items: flex-start;
@@ -335,7 +335,7 @@
         .stats-strip {
             display: flex;
             justify-content: space-around;
-            background: white;
+            background: var(--card-bg);
             padding: 30px 4%;
             border-top: var(--card-border);
             border-bottom: var(--card-border);
@@ -358,14 +358,14 @@
         .stat-item .label {
             font-size: 13px;
             font-weight: 600;
-            color: #7F8C8D;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         /* Interactive Simulator Section */
         .simulator-section {
-            background: white;
+            background: var(--card-bg);
             border-radius: 30px;
             max-width: 1050px;
             margin: 0 auto 80px auto;
@@ -437,7 +437,7 @@
         }
 
         .simulation-output {
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
             border-left: 5px solid #FF9F43;
@@ -480,7 +480,7 @@
         }
 
         .features-header p {
-            color: #7F8C8D;
+            color: var(--text-secondary);
             font-size: 17px;
             max-width: 600px;
             margin: 10px auto 0 auto;
@@ -493,7 +493,7 @@
         }
 
         .feature-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 35px 30px;
             border: var(--card-border);
@@ -675,7 +675,7 @@
             <div style="display: flex; gap: 15px; align-items: center; margin-top: 15px;">
                 <div>
                     <h4 style="font-weight: 700; color: var(--dark);">Estimate Your Surplus</h4>
-                    <p style="margin-bottom: 0; font-size: 14px; color: #7F8C8D;">See how even minor cuts compound into healthy savings.</p>
+                    <p style="margin-bottom: 0; font-size: 14px; color: var(--text-secondary);">See how even minor cuts compound into healthy savings.</p>
                 </div>
             </div>
         </div>

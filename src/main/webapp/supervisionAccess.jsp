@@ -128,7 +128,7 @@
             font-weight: 500;
         }
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -180,7 +180,7 @@
             padding: 0 20px;
         }
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
@@ -197,7 +197,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         .btn-primary {
@@ -371,7 +371,7 @@
             <div class="card">
                 <h3>Pending Counsellor Requests</h3>
                 <% if (pendingCounsellors.isEmpty()) { %>
-                    <p style="color: #7F8C8D; font-style: italic;">No pending counsellor supervision requests.</p>
+                    <p style="color: var(--text-secondary); font-style: italic;">No pending counsellor supervision requests.</p>
                 <% } else { %>
                     <table class="table">
                         <thead>
@@ -405,7 +405,7 @@
             <div class="card">
                 <h3>Linked Counsellors</h3>
                 <% if (approvedCounsellors.isEmpty()) { %>
-                    <p style="color: #7F8C8D; font-style: italic;">No counsellors linked to your account yet.</p>
+                    <p style="color: var(--text-secondary); font-style: italic;">No counsellors linked to your account yet.</p>
                 <% } else { %>
                     <table class="table">
                         <thead>
@@ -456,7 +456,7 @@
                 <% if (hasPendingCode) { %>
                     <p style="font-weight: bold; color: var(--primary-color);">Your active pending code is:</p>
                     <div class="code-box"><%= activeCode %></div>
-                    <p style="color: #7F8C8D; font-size: 13px;">Provide this 6-character code to your parent to link accounts.</p>
+                    <p style="color: var(--text-secondary); font-size: 13px;">Provide this 6-character code to your parent to link accounts.</p>
                 <% } else { %>
                     <form method="POST" action="GenerateSupervisionCodeServlet">
                         <button type="submit" class="btn-primary">Generate Supervision Code</button>
@@ -476,7 +476,7 @@
                     }
                 %>
                 <% if (linkedParents.isEmpty()) { %>
-                    <p style="color: #7F8C8D; font-style: italic;">No parents have linked to your account yet.</p>
+                    <p style="color: var(--text-secondary); font-style: italic;">No parents have linked to your account yet.</p>
                 <% } else { %>
                     <table class="table">
                         <thead>
@@ -541,7 +541,7 @@
             <div class="card">
                 <h3>Linked Children</h3>
                 <% if (supervisionLinks.isEmpty()) { %>
-                    <p style="color: #7F8C8D; font-style: italic;">No children linked to your account yet. Use the form above to link.</p>
+                    <p style="color: var(--text-secondary); font-style: italic;">No children linked to your account yet. Use the form above to link.</p>
                 <% } else { %>
                     <table class="table">
                         <thead>

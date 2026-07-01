@@ -155,7 +155,7 @@
             font-weight: 500;
         }
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -210,7 +210,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 30px;
-            background: white;
+            background: var(--card-bg);
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -244,7 +244,7 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: white;
+            background: var(--card-bg);
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -258,7 +258,7 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
         .stat-card h3 {
-            color: #7F8C8D;
+            color: var(--text-secondary);
             font-size: 13px;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -289,7 +289,7 @@
             gap: 8px;
         }
         .ai-guidance p {
-            color: #4C1D95;
+            color: var(--text-primary);
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 0;
@@ -302,7 +302,7 @@
             margin-bottom: 30px;
         }
         .chart-container {
-            background: white;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -313,7 +313,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         .chart-wrapper {
@@ -358,7 +358,7 @@
         
         <!-- Notification Center Card -->
         <% if (!unreadNotifications.isEmpty()) { %>
-        <div class="notification-center" id="notificationCenter" style="margin-bottom: 30px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); border-left: 5px solid #FF9F43; transition: all 0.3s ease;">
+        <div class="notification-center" id="notificationCenter" style="margin-bottom: 30px; background: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); border-left: 5px solid #FF9F43; transition: all 0.3s ease;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #FFF3E0; padding-bottom: 10px;">
                 <h3 style="color: #D35400; margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
                     Notification Center (<span id="notifCount"><%= unreadNotifications.size() %></span>)

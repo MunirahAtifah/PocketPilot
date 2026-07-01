@@ -124,7 +124,7 @@
         }
         
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -224,7 +224,7 @@
         }
         
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
@@ -243,7 +243,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         
@@ -353,7 +353,7 @@
         }
         
         .stat-card {
-            background: white;
+            background: var(--card-bg);
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -369,7 +369,7 @@
         }
         
         .stat-card h4 {
-            color: #7F8C8D;
+            color: var(--text-secondary);
             font-size: 13px;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -398,7 +398,7 @@
 
     <div class="container">
         <!-- Month Selector Form -->
-        <div class="month-selector" style="margin-bottom: 25px; background: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: fit-content;">
+        <div class="month-selector" style="margin-bottom: 25px; background: var(--card-bg); padding: 15px 25px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: fit-content;">
             <form method="GET" action="budget.jsp">
                 <label for="monthInput" style="color: var(--primary-color); font-weight: 700; font-size: 14px; margin-right: 10px;">Select Month/Year: </label>
                 <input type="month" id="monthInput" name="month" value="<%= selectedMonth %>" onchange="this.form.submit()" style="padding: 8px 12px; border: 2px solid var(--border-color); border-radius: 6px; color: var(--primary-color); font-weight: 600; font-size: 13px; cursor: pointer; outline: none; transition: border-color 0.3s; background-color: var(--card-bg);">

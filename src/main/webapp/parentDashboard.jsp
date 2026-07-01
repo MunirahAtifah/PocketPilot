@@ -254,7 +254,7 @@
             font-weight: 500;
         }
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -309,7 +309,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 30px;
-            background: white;
+            background: var(--card-bg);
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -343,7 +343,7 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: white;
+            background: var(--card-bg);
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -357,7 +357,7 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
         .stat-card h3 {
-            color: #7F8C8D;
+            color: var(--text-secondary);
             font-size: 13px;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -376,7 +376,7 @@
             margin-bottom: 35px;
         }
         .chart-container {
-            background: white;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -387,7 +387,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         .chart-wrapper {
@@ -395,7 +395,7 @@
             height: 320px;
         }
         .students-table {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -407,7 +407,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         table {

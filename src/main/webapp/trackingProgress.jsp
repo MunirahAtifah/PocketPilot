@@ -68,7 +68,7 @@
             font-weight: 500;
         }
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
@@ -123,7 +123,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 30px;
-            background: white;
+            background: var(--card-bg);
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -158,7 +158,7 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: white;
+            background: var(--card-bg);
             padding: 25px 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -178,7 +178,7 @@
             border-left-color: #28a745;
         }
         .stat-card h3 {
-            color: #7F8C8D;
+            color: var(--text-secondary);
             font-size: 13px;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -215,7 +215,7 @@
             gap: 8px;
         }
         .ai-guidance p {
-            color: #4C1D95;
+            color: var(--text-primary);
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 0;
@@ -238,7 +238,7 @@
             margin-bottom: 35px;
         }
         .chart-container {
-            background: white;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -249,7 +249,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         .chart-wrapper {
@@ -257,7 +257,7 @@
             height: 320px;
         }
         .table-section {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -269,7 +269,7 @@
             margin-bottom: 20px;
             font-size: 20px;
             font-weight: 700;
-            border-bottom: 2px solid #F3E8FF;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         table {
@@ -434,7 +434,7 @@
         <div class="table-section">
             <h3>Breakdown of Expenses for <%= reportMonth %></h3>
             <% if (expenses == null || expenses.isEmpty()) { %>
-                <p style="color: #7F8C8D; font-style: italic; text-align: center; padding: 20px;">No expenses recorded for this month.</p>
+                <p style="color: var(--text-secondary); font-style: italic; text-align: center; padding: 20px;">No expenses recorded for this month.</p>
             <% } else { %>
                 <table>
                     <thead>
@@ -497,7 +497,7 @@
         <div class="table-section">
             <h3>Breakdown of Budgets for <%= reportMonth %></h3>
             <% if (budgets == null || budgets.isEmpty()) { %>
-                <p style="color: #7F8C8D; font-style: italic; text-align: center; padding: 20px;">No budgets set for this month.</p>
+                <p style="color: var(--text-secondary); font-style: italic; text-align: center; padding: 20px;">No budgets set for this month.</p>
             <% } else { %>
                 <table>
                     <thead>
