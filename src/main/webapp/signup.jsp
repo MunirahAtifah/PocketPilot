@@ -172,7 +172,8 @@
             right: 15px;
             cursor: pointer;
             color: var(--primary-color);
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 600;
             user-select: none;
             z-index: 10;
         }
