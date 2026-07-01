@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
     <style>
         * {
             margin: 0;
@@ -15,18 +17,20 @@
         
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: var(--text-color);
         }
         
         .signup-container {
-            background: white;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
             max-width: 500px;
             width: 100%;
             padding: 40px;
@@ -38,13 +42,13 @@
         }
         
         .signup-header h1 {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             margin-bottom: 10px;
         }
         
         .signup-header p {
-            color: #999;
+            color: var(--primary-light);
             font-size: 14px;
         }
         
@@ -54,7 +58,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -64,18 +68,20 @@
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
             font-family: inherit;
+            color: var(--text-color);
+            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--input-bg);
         }
         
         .form-row {
@@ -93,7 +99,7 @@
         .btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -114,11 +120,11 @@
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
-            color: #666;
+            color: var(--primary-light);
         }
         
         .login-link a {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
         }
@@ -165,8 +171,8 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: #6B46C1;
-            font-size: 18px;
+            color: var(--primary-color);
+            font-size: 14px;
             user-select: none;
             z-index: 10;
         }
@@ -174,7 +180,7 @@
         .dynamic-fields {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #E0D5C7;
+            border-top: 1px solid var(--border-color);
         }
 
         .field-hidden {
@@ -182,16 +188,17 @@
         }
 
         .role-description {
-            background: #F5F1E8;
+            background: var(--input-bg);
             padding: 10px;
             border-radius: 8px;
             font-size: 12px;
-            color: #666;
+            color: var(--primary-light);
             margin-top: 5px;
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" onclick="toggleTheme()">🌓 Theme</button>
     <%
         // Check if user is already logged in
         if (session.getAttribute("userID") != null) {

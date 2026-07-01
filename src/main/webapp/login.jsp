@@ -6,28 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PocketPilot</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            color: var(--text-color);
         }
         
         .back-link {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             display: flex;
@@ -38,12 +34,14 @@
         
         .back-link:hover {
             transform: translateX(-5px);
+            color: var(--primary-light);
         }
         
         .login-container {
-            background: #F5F1E8;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--card-shadow);
             width: 100%;
             max-width: 450px;
             padding: 40px;
@@ -55,13 +53,13 @@
         }
         
         .logo-section h1 {
-            color: #6B46C1;
+            color: var(--primary-color);
             font-size: 32px;
             margin-bottom: 10px;
         }
         
         .logo-section p {
-            color: #8B5CF6;
+            color: var(--primary-light);
             font-size: 14px;
         }
         
@@ -71,7 +69,7 @@
         
         .form-group label {
             display: block;
-            color: #6B46C1;
+            color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
@@ -80,22 +78,24 @@
         .form-group input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #E0D5C7;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
+            color: var(--text-color);
+            background: var(--input-bg);
             transition: border-color 0.3s;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
+            border-color: var(--primary-color);
+            background-color: var(--input-bg);
         }
         
         .login-button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -120,13 +120,13 @@
         }
         
         .links a {
-            color: #8B5CF6;
+            color: var(--primary-light);
             text-decoration: none;
             transition: color 0.3s;
         }
         
         .links a:hover {
-            color: #6B46C1;
+            color: var(--primary-color);
             text-decoration: underline;
         }
         
@@ -150,7 +150,6 @@
             border-left: 4px solid #2e7d32;
         }
         
-        /* Password container with eye toggle */
         .password-container {
             position: relative;
             display: flex;
@@ -166,74 +165,15 @@
             position: absolute;
             right: 15px;
             cursor: pointer;
-            color: #6B46C1;
-            font-size: 18px;
+            color: var(--primary-color);
+            font-size: 14px;
             user-select: none;
             z-index: 10;
         }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            color: #6B46C1;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #E0D5C7;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #6B46C1;
-            background-color: #FFFBF0;
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: inherit;
-        }
-        
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(107, 70, 193, 0.4);
-        }
-        
-        .links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 13px;
-        }
-        
-        .links a {
-            color: #8B5CF6;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        </style>
+    </style>
 </head>
 <body>
+    <button class="theme-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" onclick="toggleTheme()">🌓 Theme</button>
     <a href="index.jsp" class="back-link">← Back to Home</a>
     
     <div class="login-container">

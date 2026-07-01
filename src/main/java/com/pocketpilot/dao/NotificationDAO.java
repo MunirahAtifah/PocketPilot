@@ -24,9 +24,7 @@ import java.util.*;
  */
 public class NotificationDAO {
     
-    // ============================================================
-    // CREATE NOTIFICATIONS
-    // ============================================================
+    // Create notifications
     
     /**
      * Create a new notification in the database
@@ -71,9 +69,7 @@ public class NotificationDAO {
         return count;
     }
     
-    // ============================================================
-    // RETRIEVE NOTIFICATIONS
-    // ============================================================
+    // Retrieve notifications
     
     /**
      * Get all unread notifications for a student
@@ -164,9 +160,7 @@ public class NotificationDAO {
         return 0;
     }
     
-    // ============================================================
-    // UPDATE NOTIFICATIONS
-    // ============================================================
+    // Update notifications
     
     /**
      * Mark a notification as read
@@ -213,9 +207,7 @@ public class NotificationDAO {
         }
     }
     
-    // ============================================================
-    // DELETE NOTIFICATIONS
-    // ============================================================
+    // Delete notifications
     
     /**
      * Delete a notification
@@ -262,9 +254,7 @@ public class NotificationDAO {
         }
     }
     
-    // ============================================================
-    // NOTIFICATION PREFERENCES
-    // ============================================================
+    // Notification preferences
     
     /**
      * Get notification preferences for a student
@@ -328,9 +318,7 @@ public class NotificationDAO {
         }
     }
     
-    // ============================================================
-    // HELPER METHODS
-    // ============================================================
+    // Helper methods
     
     /**
      * Map ResultSet row to Notification object

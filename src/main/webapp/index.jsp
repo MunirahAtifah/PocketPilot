@@ -9,8 +9,10 @@
     <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
     <style>
-        /* CSS Reset & Variables */
+        /* CSS Reset & Variables mapped to global theme */
         * {
             margin: 0;
             padding: 0;
@@ -18,19 +20,23 @@
         }
         
         :root {
-            --primary: #6B46C1;
-            --primary-light: #8B5CF6;
+            --primary: var(--primary-color);
+            --primary-light: var(--primary-light);
             --accent: #FF7A00;
-            --dark: #1A0B2E;
-            --bg-gradient: radial-gradient(circle at 0% 0%, #F8F5FF 0%, #FFFDF9 70%, #F5F1E8 100%);
-            --card-border: 1px solid rgba(224, 213, 199, 0.45);
-            --shadow: 0 10px 30px rgba(107, 70, 193, 0.08);
+            --dark: var(--text-color);
+            --bg-gradient-val: var(--bg-gradient);
+            --card-border: 1px solid var(--border-color);
+            --shadow: var(--card-shadow);
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-bg: var(--card-bg);
+            --card-bg-val: var(--card-bg);
+            --card-sub-bg: var(--input-bg);
+            --text-muted: var(--primary-light);
         }
 
         body {
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-gradient);
+            background: var(--bg-gradient-val);
             background-attachment: fixed;
             color: var(--dark);
             line-height: 1.6;
@@ -42,7 +48,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--nav-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: var(--card-border);
@@ -203,7 +209,7 @@
         }
 
         .mock-dashboard {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--card-bg-val);
             backdrop-filter: blur(20px);
             border: var(--card-border);
             border-radius: 24px;
@@ -276,7 +282,7 @@
         }
 
         .mock-widget {
-            background: white;
+            background: var(--card-sub-bg);
             border-radius: 14px;
             padding: 15px;
             border: var(--card-border);
@@ -318,12 +324,12 @@
         }
 
         .mock-ai-bubble {
-            background: #F3E8FF;
+            background: var(--input-bg);
             border-left: 4px solid var(--primary-light);
             border-radius: 10px;
             padding: 12px;
             font-size: 12px;
-            color: #4C1D95;
+            color: var(--text-color);
             display: flex;
             gap: 10px;
             align-items: flex-start;
@@ -335,7 +341,7 @@
         .stats-strip {
             display: flex;
             justify-content: space-around;
-            background: white;
+            background: var(--card-bg-val);
             padding: 30px 4%;
             border-top: var(--card-border);
             border-bottom: var(--card-border);
@@ -365,7 +371,7 @@
 
         /* Interactive Simulator Section */
         .simulator-section {
-            background: white;
+            background: var(--card-bg-val);
             border-radius: 30px;
             max-width: 1050px;
             margin: 0 auto 80px auto;
@@ -392,7 +398,7 @@
         }
 
         .simulator-card {
-            background: #FAF8F5;
+            background: var(--card-sub-bg);
             border-radius: 20px;
             border: var(--card-border);
             padding: 30px;
@@ -437,7 +443,7 @@
         }
 
         .simulation-output {
-            background: white;
+            background: var(--card-bg-val);
             border-radius: 12px;
             padding: 20px;
             border-left: 5px solid #FF9F43;
@@ -493,7 +499,7 @@
         }
 
         .feature-card {
-            background: white;
+            background: var(--card-bg-val);
             border-radius: 20px;
             padding: 35px 30px;
             border: var(--card-border);
@@ -512,7 +518,7 @@
         .feature-icon-wrapper {
             width: 60px;
             height: 60px;
-            background: #F3E8FF;
+            background: var(--input-bg);
             border-radius: 14px;
             display: flex;
             justify-content: center;
@@ -609,6 +615,7 @@
             <span class="logo-text">PocketPilot</span>
         </a>
         <div class="nav-actions">
+            <button class="theme-toggle" onclick="toggleTheme()" style="background: none; border: none; font-size: 15px; font-weight: 600; color: var(--primary); cursor: pointer; padding: 8px 16px; transition: var(--transition);">🌓 Theme</button>
             <a href="login.jsp" class="nav-link">Login</a>
             <a href="signup.jsp" class="btn-nav-signup">Sign Up</a>
         </div>

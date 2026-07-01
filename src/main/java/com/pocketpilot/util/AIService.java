@@ -55,8 +55,23 @@ public class AIService {
               .append(", Utilization=").append(String.format("%.1f%%", budgetUtilization))
               .append(", Budget=RM").append(String.format("%.2f", totalBudget))
               .append(", AvgDaily=RM").append(String.format("%.2f", averageDailyExpense))
-              .append(", Trend=").append(spendingTrend.get("trend")).append(" (").append(spendingTrend.get("percentage")).append(").")
-              .append(" Provide 3-4 sentences of actionable, encouraging financial advice.");
+              .append(", Trend=").append(spendingTrend.get("trend")).append(" (").append(spendingTrend.get("percentage")).append(").");
+        
+        if (topCategories != null && !topCategories.isEmpty()) {
+            prompt.append(" Top spending categories: ").append(topCategories.toString()).append(".");
+        }
+        
+        if ("deficit".equals(surplusStatus)) {
+            prompt.append(" The student has a deficit of RM").append(String.format("%.2f", Math.abs(surplusDeficitAmount)))
+                  .append(". Based on the top spending categories, identify where they should cut back and spend less to get back on track.");
+        } else if ("surplus".equals(surplusStatus)) {
+            prompt.append(" The student has a surplus of RM").append(String.format("%.2f", Math.abs(surplusDeficitAmount)))
+                  .append(". Provide advice on where to allocate this surplus, specifically suggesting putting it into an Emergency Fund or allocating it toward a goal they have set.");
+        } else {
+            prompt.append(" The budget is balanced. Suggest setting aside a small amount of money into an Emergency Fund or student goals.");
+        }
+        
+        prompt.append(" Provide 3-4 sentences of actionable, encouraging financial advice.");
         return prompt.toString();
     }
 
@@ -119,9 +134,16 @@ public class AIService {
     }
 
     public static String generateRuleBasedGuidance(String status, double util, double avg, double budget, double diff) {
-        if ("surplus".equals(status)) return "Great job! You have a surplus of RM" + String.format("%.2f", diff) + ". Keep it up!";
-        if ("deficit".equals(status)) return "Alert: You exceeded your budget. Try reducing daily spend to RM" + String.format("%.2f", avg * 0.8) + ".";
-        return "You are on track with your budget. Maintain your current spending habits.";
+        if ("surplus".equals(status)) {
+            return "Great job! You have a surplus of RM" + String.format("%.2f", diff) + 
+                   ". We recommend putting this surplus money into your Emergency Fund or allocating it toward a goal you have set to secure your future.";
+        }
+        if ("deficit".equals(status)) {
+            return "Alert: You exceeded your budget by RM" + String.format("%.2f", Math.abs(diff)) + 
+                   ". Try reducing your daily spend to RM" + String.format("%.2f", avg * 0.8) + 
+                   " by cutting back on your top non-essential categories.";
+        }
+        return "You are on track with your budget. We recommend putting any extra savings this week into an Emergency Fund.";
     }
 
     public static int suggestCategoryID(String description) {
