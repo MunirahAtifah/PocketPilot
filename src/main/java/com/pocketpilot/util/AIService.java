@@ -24,7 +24,7 @@ public class AIService {
                                              totalBudget, surplusDeficitAmount, spendingTrend, topCategories);
         
         if (aiGuidance == null || aiGuidance.isEmpty()) {
-            aiGuidance = generateRuleBasedGuidance(surplusStatus, budgetUtilization, averageDailyExpense, totalBudget, surplusDeficitAmount);
+            aiGuidance = "AI guidance is currently unavailable. Please check your network connection or API configuration.";
         }
         return aiGuidance;
     }
@@ -131,19 +131,6 @@ public class AIService {
             System.err.println("[AIService] Groq Gson parsing failed: " + e.getMessage());
         }
         return null;
-    }
-
-    public static String generateRuleBasedGuidance(String status, double util, double avg, double budget, double diff) {
-        if ("surplus".equals(status)) {
-            return "Great job! You have a surplus of RM" + String.format("%.2f", diff) + 
-                   ". We recommend putting this surplus money into your Emergency Fund or allocating it toward a goal you have set to secure your future.";
-        }
-        if ("deficit".equals(status)) {
-            return "Alert: You exceeded your budget by RM" + String.format("%.2f", Math.abs(diff)) + 
-                   ". Try reducing your daily spend to RM" + String.format("%.2f", avg * 0.8) + 
-                   " by cutting back on your top non-essential categories.";
-        }
-        return "You are on track with your budget. We recommend putting any extra savings this week into an Emergency Fund.";
     }
 
     public static int suggestCategoryID(String description) {
