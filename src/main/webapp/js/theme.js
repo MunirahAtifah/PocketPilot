@@ -52,5 +52,38 @@
             localStorage.setItem('pocketpilot-theme', newTheme);
             toggleBtn.textContent = newTheme === 'light' ? 'Dark Mode' : 'Light Mode';
         });
+
+        // 4. Responsive Navbar Setup
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            const menuToggle = document.createElement('button');
+            menuToggle.className = 'menu-toggle';
+            menuToggle.id = 'menuToggle';
+            menuToggle.setAttribute('aria-label', 'Toggle navigation menu');
+            menuToggle.innerHTML = '☰ Menu';
+            
+            const navLinks = document.createElement('div');
+            navLinks.className = 'nav-links';
+            navLinks.id = 'navLinks';
+            
+            const children = Array.from(navbar.children);
+            children.forEach(child => {
+                navLinks.appendChild(child);
+            });
+            
+            navbar.appendChild(menuToggle);
+            navbar.appendChild(navLinks);
+            
+            menuToggle.addEventListener('click', function () {
+                const isOpen = navLinks.classList.contains('active');
+                if (isOpen) {
+                    navLinks.classList.remove('active');
+                    menuToggle.innerHTML = '☰ Menu';
+                } else {
+                    navLinks.classList.add('active');
+                    menuToggle.innerHTML = '✕ Close';
+                }
+            });
+        }
     });
 })();
