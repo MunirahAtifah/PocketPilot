@@ -460,13 +460,13 @@
             <!-- Tabs Menu -->
             <div class="dashboard-tabs">
                 <button class="tab-btn active" onclick="switchTab('active-tab')">
-                    👥 Supervised Students (<%= activeSupervised.size() %>)
+                    Supervised Students (<%= activeSupervised.size() %>)
                 </button>
                 <button class="tab-btn" onclick="switchTab('pending-tab')">
-                    ⏳ Pending Approval (<%= pendingApprovalsList.size() %>)
+                    Pending Approval (<%= pendingApprovalsList.size() %>)
                 </button>
                 <button class="tab-btn" onclick="switchTab('directory-tab')">
-                    🔍 Student Directory (<%= studentDirectory.size() %>)
+                    Student Directory (<%= studentDirectory.size() %>)
                 </button>
             </div>
 
