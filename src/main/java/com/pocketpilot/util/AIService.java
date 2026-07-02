@@ -63,20 +63,36 @@ public class AIService {
             prompt.append(" Top spending categories: ").append(topCategories.toString()).append(".");
         }
 
+        prompt.append("\nYour response MUST follow this exact format, with no other text, greetings, or conclusions:\n\n");
+
         if ("deficit".equals(surplusStatus)) {
-            prompt.append(" The student has a deficit of RM")
-                    .append(String.format("%.2f", Math.abs(surplusDeficitAmount)))
-                    .append(". Based on the top spending categories, identify where they should cut back and spend less to get back on track.");
+            prompt.append("AI Guidance (Deficit):\n"
+                    + "1. [First recommendation sentence]\n"
+                    + "2. [Second recommendation sentence]\n"
+                    + "3. [Third recommendation sentence]\n\n")
+                    .append("Provide advice on cutting back based on categories to recover the deficit of RM")
+                    .append(String.format("%.2f", Math.abs(surplusDeficitAmount))).append(".");
         } else if ("surplus".equals(surplusStatus)) {
-            prompt.append(" The student has a surplus of RM")
-                    .append(String.format("%.2f", Math.abs(surplusDeficitAmount)))
-                    .append(". Provide advice on where to allocate this surplus, specifically suggesting putting it into an Emergency Fund or allocating it toward a goal they have set.");
+            prompt.append("AI Guidance (Surplus):\n"
+                    + "1. [First recommendation sentence]\n"
+                    + "2. [Second recommendation sentence]\n"
+                    + "3. [Third recommendation sentence]\n\n")
+                    .append("Provide advice on where to allocate their surplus of RM")
+                    .append(String.format("%.2f", Math.abs(surplusDeficitAmount))).append(", such as an emergency fund or goals.");
         } else {
-            prompt.append(
-                    " The budget is balanced. Suggest setting aside a small amount of money into an Emergency Fund or student goals.");
+            prompt.append("AI Guidance (Balanced):\n"
+                    + "1. [First recommendation sentence]\n"
+                    + "2. [Second recommendation sentence]\n"
+                    + "3. [Third recommendation sentence]\n\n")
+                    .append("Suggest saving methods or goal planning since their budget is balanced.");
         }
 
-        prompt.append(" Provide 3-4 actionable financial advice points in bullet format. Each bullet point MUST be exactly one short sentence.");
+        prompt.append("\nRequirements for the points:\n"
+                + "- Output exactly the header name as specified above, followed by a numbered list (1, 2, 3).\n"
+                + "- Each numbered item MUST be exactly one short, simple sentence that fits on a single line (max 10-12 words).\n"
+                + "- Make sure it does not wrap or take 2 lines.\n"
+                + "- Do not include any other markdown formatting like bold text or custom bullets, just plain numbers.");
+
         return prompt.toString();
     }
 
