@@ -420,11 +420,19 @@
             </div>
         </div>
         
+        <!-- AI Guidance Card -->
+        <% if (aiGuidance != null && !aiGuidance.isEmpty()) { %>
+        <div class="ai-guidance">
+            <h3>🤖 PocketPilot AI Guidance</h3>
+            <p style="white-space: pre-line;"><%= aiGuidance %></p>
+        </div>
+        <% } %>
+        
         <!-- AI Chatbot Replacement -->
         <div class="ai-chat-container">
             <div class="ai-chat-header">
                 <h3>
-                    <span class="chat-icon">🤖</span>
+                    <span class="chat-icon">💬</span>
                     <span>PocketPilot AI Assistant</span>
                 </h3>
                 <span class="chat-status"><span class="status-dot"></span>Online</span>
@@ -434,7 +442,7 @@
                 <div class="ai-chat-message assistant">
                     <div class="message-content">
                         <strong>PocketPilot AI:</strong><br>
-                        <%= aiGuidance %>
+                        Hello! I am your interactive assistant. Ask me anything about your budgets, expenses, parent/counsellor access, or how the system works!
                     </div>
                     <div class="message-time">Just now</div>
                 </div>

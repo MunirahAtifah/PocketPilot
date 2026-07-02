@@ -1397,6 +1397,43 @@ footer a:hover {
 
 /* ==================== POCKETPILOT UPGRADE STYLES ==================== */
 
+/* AI Guidance Card Styling */
+.ai-guidance {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-left: 5px solid var(--accent-light) !important;
+  box-shadow: var(--shadow-md), var(--card-glow) !important;
+  border-radius: 16px;
+  padding: 20px 25px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(12px);
+  transition: var(--transition-smooth);
+}
+
+.ai-guidance:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(157, 78, 221, 0.15) !important;
+}
+
+.ai-guidance h3 {
+  color: var(--accent-light) !important;
+  font-size: 18px !important;
+  margin-top: 0 !important;
+  margin-bottom: 15px !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-guidance p {
+  color: var(--text-primary) !important;
+  font-size: 14.5px !important;
+  line-height: 1.8 !important;
+  margin: 0 !important;
+  font-weight: 500;
+}
+
 /* AI Chat Container & Interactive Chatbot */
 .ai-chat-container {
   display: flex;
