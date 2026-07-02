@@ -283,13 +283,13 @@
                         type="password" 
                         id="password" 
                         name="password" 
-                        placeholder="Minimum 6 characters"
+                        placeholder="Minimum 8 characters"
                         required
                     >
                     <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">Show</span>
                 </div>
                 <div id="passwordWarning" style="display: none; color: #c62828; font-size: 13px; margin-top: 5px; font-weight: 500; align-items: center; gap: 4px; transition: all 0.3s ease;">
-                    Password must be at least 6 characters
+                    Password must be at least 8 characters
                 </div>
             </div>
             
@@ -325,14 +325,14 @@
         });
 
         passwordInput.addEventListener('input', function() {
-            if (passwordInput.value.length >= 6) {
+            if (passwordInput.value.length >= 8) {
                 passwordWarning.style.display = 'none';
                 passwordInput.style.borderColor = 'var(--border-color)';
             }
         });
 
         function validatePasswordLength() {
-            if (passwordInput.value.length > 0 && passwordInput.value.length < 6) {
+            if (passwordInput.value.length > 0 && passwordInput.value.length < 8) {
                 passwordWarning.style.display = 'flex';
                 passwordInput.style.borderColor = '#c62828';
             } else {
@@ -389,8 +389,8 @@
                 return;
             }
             
-            if (password.length < 6) {
-                errorDiv.textContent = 'Password must be at least 6 characters';
+            if (password.length < 8) {
+                errorDiv.textContent = 'Password must be at least 8 characters';
                 errorDiv.style.display = 'block';
                 e.preventDefault();
                 return;

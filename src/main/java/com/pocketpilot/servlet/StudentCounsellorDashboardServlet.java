@@ -163,12 +163,12 @@ public class StudentCounsellorDashboardServlet extends HttpServlet {
         }
 
         int accessID = Integer.parseInt(accessIDStr);
-        boolean success = StudentCounsellorDAO.disapproveCounsellor(accessID);
+        boolean success = StudentCounsellorDAO.disapproveStudent(accessID);
 
         if (success) {
-            response.getWriter().print("{\"success\":true,\"message\":\"Student disapproved\"}");
+            response.getWriter().print("{\"success\":true,\"message\":\"Revoked/disapproved supervision access successfully\"}");
         } else {
-            response.getWriter().print("{\"success\":false,\"message\":\"Failed to disapprove student\"}");
+            response.getWriter().print("{\"success\":false,\"message\":\"Failed to revoke/disapprove supervision access\"}");
         }
     }
 

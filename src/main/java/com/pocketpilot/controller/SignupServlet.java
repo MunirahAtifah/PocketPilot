@@ -204,9 +204,9 @@ public class SignupServlet extends HttpServlet {
             return "Invalid role selected";
         }
 
-        // Password validation (6+ chars)
-        if (password.length() < 6 || password.length() > 50) {
-            return "Password must be 6-50 characters";
+        // Password validation (8+ chars)
+        if (password.length() < 8 || password.length() > 50) {
+            return "Password must be 8-50 characters";
         }
 
         return null; // All valid

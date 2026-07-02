@@ -160,14 +160,14 @@ CREATE TABLE `registration` (
 --
 
 INSERT INTO `registration` (`userID`, `username`, `phone_number`, `email`, `role`, `password`) VALUES
-(1, 'Muniey', '01112914982', 'irfahmazmi@gmail.com', 'Student', '123456'),
-(2, 'aiman', '01234567891', 'aiman@gmail.com', 'Student', '345678'),
-(3, 'azman', '0123567892', 'azman@gmail.com', 'Parent', '123qwe'),
+(1, 'Muniey', '01112914982', 'irfahmazmi@gmail.com', 'Student', '12345678'),
+(2, 'aiman', '01234567891', 'aiman@gmail.com', 'Student', '34567890'),
+(3, 'azman', '0123567892', 'azman@gmail.com', 'Parent', '123qwe12'),
 (5, 'Ummi', '0139647354', 'ummimusallah@gmail.com', 'Parent', 'ummi1234'),
 (6, 'Mazlan', '0133029282', 'mazlan@gmail.com', 'Parent', 'mazlan5159'),
-(7, 'Fara', '0122576289', 'fara@gmail.com', 'Student', 'fara13'),
-(8, 'Ali', '0112345624', 'ali123@gmail.com', 'Parent', '3456789'),
-(9, 'Counsellor1', '0123456789', 'counsellor1@gmail.com', 'Student_Counsellor', '987654');
+(7, 'Fara', '0122576289', 'fara@gmail.com', 'Student', 'fara1313'),
+(8, 'Ali', '0112345624', 'ali123@gmail.com', 'Parent', '34567890'),
+(9, 'Counsellor1', '0123456789', 'counsellor1@gmail.com', 'Student_Counsellor', '98765432');
 
 -- --------------------------------------------------------
 

@@ -420,11 +420,127 @@
             </div>
         </div>
         
-        <!-- AI Guidance Alert -->
-        <div class="ai-guidance">
-            <h3>PocketPilot AI Guidance</h3>
-            <p><%= aiGuidance %></p>
+        <!-- AI Chatbot Replacement -->
+        <div class="ai-chat-container">
+            <div class="ai-chat-header">
+                <h3>
+                    <span class="chat-icon">🤖</span>
+                    <span>PocketPilot AI Assistant</span>
+                </h3>
+                <span class="chat-status"><span class="status-dot"></span>Online</span>
+            </div>
+            
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-chat-message assistant">
+                    <div class="message-content">
+                        <strong>PocketPilot AI:</strong><br>
+                        <%= aiGuidance %>
+                    </div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+            
+            <form class="ai-chat-input-area" id="aiChatForm" onsubmit="sendChatMessage(event)">
+                <input type="text" id="aiChatInput" placeholder="Ask about your budget, expenses, or how the system works..." required autocomplete="off">
+                <button type="submit" class="btn-chat-send">
+                    <span class="send-icon">➔</span>
+                </button>
+            </form>
         </div>
+
+        <script>
+            // Budget Context details for AI
+            const budgetContext = "Month: <%= selectedMonth %>; Total Budget: RM <%= String.format("%.2f", totalBudget) %>; Total Expense: RM <%= String.format("%.2f", totalExpense) %>; Daily Average Spending: RM <%= String.format("%.2f", dailyAverage) %>; Budget Utilization: <%= String.format("%.1f", budgetUsagePercent) %>%.";
+
+            function sendChatMessage(event) {
+                event.preventDefault();
+                
+                const inputElement = document.getElementById("aiChatInput");
+                const messageText = inputElement.value.trim();
+                if (!messageText) return;
+
+                // Clear input
+                inputElement.value = "";
+
+                // Append user message
+                appendMessage("user", messageText);
+
+                // Show typing indicator
+                showTypingIndicator();
+
+                // Scroll to bottom
+                scrollToBottom();
+
+                // Send request
+                fetch("AIChatServlet", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "message=" + encodeURIComponent(messageText) + "&budgetContext=" + encodeURIComponent(budgetContext)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    removeTypingIndicator();
+                    if (data.success) {
+                        appendMessage("assistant", data.response);
+                    } else {
+                        appendMessage("assistant", "⚠️ Error: " + data.message);
+                    }
+                    scrollToBottom();
+                })
+                .catch(error => {
+                    removeTypingIndicator();
+                    console.error("Error during chat request:", error);
+                    appendMessage("assistant", "⚠️ Connection error. Please try again later.");
+                    scrollToBottom();
+                });
+            }
+
+            function appendMessage(sender, text) {
+                const messagesContainer = document.getElementById("aiChatMessages");
+                const messageDiv = document.createElement("div");
+                messageDiv.className = "ai-chat-message " + sender;
+                
+                const contentDiv = document.createElement("div");
+                contentDiv.className = "message-content";
+                contentDiv.innerHTML = "<strong>" + (sender === "user" ? "You" : "PocketPilot AI") + ":</strong><br>" + text.replace(/\n/g, "<br>");
+                
+                const timeDiv = document.createElement("div");
+                timeDiv.className = "message-time";
+                timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messageDiv.appendChild(contentDiv);
+                messageDiv.appendChild(timeDiv);
+                messagesContainer.appendChild(messageDiv);
+            }
+
+            function showTypingIndicator() {
+                const messagesContainer = document.getElementById("aiChatMessages");
+                const indicatorDiv = document.createElement("div");
+                indicatorDiv.className = "ai-chat-message assistant";
+                indicatorDiv.id = "typingIndicator";
+                
+                const contentDiv = document.createElement("div");
+                contentDiv.className = "message-content typing-indicator";
+                contentDiv.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+                
+                indicatorDiv.appendChild(contentDiv);
+                messagesContainer.appendChild(indicatorDiv);
+            }
+
+            function removeTypingIndicator() {
+                const indicator = document.getElementById("typingIndicator");
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+
+            function scrollToBottom() {
+                const messagesContainer = document.getElementById("aiChatMessages");
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        </script>
         
         <!-- Charts Grid -->
         <div class="charts-row">

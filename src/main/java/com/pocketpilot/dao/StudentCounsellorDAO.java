@@ -41,6 +41,7 @@ public class StudentCounsellorDAO {
                     access.setStaffID(rs.getInt("staffID"));
                     access.setStudentID(rs.getInt("studentID"));
                     access.setApprovedByStudent(rs.getInt("approvedByStudent") == 1);
+                    access.setAccessStatus(rs.getString("accessStatus"));
                     requests.add(access);
                 }
             }
@@ -59,7 +60,7 @@ public class StudentCounsellorDAO {
 
     // Fixed: table name 'StudentCounsellorAccess' to 'studentcounselloraccess'
     public static boolean disapproveStudent(int accessID) throws SQLException {
-        String sql = "UPDATE studentcounselloraccess SET approvedByStudent = 0, studentApprovalDate = NULL WHERE accessID = ?";
+        String sql = "DELETE FROM studentcounselloraccess WHERE accessID = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, accessID);
             return stmt.executeUpdate() > 0;
