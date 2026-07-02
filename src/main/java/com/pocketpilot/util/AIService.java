@@ -76,7 +76,7 @@ public class AIService {
                     " The budget is balanced. Suggest setting aside a small amount of money into an Emergency Fund or student goals.");
         }
 
-        prompt.append(" Provide 3-4 sentences of actionable, encouraging financial advice.");
+        prompt.append(" Provide 3-4 actionable financial advice points in bullet format. Each bullet point MUST be exactly one short sentence.");
         return prompt.toString();
     }
 
@@ -197,7 +197,7 @@ public class AIService {
                     + budgetContext + "\n\n"
                     + "User Message:\n"
                     + userMessage + "\n\n"
-                    + "Provide a friendly, helpful, and concise response (maximum 3-4 sentences, or bullet points if explaining steps). If the user asks about the system, guide them accurately based on the system details above.";
+                    + "Provide a friendly, helpful, and concise response. Keep your advice/points in short bullet points, with each point being exactly one short sentence. If the user asks about the system, guide them accurately based on the system details above.";
 
             String jsonResponse = callGroqAPI(prompt);
             return parseGroqResponse(jsonResponse);
